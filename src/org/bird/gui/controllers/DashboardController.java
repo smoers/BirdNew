@@ -1,5 +1,6 @@
 package org.bird.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,7 +43,7 @@ public class DashboardController implements Initializable {
                 ButtonType buttonTypeNo = new ButtonType(languages.get("no"), ButtonBar.ButtonData.NO);
                 Image image = new Image(getClass().getResource("/images/blue/high-importance-32.png").toExternalForm());
                 ImageView imageView = new ImageView(image);
-                Dialog<String> dialog = new Dialog<>();
+                Dialog<ButtonType> dialog = new Dialog<>();
                 dialog.getDialogPane().getButtonTypes().add(buttonTypeNo);
                 dialog.getDialogPane().getButtonTypes().add(buttonTypeYes);
                 dialog.setGraphic(imageView);
@@ -67,7 +68,9 @@ public class DashboardController implements Initializable {
                 dialog.headerTextProperty().setValue("lskdjfdhlqsksjhlfqksjdqhfdlk lksjqdhfl klqsjkdhlsk dlksdjh mskdjh slqjkdh kjqsd ksjdf msjkdjfh mqq sksdf qj");
                 dialog.setContentText(languages.get("message"));
 
-                dialog.showAndWait();
+                ButtonType response = dialog.showAndWait().get();
+                System.out.println(response);
+                Platform.exit();
             }
         });
 

@@ -13,7 +13,10 @@ public class ImageProvider {
         imageView = new ImageView(image);
     }
 
-
+    public ImageProvider(ImageContext imageContext){
+        image = new Image(getClass().getResource(imageContext.getContext()).toExternalForm());
+        imageView = new ImageView(image);
+    }
 
     public Image getImage() {
         return image;
@@ -23,6 +26,9 @@ public class ImageProvider {
         return imageView;
     }
 
+    /**
+     *
+     */
     public enum ImageContext {
 
         ALERT_16("/images/blue/high-importance-16.png"),
