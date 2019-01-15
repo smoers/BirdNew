@@ -34,7 +34,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("load");
+        System.out.println(getClass().getSimpleName());
         setLanguage(resourceBundle);
         menuExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override

@@ -1,7 +1,11 @@
 module BirdFly {
     requires javafx.controls;
     requires javafx.fxml;
-    exports org.bird to javafx.graphics;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
+    requires gson;
+    requires guava;
+    exports org.bird.gui to javafx.graphics;
     exports org.bird.gui.controllers to javafx.fxml;
     opens org.bird.gui.controllers to javafx.fxml;
 }

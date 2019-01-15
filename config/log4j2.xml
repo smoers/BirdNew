@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ /**
+  ~  * Copyright (c) 2018.  MO Consult
+  ~  *
+  ~  * Licensed under the Apache License, Version 2.0 (the "License");
+  ~  * you may not use this file except in compliance with the License.
+  ~  * You may obtain a copy of the License at
+  ~  *
+  ~  *     http://www.apache.org/licenses/LICENSE-2.0
+  ~  *
+  ~  * Unless required by applicable law or agreed to in writing, software
+  ~  * distributed under the License is distributed on an "AS IS" BASIS,
+  ~  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  * See the License for the specific language governing permissions and
+  ~  * limitations under the License.
+  ~  */
+  ~
+  -->
+
+<Configuration status="warn" name="moconsult">
+    <Properties>
+        <Property name="log-path">logs</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="system-log" fileName="${log-path}/mobackup.log"
+                     filePattern="${log-path}/mobackup-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t][%C{30}] - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="system-task" fileName="${log-path}/mobackup-task.log"
+                     filePattern="${log-path}/mobackup-task-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t][%C{30}] - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{10} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="be.mo.consult" level="all" additivity="false">
+            <appender-ref ref="system-log" level="all"/>
+        </Logger>
+        <Logger name="be.mo.consult.task" level="all" additivity="false">
+            <appender-ref ref="system-task" level="all"/>
+        </Logger>
+        <Root level="info" additivity="false">
+            <appender-ref ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
