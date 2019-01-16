@@ -14,7 +14,7 @@ public class InternationalizationBuilder {
     /*
     Liste des ResourceBundle déjà chargé
      */
-    private HashMap<String, ResourceBundle> i18nMap = new HashMap<>();
+    private HashMap<String, InternationalizationBundle> i18nMap = new HashMap<>();
     /*
     Locale setting
      */
@@ -59,15 +59,15 @@ public class InternationalizationBuilder {
     }
 
     /**
-     * Retourne l'objetResourceBundle correspondant à la clé
-     * Si l'objet ResourceBundle n'est pas dans l'objet Map, il sera placé dans celui-ci avant d'être retoourné
+     * Retourne l'objet InternationalizationBundle correspondant à la clé
+     * Si l'objet InternationalizationBundle n'est pas dans l'objet Map, il sera placé dans celui-ci avant d'être retourné
      * @param key
-     * @return
-     * @throws MissingResourceException
+     * @return InternationalizationBundle
+     * @throws MissingResourceException // lève une exception si le fichier n'existe pas pour pouvoir créer l'objet ResourceBundle
      */
-    public ResourceBundle getResourceBundle(String key) throws MissingResourceException{
+    public InternationalizationBundle getInternationalizationBundle(String key) throws MissingResourceException{
         if(!i18nMap.containsKey(key)){
-            i18nMap.put(key, ResourceBundle.getBundle(getBaseName(key)));
+            i18nMap.put(key, new InternationalizationBundle(ResourceBundle.getBundle(getBaseName(key))));
         }
         return i18nMap.get(key);
     }

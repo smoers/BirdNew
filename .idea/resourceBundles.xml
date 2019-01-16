@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/src/i18n/DashboardController.properties" />
+    <file url="file://$PROJECT_DIR$/src/i18n/DashboardController_fr.properties" />
+    <file url="file://$PROJECT_DIR$/src/i18n/DashboardController_nl.properties" />
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/src/i18n/DashboardController.properties" />
+      <file value="file://$PROJECT_DIR$/src/i18n/DashboardController_fr.properties" />
+      <file value="file://$PROJECT_DIR$/src/i18n/DashboardController_nl.properties" />
+      <base-name>DashboardController</base-name>
+    </custom-resource-bundle>
+  </component>
+</project>

@@ -1,7 +1,6 @@
 package org.bird.gui.controllers;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,12 +12,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
+import org.bird.i18n.InternationalizationController;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class DashboardController implements Initializable {
+public class DashboardController extends InternationalizationController implements Initializable {
 
     @FXML
     private MenuItem menuExit;
@@ -26,16 +26,19 @@ public class DashboardController implements Initializable {
     private Menu menuFile;
     @FXML
     private MenuBar menuBar;
+
     private HashMap<String, String> languages = new HashMap<>();
 
     public DashboardController() {
 
     }
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println(getClass().getSimpleName());
-        setLanguage(resourceBundle);
+        setLanguage();
         menuExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -76,10 +79,12 @@ public class DashboardController implements Initializable {
 
     }
 
-    public void setLanguage(ResourceBundle resourceBundle){
-        //
-        menuFile.setText("Dashboard");
-        menuExit.setText("Quitter");
+    public void setLanguage(){
+        //Ne defini le texte que si l'objet InternationalizationBundle est non null
+        if (internationalizationBundle != null) {
+            menuFile.setText(internationalizationBundle.getString("Dashboard"));
+            menuExit.setText(internationalizationBundle.getString("Exit"));
+        }
 
         languages.put("yes","Oui");
         languages.put("no", "Non");
