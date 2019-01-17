@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
+import org.bird.gui.common.dialog.DialogAlert;
 import org.bird.i18n.InternationalizationController;
 
 import java.net.URL;
@@ -27,8 +28,6 @@ public class DashboardController extends InternationalizationController implemen
     @FXML
     private MenuBar menuBar;
 
-    private HashMap<String, String> languages = new HashMap<>();
-
     public DashboardController() {
 
     }
@@ -42,6 +41,10 @@ public class DashboardController extends InternationalizationController implemen
         menuExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
+                //DialogAlert dialogAlert = new DialogAlert();
+                //dialogAlert.
+                /*
                 ButtonType buttonTypeYes = new ButtonType(languages.get("yes"), ButtonBar.ButtonData.YES);
                 ButtonType buttonTypeNo = new ButtonType(languages.get("no"), ButtonBar.ButtonData.NO);
                 Image image = new Image(getClass().getResource("/images/blue/high-importance-32.png").toExternalForm());
@@ -73,6 +76,7 @@ public class DashboardController extends InternationalizationController implemen
 
                 ButtonType response = dialog.showAndWait().get();
                 System.out.println(response);
+                */
                 Platform.exit();
             }
         });
@@ -86,8 +90,5 @@ public class DashboardController extends InternationalizationController implemen
             menuExit.setText(internationalizationBundle.getString("Exit"));
         }
 
-        languages.put("yes","Oui");
-        languages.put("no", "Non");
-        languages.put("message","Voulez-vous quitter l'application ?");
     }
 }

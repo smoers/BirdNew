@@ -7,6 +7,18 @@ import javafx.scene.layout.Priority;
 
 public class DialogExtended<R> extends Dialog<R> {
 
+    public static enum TYPE {
+
+        BUTTON_YES,
+        BUTTON_NO,
+        BUTTON_CANCEL,
+        BUTTON_SAVE,
+        BUTTON_YES_NO,
+        BUTTON_OK_CANCEL,
+        BUTTON_SAVE_CANCEL
+
+    }
+
     protected GridPane getExpandableContext(String text){
 
         TextArea textArea = new TextArea(text);
