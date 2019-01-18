@@ -67,9 +67,13 @@ public class InternationalizationBuilder {
      */
     public InternationalizationBundle getInternationalizationBundle(String key) throws MissingResourceException{
         if(!i18nMap.containsKey(key)){
-            i18nMap.put(key, new InternationalizationBundle(ResourceBundle.getBundle(getBaseName(key))));
+            i18nMap.put(key, new InternationalizationBundle(ResourceBundle.getBundle(getBaseName(key), locale)));
         }
         return i18nMap.get(key);
+    }
+
+    public InternationalizationBundle getInternationalizationBundle(Class clazz){
+        return getInternationalizationBundle(clazz.getSimpleName());
     }
 
     /**

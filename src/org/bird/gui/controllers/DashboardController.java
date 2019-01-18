@@ -13,6 +13,9 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
 import org.bird.gui.common.dialog.DialogAlert;
+import org.bird.gui.common.dialog.DialogExtended;
+import org.bird.i18n.InternationalizationBuilder;
+import org.bird.i18n.InternationalizationBundle;
 import org.bird.i18n.InternationalizationController;
 
 import java.net.URL;
@@ -27,9 +30,11 @@ public class DashboardController extends InternationalizationController implemen
     private Menu menuFile;
     @FXML
     private MenuBar menuBar;
+    private final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
+    private InternationalizationBundle internationalizationBundle;
 
     public DashboardController() {
-
+        internationalizationBundle = internationalizationBuilder.getInternationalizationBundle(getClass());
     }
 
 
@@ -42,41 +47,12 @@ public class DashboardController extends InternationalizationController implemen
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                //DialogAlert dialogAlert = new DialogAlert();
-                //dialogAlert.
-                /*
-                ButtonType buttonTypeYes = new ButtonType(languages.get("yes"), ButtonBar.ButtonData.YES);
-                ButtonType buttonTypeNo = new ButtonType(languages.get("no"), ButtonBar.ButtonData.NO);
-                Image image = new Image(getClass().getResource("/images/blue/high-importance-32.png").toExternalForm());
-                ImageView imageView = new ImageView(image);
-                Dialog<ButtonType> dialog = new Dialog<>();
-                dialog.getDialogPane().getButtonTypes().add(buttonTypeNo);
-                dialog.getDialogPane().getButtonTypes().add(buttonTypeYes);
-                dialog.setGraphic(imageView);
-                dialog.setTitle("Attention");
-                dialog.setResizable(true);
-                TextArea textArea = new TextArea("lskdjfdhlqsksjhlfqksjdqhfdlk lksjqdhfl klqsjkdhlsk dlksdjh mskdjh slqjkdh kjqsd ksjdf msjkdjfh mqq sksdf qj");
-                textArea.setEditable(false);
-                textArea.setWrapText(true);
+                InternationalizationBundle bundle = internationalizationBuilder.getInternationalizationBundle(DialogExtended.class);
+                DialogAlert dialogAlert = new DialogAlert(DialogExtended.TYPE.BUTTON_YES_NO,"Titre", "Message Text","Context Text",bundle);
+                ButtonType response = dialogAlert.showAndWait().get();
 
-                textArea.setMaxWidth(Double.MAX_VALUE);
-                textArea.setMaxHeight(Double.MAX_VALUE);
-                GridPane.setVgrow(textArea, Priority.ALWAYS);
-                GridPane.setHgrow(textArea, Priority.ALWAYS);
-                GridPane expContent = new GridPane();
+                System.out.println(response.getText());
 
-                expContent.setMaxWidth(Double.MAX_VALUE);
-                expContent.add(textArea, 0, 0);
-
-                dialog.initModality(Modality.APPLICATION_MODAL);
-                dialog.initStyle(StageStyle.TRANSPARENT);
-                dialog.getDialogPane().setExpandableContent(expContent);
-                dialog.headerTextProperty().setValue("lskdjfdhlqsksjhlfqksjdqhfdlk lksjqdhfl klqsjkdhlsk dlksdjh mskdjh slqjkdh kjqsd ksjdf msjkdjfh mqq sksdf qj");
-                dialog.setContentText(languages.get("message"));
-
-                ButtonType response = dialog.showAndWait().get();
-                System.out.println(response);
-                */
                 Platform.exit();
             }
         });
