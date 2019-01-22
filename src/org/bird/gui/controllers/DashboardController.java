@@ -64,7 +64,7 @@ public class DashboardController extends InternationalizationController implemen
         });
 
         //Charge le dashboard
-        int ii = 4;
+        int ii = 50;
         for(int i=1;i<=ii;i++) {
             try {
                 FXMLLoader loader = new FXMLLoader();

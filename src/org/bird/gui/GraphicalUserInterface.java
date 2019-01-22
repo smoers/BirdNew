@@ -14,7 +14,9 @@ public class GraphicalUserInterface extends Application {
         fxmlLoader.setLocation(getClass().getResource("/org/bird/gui/resources/views/dashboard.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Bird Fly");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Scene scene = new Scene(root, 300, 275);
+        scene.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
