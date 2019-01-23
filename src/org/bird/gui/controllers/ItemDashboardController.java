@@ -35,6 +35,7 @@ public class ItemDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        author.getStyleClass().add("itemdashboard_author");
+        book.getStyleClass().add("itemdashboard_book");
     }
 }

@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -37,9 +38,15 @@ public class DashboardController extends InternationalizationController implemen
     private MenuBar menuBar;
     @FXML
     private FlowPane itemsContainer;
+    @FXML
+    private BorderPane dashboard;
+    //
     private final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
     private InternationalizationBundle internationalizationBundle;
 
+    /**
+     * Contructeur
+     */
     public DashboardController() {
         internationalizationBundle = internationalizationBuilder.getInternationalizationBundle(getClass());
     }
@@ -47,6 +54,13 @@ public class DashboardController extends InternationalizationController implemen
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //charge le texte de l'interface
         setLanguage();
+        //Layout
+        dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+        dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+        dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+
+        itemsContainer.getStyleClass().add("itemscontainer");
+
         //evenements
         menuExit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -64,7 +78,7 @@ public class DashboardController extends InternationalizationController implemen
         });
 
         //Charge le dashboard
-        int ii = 50;
+        int ii = 100;
         for(int i=1;i<=ii;i++) {
             try {
                 FXMLLoader loader = new FXMLLoader();

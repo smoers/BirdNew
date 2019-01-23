@@ -16,6 +16,7 @@ public class GraphicalUserInterface extends Application {
         primaryStage.setTitle("Bird Fly");
         Scene scene = new Scene(root, 300, 275);
         scene.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
+        System.out.println(scene.getStylesheets().isEmpty());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

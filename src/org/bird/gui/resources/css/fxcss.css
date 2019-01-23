@@ -1,4 +1,22 @@
-.root
-{
-    -fx-background-color: white;
+.root{
+    -fx-background-color: #ffffff;
+}
+
+.itemscontainer{
+    -fx-background-color: #ff0000;
+}
+
+.itemdashboard_author{
+    -fx-text-alignment: center;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-font-weigh: bolder;
+}
+
+.itemdashboard_book{
+    -fx-text-alignment: center;
+    -fx-font-size: 10px;
+    -fx-font-style: normal;
+    -fx-font-weigh: normal;
+    -fx-text-fill: white
 }
