@@ -40,6 +40,10 @@ public class DashboardController extends InternationalizationController implemen
     private FlowPane itemsContainer;
     @FXML
     private BorderPane dashboard;
+    @FXML
+    private ToolBar toolbar;
+    @FXML
+    private Button buttonLarge;
     //
     private final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
     private InternationalizationBundle internationalizationBundle;
@@ -60,6 +64,8 @@ public class DashboardController extends InternationalizationController implemen
         dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
 
         itemsContainer.getStyleClass().add("itemscontainer");
+        toolbar.getStyleClass().add("toolbar");
+        buttonLarge.getStyleClass().addAll("toolbar");
 
         //evenements
         menuExit.setOnAction(new EventHandler<ActionEvent>() {

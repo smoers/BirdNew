@@ -5,12 +5,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ItemDashboardController implements Initializable {
 
+    @FXML
+    private VBox container;
     @FXML
     private ImageView image;
     @FXML
@@ -35,6 +38,7 @@ public class ItemDashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        container.getStyleClass().add("itemscontainer");
         author.getStyleClass().add("itemdashboard_author");
         book.getStyleClass().add("itemdashboard_book");
     }

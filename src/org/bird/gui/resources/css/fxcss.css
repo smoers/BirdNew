@@ -3,7 +3,7 @@
 }
 
 .itemscontainer{
-    -fx-background-color: #ff0000;
+    -fx-background-color: white;
 }
 
 .itemdashboard_author{
@@ -11,6 +11,7 @@
     -fx-font-size: 12px;
     -fx-font-style: italic;
     -fx-font-weigh: bolder;
+    -fx-text-fill: #ff0000;
 }
 
 .itemdashboard_book{
@@ -18,5 +19,27 @@
     -fx-font-size: 10px;
     -fx-font-style: normal;
     -fx-font-weigh: normal;
-    -fx-text-fill: white
+    -fx-text-fill: #000000;
+}
+
+.toolbar{
+    -fx-background-color: white;
+}
+
+.toolbar.button{
+    -fx-text-fill: black;
+    -fx-text-overrun: clip;
+}
+
+.toolbar.button:hover{
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+#buttonLarge{
+    -fx-graphic: url("../../../../../images/blue/details-large-view-24.png")
+}
+
+#buttonLarge:hover{
+    -fx-graphic: url("../../../../../images/orange/details-large-view-24.png")
 }
