@@ -1,3 +1,6 @@
+/**
+* Global CSS
+*/
 .root{
     -fx-background-color: #ffffff;
 }
@@ -27,19 +30,19 @@
 }
 
 .toolbar.button{
-    -fx-text-fill: black;
-    -fx-text-overrun: clip;
+    -fx-background-color: white;
+    -fx-text-fill: #074AA3;
 }
 
 .toolbar.button:hover{
-    -fx-background-color: black;
-    -fx-text-fill: white;
+    -fx-background-color: white;
+    -fx-text-fill: #D87B1B;
 }
 
 #buttonLarge{
-    -fx-graphic: url("../../../../../images/blue/details-large-view-24.png")
+    -fx-graphic: url("../../../../../images/blue/details-large-view-32.png");
 }
 
 #buttonLarge:hover{
-    -fx-graphic: url("../../../../../images/orange/details-large-view-24.png")
+    -fx-graphic: url("../../../../../images/orange/details-large-view-32.png");
 }
