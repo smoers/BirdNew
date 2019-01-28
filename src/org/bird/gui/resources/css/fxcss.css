@@ -25,24 +25,31 @@
     -fx-text-fill: #000000;
 }
 
+/*Toolbar Default Layout*/
 .toolbar{
     -fx-background-color: white;
 }
-
 .toolbar.button{
     -fx-background-color: white;
     -fx-text-fill: #074AA3;
 }
-
 .toolbar.button:hover{
     -fx-background-color: white;
     -fx-text-fill: #D87B1B;
 }
 
+/*Toolbar Dashboard*/
+/*id : buttonLarge*/
 #buttonLarge{
     -fx-graphic: url("../../../../../images/blue/details-large-view-32.png");
 }
-
 #buttonLarge:hover{
     -fx-graphic: url("../../../../../images/orange/details-large-view-32.png");
+}
+/*id: buttonList*/
+#buttonList{
+    -fx-graphic: url("../../../../../images/blue/list-view-32.png");
+}
+#buttonList:hover{
+    -fx-graphic: url("../../../../../images/orange/list-view-32.png");
 }

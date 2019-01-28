@@ -39,6 +39,7 @@
             <ToolBar fx:id="toolbar" BorderPane.alignment="CENTER">
               <items>
                 <Button fx:id="buttonLarge" mnemonicParsing="false" text="Button" />
+                  <Button fx:id="buttonList" mnemonicParsing="false" text="Button" />
               </items>
             </ToolBar>
          </top>
