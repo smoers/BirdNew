@@ -23,11 +23,8 @@ public class ButtonLayout extends NodeLayout<Button> {
     public void apply() {
         String selector = layoutParameters.<String>getParameter("selector","");
         boolean ifText = layoutParameters.<Boolean>getParameter("iftext", true);
-        String text = layoutParameters.<String>getParameter("text","");
         node.getStyleClass().add(selector);
-        if (ifText)
-            node.setText(text);
-        else
+        if (!ifText)
             node.setText("");
     }
 }

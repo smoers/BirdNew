@@ -16,8 +16,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.StageStyle;
+import org.bird.configuration.Configuration;
+import org.bird.configuration.ConfigurationBuilder;
 import org.bird.gui.common.dialog.DialogAlert;
 import org.bird.gui.common.dialog.DialogExtended;
+import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.resources.images.ImageProvider;
 import org.bird.gui.resources.layout.*;
 import org.bird.i18n.InternationalizationBuilder;
@@ -51,6 +54,8 @@ public class DashboardController extends InternationalizationController implemen
     //
     private final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
     private InternationalizationBundle internationalizationBundle;
+    private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
+    private Configuration configurationLayout = configurationBuilder.get("layout");
 
     /**
      * Contructeur
@@ -66,36 +71,21 @@ public class DashboardController extends InternationalizationController implemen
         dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-
+        //Configuration du layout de la toolbar
         ArrayList<LayoutInterface> nodeLayouts = new ArrayList<>();
         LayoutParameters layoutParameters = new LayoutParameters();
         layoutParameters.put(LayoutParameters.SELECTOR, "toolbar");
-        layoutParameters.put(LayoutParameters.IFTEXT, false);
+        layoutParameters.put(LayoutParameters.IFTEXT, configurationLayout.get("layout.toolbar.iftext").getAsBoolean());
         layoutParameters.put(LayoutParameters.CHILDREN, nodeLayouts);
         nodeLayouts.add(new ButtonLayout(buttonLarge, layoutParameters));
         nodeLayouts.add(new ButtonLayout(buttonList,layoutParameters));
         ToolBarLayout toolBarLayout = new ToolBarLayout(toolbar, layoutParameters);
         toolBarLayout.apply();
 
-        itemsContainer.getStyleClass().add("itemscontainer");
-        //toolbar.getStyleClass().add("toolbar");
-        //buttonLarge.getStyleClass().addAll("toolbar");
+        itemsContainer.getStyleClass().add("items_container");
 
         //evenements
-        menuExit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-                InternationalizationBundle bundle = internationalizationBuilder.getInternationalizationBundle(DialogExtended.class);
-                String title = internationalizationBundle.getString("Attention");
-                String message = internationalizationBundle.getString("Message001");
-                DialogAlert dialogAlert = new DialogAlert(DialogExtended.TYPE.BUTTON_YES_NO,title, message,bundle);
-                ButtonType response = dialogAlert.showAndWait().get();
-
-                if (response.getButtonData() == ButtonBar.ButtonData.YES)
-                    Platform.exit();
-            }
-        });
+        menuExit.setOnAction(new ExitPlatformEvent());
 
         //Charge le dashboard
         int ii = 100;
@@ -116,11 +106,17 @@ public class DashboardController extends InternationalizationController implemen
         }
     }
 
+    /**
+     * Charge le texte sur base de la langue
+     */
     public void setLanguage(){
         //Ne defini le texte que si l'objet InternationalizationBundle est non null
         if (internationalizationBundle != null) {
             menuFile.setText(internationalizationBundle.getString("Dashboard"));
             menuExit.setText(internationalizationBundle.getString("Exit"));
+            //ToolBar
+            buttonLarge.setText(internationalizationBundle.getString("Large"));
+            buttonList.setText(internationalizationBundle.getString("List"));
         }
 
     }

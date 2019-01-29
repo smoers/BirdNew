@@ -5,11 +5,23 @@
     -fx-background-color: #ffffff;
 }
 
-.itemscontainer{
+.items_container{
     -fx-background-color: white;
 }
 
-.itemdashboard_author{
+.item_container{
+    -fx-background-color: white;
+}
+
+.item_container:hover{
+    -fx-background-color: #42f400;
+}
+
+.item_container:active{
+    -fx-background-color: #42f400;
+}
+
+.item_author{
     -fx-text-alignment: center;
     -fx-font-size: 12px;
     -fx-font-style: italic;
@@ -17,7 +29,7 @@
     -fx-text-fill: #ff0000;
 }
 
-.itemdashboard_book{
+.item_book{
     -fx-text-alignment: center;
     -fx-font-size: 10px;
     -fx-font-style: normal;
