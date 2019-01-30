@@ -1,5 +1,6 @@
 {
   "layout": {
+    "logo": "/images/logo011.png",
     "toolbar": {
       "iftext": false
     }

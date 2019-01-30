@@ -95,6 +95,7 @@ public class DashboardController extends InternationalizationController implemen
                 loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
                 Node node = loader.load();
                 ItemDashboardController item = (ItemDashboardController) loader.getController();
+
                 item.setAuthor("Joe Abercrombie");
                 item.setBook("livre " + i);
                 ImageProvider imageProvider = new ImageProvider("/images/books/001.jpg");

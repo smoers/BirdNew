@@ -6,6 +6,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+import org.bird.gui.resources.images.ImageProvider;
 import org.bird.i18n.InternationalizationBundle;
 
 import java.io.PrintWriter;
@@ -26,6 +28,12 @@ public class DialogExtended<R> extends Dialog<R> {
         BUTTON_OK_CANCEL,
         BUTTON_SAVE_CANCEL
 
+    }
+
+    public DialogExtended() {
+        super();
+        Stage stage = (Stage) getDialogPane().getScene().getWindow();
+        stage.getIcons().add(ImageProvider.getLogoImage());
     }
 
     protected GridPane getExpandableContext(String text){
