@@ -13,5 +13,9 @@
     <orderEntry type="library" name="log4j-core-2.11.1" level="project" />
     <orderEntry type="library" name="gson-2.8.5" level="project" />
     <orderEntry type="library" name="guava-19.0" level="project" />
+    <orderEntry type="library" name="core-1.4.0" level="project" />
+    <orderEntry type="library" name="mongodb-driver-3.9.1" level="project" />
+    <orderEntry type="library" name="mongodb-driver-core-3.9.1" level="project" />
+    <orderEntry type="library" name="bson-3.9.1" level="project" />
   </component>
 </module>

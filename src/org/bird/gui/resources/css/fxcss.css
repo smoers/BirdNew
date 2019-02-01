@@ -9,11 +9,12 @@
 * Affichage de la liste des livres
 */
 .items_container{
-    -fx-background-color: white;
+    -fx-background-color: #bfbfbf;
 }
 
 .item_container{
-    -fx-background-color: white;
+    -fx-background-color: #bfbfbf;
+    -fx-border-style: none ;
 }
 
 .item_container:hover{
@@ -23,8 +24,11 @@
     -fx-border-radius: 5px 5px;
 }
 
-.item_container:active{
-    -fx-background-color: #42f400;
+.item_container_active{
+    -fx-border-color: red;
+    -fx-border-style: solid outside ;
+    -fx-border-width: 5px;
+    -fx-border-radius: 5px 5px;
 }
 /*Personnalisation du label auteur*/
 .item_author{
@@ -45,14 +49,14 @@
 
 /*Toolbar Default Layout*/
 .toolbar{
-    -fx-background-color: white;
+    -fx-background-color: #bfbfbf;
 }
 .toolbar.button{
-    -fx-background-color: white;
+    -fx-background-color: #bfbfbf;
     -fx-text-fill: #074AA3;
 }
 .toolbar.button:hover{
-    -fx-background-color: white;
+    -fx-background-color: #bfbfbf;
     -fx-text-fill: #D87B1B;
 }
 

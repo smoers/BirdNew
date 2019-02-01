@@ -8,8 +8,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.events.OnRightClickEvent;
+import org.bird.gui.listeners.OnLeftClickListener;
+import org.bird.gui.listeners.OnRightClickListener;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ItemDashboardController implements Initializable {
@@ -22,6 +27,11 @@ public class ItemDashboardController implements Initializable {
     private Label author;
     @FXML
     private Label book;
+    /**
+     * Event
+     */
+    private ArrayList<OnRightClickListener> onRightClickListeners = new ArrayList<>();
+    private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
     public ItemDashboardController() {
 
@@ -47,10 +57,32 @@ public class ItemDashboardController implements Initializable {
         container.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(mouseEvent.getButton());
-                System.out.println(mouseEvent.isPrimaryButtonDown());
-                System.out.println(mouseEvent.getClickCount());
+                if (mouseEvent.isPrimaryButtonDown()){
+                    notifyOnLeftClickListener(new OnLeftClickEvent(container, mouseEvent.getClickCount()));
+                } else if (mouseEvent.isSecondaryButtonDown()){
+                    notifyOnRightClickListener(new OnRightClickEvent(container, mouseEvent.getClickCount()));
+                }
             }
         });
+    }
+
+    public void addOnRightClickListener(OnRightClickListener listener){
+        onRightClickListeners.add(listener);
+    }
+
+    public void addOnLeftClickListener(OnLeftClickListener listener){
+        onLeftClickListeners.add(listener);
+    }
+
+    private void notifyOnRightClickListener(OnRightClickEvent evt){
+        for (OnRightClickListener listener : onRightClickListeners){
+            listener.onRightClick(evt);
+        }
+    }
+
+    private void notifyOnLeftClickListener(OnLeftClickEvent evt){
+        for (OnLeftClickListener listener : onLeftClickListeners){
+            listener.onLeftClick(evt);
+        }
     }
 }

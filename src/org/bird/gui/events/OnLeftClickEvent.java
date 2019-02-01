@@ -2,7 +2,7 @@ package org.bird.gui.events;
 
 import java.util.EventObject;
 
-public class OnRightClickEvent extends EventObject {
+public class OnLeftClickEvent extends EventObject {
 
     private int clickCount;
     /**
@@ -11,7 +11,7 @@ public class OnRightClickEvent extends EventObject {
      * @param source the object on which the Event initially occurred
      * @throws IllegalArgumentException if source is null
      */
-    public OnRightClickEvent(Object source,int clickCount) {
+    public OnLeftClickEvent(Object source, int clickCount) {
         super(source);
         this.clickCount = clickCount;
     }

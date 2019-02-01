@@ -1,26 +1,16 @@
 package org.bird.gui.controllers;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.stage.Modality;
-import javafx.stage.StageStyle;
+import javafx.scene.layout.*;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
-import org.bird.gui.common.dialog.DialogAlert;
-import org.bird.gui.common.dialog.DialogExtended;
 import org.bird.gui.events.ExitPlatformEvent;
+import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.images.ImageProvider;
 import org.bird.gui.resources.layout.*;
 import org.bird.i18n.InternationalizationBuilder;
@@ -30,7 +20,6 @@ import org.bird.i18n.InternationalizationController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class DashboardController extends InternationalizationController implements Initializable {
@@ -56,6 +45,7 @@ public class DashboardController extends InternationalizationController implemen
     private InternationalizationBundle internationalizationBundle;
     private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
     private Configuration configurationLayout = configurationBuilder.get("layout");
+    private VBox selectedContainer = null;
 
     /**
      * Contructeur
@@ -95,7 +85,20 @@ public class DashboardController extends InternationalizationController implemen
                 loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
                 Node node = loader.load();
                 ItemDashboardController item = (ItemDashboardController) loader.getController();
-
+                item.addOnLeftClickListener(new OnLeftClickListener() {
+                    @Override
+                    public void onLeftClick(OnLeftClickEvent evt) {
+                        VBox container = (VBox) evt.getSource();
+                        if(evt.getClickCount() == 1){
+                            if ((selectedContainer != null)) {
+                                selectedContainer.getStyleClass().clear();
+                                selectedContainer.getStyleClass().add("item_container");
+                            }
+                            container.getStyleClass().add("item_container_active");
+                            selectedContainer = container;
+                        }
+                    }
+                });
                 item.setAuthor("Joe Abercrombie");
                 item.setBook("livre " + i);
                 ImageProvider imageProvider = new ImageProvider("/images/books/001.jpg");
