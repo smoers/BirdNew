@@ -13,15 +13,17 @@ import java.util.ArrayList;
 public class Cycle extends ModelMetaData {
 
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String title;
     private boolean isCycle;
     private int volumeNumber;
     private String comments;
     @Reference
-    private ArrayList<Author> authors;
+    private ArrayList<Author> authors = new ArrayList<>();
     @Reference
-    private ArrayList<Book> books;
+    private ArrayList<Book> books = new ArrayList<>();
+
+    private Cycle(){}
 
     public Cycle(String title) {
         this.title = title;

@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class ModelMetaData {
 
-    private Date createDate;
-    private Date modificationDate;
-    private User user;
+    private Date createDate = null;
+    private Date modificationDate = null;
+    private User user = null;
 
     public Date getCreateDate() {
         return createDate;

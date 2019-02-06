@@ -6,6 +6,7 @@ import xyz.morphia.annotations.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity("authors")
 @Indexes({
@@ -16,7 +17,7 @@ import java.util.Date;
 public class Author extends ModelMetaData {
 
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String firstName;
     private String lastName;
     private String bornFirstname;
@@ -26,7 +27,10 @@ public class Author extends ModelMetaData {
     private String comment;
     private Date bornDate;
     private Date deathDate;
-    private ArrayList<Cycle> cycles;
+    @Reference
+    private List<Cycle> cycles = new ArrayList<>();
+
+    private Author(){}
 
     public Author(String lastName) {
         this.lastName = lastName;
@@ -108,11 +112,11 @@ public class Author extends ModelMetaData {
         this.deathDate = deathDate;
     }
 
-    public ArrayList<Cycle> getCycles() {
+    public List<Cycle> getCycles() {
         return cycles;
     }
 
-    public void setCycles(ArrayList<Cycle> cycles) {
+    public void setCycles(List<Cycle> cycles) {
         this.cycles = cycles;
     }
 }

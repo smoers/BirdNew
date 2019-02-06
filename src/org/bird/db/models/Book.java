@@ -4,6 +4,9 @@ import org.bird.db.models.metadata.ModelMetaData;
 import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity("books")
 @Indexes({
         @Index(value = "title", fields = @Field("title")),
@@ -13,14 +16,18 @@ import xyz.morphia.annotations.*;
 public class Book extends ModelMetaData {
 
     @Id
-    private ObjectId id;
-    private String title;
-    private int volume;
-    private String presentation;
-    private String cover;
-    private String editor;
-    private String collection;
-    private String isbn;
+    private ObjectId id = new ObjectId();
+    private String title = null;
+    private int volume = 0;
+    private String presentation = null;
+    private String cover = null;
+    private String editor = null;
+    private String collection =null;
+    private String isbn_10 = null;
+    private String isbn_13 = null;
+    private List<Illustrator> illustrators = new ArrayList<>();
+
+    private Book(){}
 
     public Book(String title) {
         this.title = title;
@@ -78,11 +85,27 @@ public class Book extends ModelMetaData {
         this.collection = collection;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public String getIsbn_10() {
+        return isbn_10;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setIsbn_10(String isbn_10) {
+        this.isbn_10 = isbn_10;
+    }
+
+    public String getIsbn_13() {
+        return isbn_13;
+    }
+
+    public void setIsbn_13(String isbn_13) {
+        this.isbn_13 = isbn_13;
+    }
+
+    public List<Illustrator> getIllustrators() {
+        return illustrators;
+    }
+
+    public void setIllustrators(List<Illustrator> illustrators) {
+        this.illustrators = illustrators;
     }
 }

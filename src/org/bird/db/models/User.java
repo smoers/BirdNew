@@ -14,7 +14,7 @@ import java.util.Date;
 public class User {
 
     @Id
-    private ObjectId id;
+    private ObjectId id = new ObjectId();
     private String login;
     private String firstName;
     private String lastName;
@@ -22,6 +22,8 @@ public class User {
     private String password;
     private Date lastLogin;
     private Date createDate;
+
+    private User(){}
 
     public User(String login) {
         this.login = login;
