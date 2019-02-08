@@ -1,9 +1,7 @@
 package org.bird.sandbox;
 
 import com.mongodb.MongoClient;
-import org.bird.db.models.Book;
-import org.bird.db.models.Illustrator;
-import org.bird.db.models.User;
+import org.bird.db.models.*;
 import xyz.morphia.Datastore;
 import xyz.morphia.Morphia;
 
@@ -45,8 +43,8 @@ public class _Create_Data_Mas {
     private static boolean a_image = false;
     private static String a_biography = "biography";
     private static String a_comment = "comments";
-    private Date a_bornDate = Calendar.getInstance().getTime();
-    private Date a_deathDate = Calendar.getInstance().getTime();
+    private static Date a_bornDate = Calendar.getInstance().getTime();
+    private static Date a_deathDate = Calendar.getInstance().getTime();
     
 
     public static void main(String[] args) {
@@ -98,15 +96,51 @@ public class _Create_Data_Mas {
             book.setCollection(b_collection);
             book.setIsbn_10(b_isbn_10);
             book.setIsbn_13(b_isbn_13);
+            book.setCreateDate(Calendar.getInstance().getTime());
+            book.setModificationDate(Calendar.getInstance().getTime());
+
+            Cycle cycle = new Cycle(c_title+String.valueOf(i));
+            cycle.setCycle(false);
+            cycle.setVolumeNumber(1);
+            cycle.setComments(c_comments);
+            cycle.setBooks(List.of(book));
+            cycle.setCreateDate(Calendar.getInstance().getTime());
+            cycle.setModificationDate(Calendar.getInstance().getTime());
+
+            Author author = new Author(a_lastName+String.valueOf(i));
+            author.setFirstName(a_firstName);
+            author.setBornFirstname(a_bornFirstname);
+            author.setBornLastName(a_bornLastName);
+            author.setBiography(a_biography);
+            author.setComment(a_comment);
+            author.setBornDate(a_bornDate);
+            author.setDeathDate(a_deathDate);
+            author.setImage(a_image);
+            author.setCreateDate(Calendar.getInstance().getTime());
+            author.setModificationDate(Calendar.getInstance().getTime());
+
+            cycle.setAuthors(List.of(author));
+            author.setCycles(List.of(cycle));
+
             if(i<count/2){
                 book.setUser(user01);
                 book.setIllustrators(List.of(illustrator01));
+                cycle.setUser(user01);
+                author.setUser(user01);
             } else {
                 book.setUser(user02);
                 book.setIllustrators(List.of(illustrator01, illustrator02));
+                cycle.setUser(user02);
+                author.setUser(user02);
             }
 
+            datastore.save(book);
+            datastore.save(cycle);
+            datastore.save(author);
+
         }
+
+
     }
     
 }

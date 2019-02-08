@@ -1,6 +1,7 @@
 package org.bird.db.models.metadata;
 
 import org.bird.db.models.User;
+import xyz.morphia.annotations.Reference;
 
 import java.util.Date;
 
@@ -8,6 +9,7 @@ public class ModelMetaData {
 
     private Date createDate = null;
     private Date modificationDate = null;
+    @Reference
     private User user = null;
 
     public Date getCreateDate() {

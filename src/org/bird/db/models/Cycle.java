@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity("cycles")
 @Indexes({
@@ -19,9 +20,9 @@ public class Cycle extends ModelMetaData {
     private int volumeNumber;
     private String comments;
     @Reference
-    private ArrayList<Author> authors = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
     @Reference
-    private ArrayList<Book> books = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
 
     private Cycle(){}
 
@@ -65,19 +66,19 @@ public class Cycle extends ModelMetaData {
         this.comments = comments;
     }
 
-    public ArrayList<Author> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(ArrayList<Author> authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
-    public ArrayList<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(ArrayList<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }
