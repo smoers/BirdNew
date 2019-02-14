@@ -1,6 +1,7 @@
 package org.bird.configuration;
 
 import com.google.gson.JsonElement;
+import org.bird.configuration.exceptions.ConfigurationException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class Configuration {
      * @param path
      * @return
      */
-    public JsonElement get(String path){
+    public JsonElement get(String path) throws ConfigurationException {
         JsonElement jsonElement = this.jsonElement;
         JsonElement response = null;
         String delimiter = "\\.";
@@ -48,6 +49,9 @@ public class Configuration {
                 jsonElement = jsonElement.getAsJsonObject().get(key);
                 response = jsonElement;
             }
+        }
+        if (response == null){
+            throw new ConfigurationException(8003);
         }
         return response;
     }

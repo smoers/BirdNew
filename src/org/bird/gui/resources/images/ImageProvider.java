@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
+import org.bird.configuration.exceptions.ConfigurationException;
 
 /**
  * création des objects Image & ImageView au départ des fichiers images
@@ -33,10 +34,16 @@ public class ImageProvider {
      * Contructeur pour le logo
      */
     public ImageProvider(){
-        Configuration configuration = configurationBuilder.get("layout");
+        Configuration configuration = null;
+        try {
+            configuration = configurationBuilder.get("layout");
+
         String path = configuration.get("layout.logo").getAsString();
         image = new Image(getClass().getResource(path).toExternalForm());
         imageView = new ImageView(image);
+        } catch (ConfigurationException e) {
+            e.getI18nMessage();
+        }
     }
 
     /**

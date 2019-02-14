@@ -1,71 +1,39 @@
 package org.bird.db.exceptions;
 
+import org.bird.exceptions.BirdException;
+import org.bird.i18n.InternationalizationBuilder;
+import org.bird.i18n.InternationalizationBundle;
+
 /**
  * Exception dans le cas où la database n'est pas définie
  */
-public class DBException extends Exception {
+public class DBException extends BirdException {
 
     private static final long serialVersionUID = 5874598321574521475L;
 
-    private int code;
-
-    /**
-     *
-     * @param code
-     */
     public DBException(int code) {
-        super();
+        super(code);
     }
 
-    /**
-     *
-     * @param message
-     * @param code
-     */
     public DBException(String message, int code) {
-        super(message);
-        this.code = code;
+        super(message, code);
     }
 
-    /**
-     *
-     * @param message
-     * @param cause
-     * @param code
-     */
     public DBException(String message, Throwable cause, int code) {
-        super(message, cause);
-        this.code = code;
+        super(message, cause, code);
     }
 
-    /**
-     *
-     * @param cause
-     * @param code
-     */
     public DBException(Throwable cause, int code) {
-        super(cause);
-        this.code = code;
+        super(cause, code);
     }
 
-    /**
-     *
-     * @param message
-     * @param cause
-     * @param enableSuppression
-     * @param writableStackTrace
-     * @param code
-     */
     public DBException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, int code) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.code = code;
+        super(message, cause, enableSuppression, writableStackTrace, code);
     }
 
-    /**
-     * Retourne le code error
-     * @return
-     */
-    public int getCode() {
-        return code;
+    @Override
+    public String getI18nMessage() {
+        InternationalizationBundle i18n = InternationalizationBuilder.getInstance().getInternationalizationBundle(DBException.class);
+        return i18n.getString(String.valueOf(getCode()));
     }
 }

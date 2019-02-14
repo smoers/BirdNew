@@ -1,5 +1,8 @@
 {
   "global": {
-    "language": "fr"
+    "language": "fr",
+    "database": {
+      "name": "bird"
+    }
   }
 }

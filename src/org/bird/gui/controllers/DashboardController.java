@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
+import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
@@ -44,14 +45,15 @@ public class DashboardController extends InternationalizationController implemen
     private final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
     private InternationalizationBundle internationalizationBundle;
     private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
-    private Configuration configurationLayout = configurationBuilder.get("layout");
+    private Configuration configurationLayout;
     private VBox selectedContainer = null;
 
     /**
      * Contructeur
      */
-    public DashboardController() {
+    public DashboardController() throws ConfigurationException {
         internationalizationBundle = internationalizationBuilder.getInternationalizationBundle(getClass());
+        configurationLayout = configurationBuilder.get("layout");
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,7 +67,11 @@ public class DashboardController extends InternationalizationController implemen
         ArrayList<LayoutInterface> nodeLayouts = new ArrayList<>();
         LayoutParameters layoutParameters = new LayoutParameters();
         layoutParameters.put(LayoutParameters.SELECTOR, "toolbar");
-        layoutParameters.put(LayoutParameters.IFTEXT, configurationLayout.get("layout.toolbar.iftext").getAsBoolean());
+        try {
+            layoutParameters.put(LayoutParameters.IFTEXT, configurationLayout.get("layout.toolbar.iftext").getAsBoolean());
+        } catch (ConfigurationException e) {
+            e.getI18nMessage();
+        }
         layoutParameters.put(LayoutParameters.CHILDREN, nodeLayouts);
         nodeLayouts.add(new ButtonLayout(buttonLarge, layoutParameters));
         nodeLayouts.add(new ButtonLayout(buttonList,layoutParameters));

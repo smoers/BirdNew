@@ -1,6 +1,9 @@
 package org.bird.db.mapper;
 
 import com.mongodb.MongoClient;
+import org.bird.configuration.Configuration;
+import org.bird.configuration.ConfigurationBuilder;
+import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.exceptions.DBException;
 import xyz.morphia.Morphia;
 
@@ -10,20 +13,28 @@ import xyz.morphia.Morphia;
 public class MapperFactory {
     private Morphia morphia = new Morphia();
     private String databaseName = null;
-    private static MapperFactory ourInstance = new MapperFactory();
+    private static MapperFactory ourInstance = null;
 
     /**
      * Retourne l'instance de la classe
      * @return
      */
-    public static MapperFactory getInstance() {
+    public static MapperFactory getInstance() throws DBException {
+        if (ourInstance == null){
+            ourInstance = new MapperFactory();
+        }
         return ourInstance;
     }
 
     /**
      * Constructeur privé
      */
-    private MapperFactory() {
+    private MapperFactory() throws DBException {
+        try {
+            databaseName = ConfigurationBuilder.getInstance().getElement("global::global.database.name").getAsString();
+        } catch (ConfigurationException e) {
+            throw new DBException(9001);
+        }
     }
 
     /**
