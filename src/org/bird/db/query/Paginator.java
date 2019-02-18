@@ -20,6 +20,7 @@ public class Paginator<T> {
     public Paginator(int page, int itemByPage, Class<T> entityClass) {
         this.page = page;
         this.itemsByPage = itemByPage;
+        this.entityClass = entityClass;
     }
 
     /**
@@ -29,6 +30,7 @@ public class Paginator<T> {
         this.page = page;
         this.itemsByPage = itemByPage;
         this.query = query;
+        this.entityClass = entityClass;
     }
 
 
