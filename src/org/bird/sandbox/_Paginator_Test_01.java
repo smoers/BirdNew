@@ -11,7 +11,7 @@ import java.util.List;
 public class _Paginator_Test_01 {
 
     public static void main(String[] args) throws DBException {
-        Paginator<Author> paginator = new Paginator<>(10,10, Author.class);
+        Paginator<Author> paginator = new Paginator<>(2,15, Author.class);
         Mapper mapper = MapperFactory.getInstance().getMapper();
         paginator = mapper.<Author>Paginator(paginator);
         List<Author> list = paginator.getList();

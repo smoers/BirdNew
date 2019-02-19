@@ -1,5 +1,6 @@
 package org.bird.db.models;
 
+import javafx.scene.image.ImageView;
 import org.bird.db.models.metadata.ModelMetaData;
 import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
@@ -27,6 +28,7 @@ public class Author extends ModelMetaData {
     private String comment;
     private Date bornDate;
     private Date deathDate;
+    private ImageView imageView;
     @Reference
     private List<Cycle> cycles = new ArrayList<>();
 
@@ -118,5 +120,13 @@ public class Author extends ModelMetaData {
 
     public void setCycles(List<Cycle> cycles) {
         this.cycles = cycles;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 }

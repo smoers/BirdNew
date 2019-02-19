@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.db.query.Paginator;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
@@ -128,6 +129,10 @@ public class DashboardController extends InternationalizationController implemen
             buttonLarge.setText(internationalizationBundle.getString("Large"));
             buttonList.setText(internationalizationBundle.getString("List"));
         }
+
+    }
+
+    public void showDashboardItems(Paginator paginator){
 
     }
 }

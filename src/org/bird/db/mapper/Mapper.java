@@ -30,8 +30,9 @@ public class Mapper {
         } else {
             query = paginator.getQuery();
         }
-        //
-        List<T> list = query.asList(new FindOptions().limit(paginator.getItemsByPage()).skip(paginator.getPage()));
+        //Permet de calcul la valeur Skip au départ du numéro de page
+        int skipValue = (paginator.getPage()-1)*paginator.getItemsByPage();
+        List<T> list = query.asList(new FindOptions().limit(paginator.getItemsByPage()).skip(skipValue));
         paginator.setPages(query.count());
         paginator.setList(list);
         return paginator;

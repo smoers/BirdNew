@@ -1,5 +1,6 @@
 package org.bird.db.models;
 
+import javafx.scene.image.ImageView;
 import org.bird.db.models.metadata.ModelMetaData;
 import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
@@ -25,6 +26,7 @@ public class Book extends ModelMetaData {
     private String collection =null;
     private String isbn_10 = null;
     private String isbn_13 = null;
+    private ImageView imageView;
     private List<Illustrator> illustrators = new ArrayList<>();
 
     private Book(){}
@@ -107,5 +109,13 @@ public class Book extends ModelMetaData {
 
     public void setIllustrators(List<Illustrator> illustrators) {
         this.illustrators = illustrators;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 }

@@ -51,6 +51,7 @@ public class ImageProvider {
      * @param path
      */
     public ImageProvider(String path) {
+        System.out.println(getClass().getResource(path).toExternalForm());
         image = new Image(getClass().getResource(path).toExternalForm());
         imageView = new ImageView(image);
     }

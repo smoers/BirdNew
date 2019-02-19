@@ -33,9 +33,7 @@ public class ItemDashboardController implements Initializable {
     private ArrayList<OnRightClickListener> onRightClickListeners = new ArrayList<>();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
-    public ItemDashboardController() {
-
-    }
+    public ItemDashboardController() {}
 
     public void setImage(Image image){
         this.image.setImage(image);

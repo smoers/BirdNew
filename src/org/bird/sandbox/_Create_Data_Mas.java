@@ -1,7 +1,9 @@
 package org.bird.sandbox;
 
 import com.mongodb.MongoClient;
+import javafx.scene.image.Image;
 import org.bird.db.models.*;
+import org.bird.gui.resources.images.ImageProvider;
 import xyz.morphia.Datastore;
 import xyz.morphia.Morphia;
 
@@ -119,18 +121,30 @@ public class _Create_Data_Mas {
             author.setCreateDate(Calendar.getInstance().getTime());
             author.setModificationDate(Calendar.getInstance().getTime());
 
+
             cycle.setAuthors(List.of(author));
             author.setCycles(List.of(cycle));
 
             if(i<count/2){
+
+                System.out.println();
+                ImageProvider imageProviderA = new ImageProvider("/images/authors/tolkien.jpg");
+                ImageProvider imageProviderB = new ImageProvider(_Create_Data_Mas.class.getClass().getResource("images/books/001.jpg").toExternalForm());
                 book.setUser(user01);
+                book.setImageView(imageProviderB.getImageView());
                 book.setIllustrators(List.of(illustrator01));
                 cycle.setUser(user01);
+                author.setImageView(imageProviderA.getImageView());
                 author.setUser(user01);
+
             } else {
+                ImageProvider imageProviderA = new ImageProvider(_Create_Data_Mas.class.getClass().getResource("images/authors/martin.jpg").toExternalForm());
+                ImageProvider imageProviderB = new ImageProvider(_Create_Data_Mas.class.getClass().getResource("images/books/004.jpg").toExternalForm());
                 book.setUser(user02);
+                book.setImageView(imageProviderB.getImageView());
                 book.setIllustrators(List.of(illustrator01, illustrator02));
                 cycle.setUser(user02);
+                author.setImageView(imageProviderA.getImageView());
                 author.setUser(user02);
             }
 
