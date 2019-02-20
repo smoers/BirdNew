@@ -9,6 +9,8 @@ module org.bird {
     requires core;
     requires mongo.java.driver;
     requires java.sql;
+    requires java.desktop;
+    requires java.base;
     exports org.bird.gui to javafx.graphics;
     exports org.bird.gui.controllers to javafx.fxml;
     opens org.bird.gui.controllers to javafx.fxml;

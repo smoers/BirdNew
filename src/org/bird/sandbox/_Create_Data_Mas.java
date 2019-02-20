@@ -1,13 +1,14 @@
 package org.bird.sandbox;
 
 import com.mongodb.MongoClient;
-import javafx.scene.image.Image;
 import org.bird.db.models.*;
-import org.bird.gui.resources.images.ImageProvider;
 import xyz.morphia.Datastore;
 import xyz.morphia.Morphia;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +50,7 @@ public class _Create_Data_Mas {
     private static Date a_deathDate = Calendar.getInstance().getTime();
     
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Morphia morphia = new Morphia();
         Datastore datastore = morphia.createDatastore(new MongoClient(), "bird");
@@ -127,24 +128,24 @@ public class _Create_Data_Mas {
 
             if(i<count/2){
 
-                System.out.println();
-                ImageProvider imageProviderA = new ImageProvider("/images/authors/tolkien.jpg");
-                ImageProvider imageProviderB = new ImageProvider(_Create_Data_Mas.class.getClass().getResource("images/books/001.jpg").toExternalForm());
+                System.out.println(FileSystems.getDefault().getPath(".").toAbsolutePath().toString());
+                File filea = new File("src/images/authors/tolkien.jpg");
+                File fileb = new File("src/images/books/001.jpg");
                 book.setUser(user01);
-                book.setImageView(imageProviderB.getImageView());
+                book.setPicture(new FileInputStream(filea).readAllBytes());
                 book.setIllustrators(List.of(illustrator01));
                 cycle.setUser(user01);
-                author.setImageView(imageProviderA.getImageView());
+                author.setPicture(new FileInputStream(fileb).readAllBytes());
                 author.setUser(user01);
 
             } else {
-                ImageProvider imageProviderA = new ImageProvider(_Create_Data_Mas.class.getClass().getResource("images/authors/martin.jpg").toExternalForm());
-                ImageProvider imageProviderB = new ImageProvider(_Create_Data_Mas.class.getClass().getResource("images/books/004.jpg").toExternalForm());
+                File filea = new File("src/images/authors/martin.jpg");
+                File fileb = new File("src/images/books/004.jpg");
                 book.setUser(user02);
-                book.setImageView(imageProviderB.getImageView());
+                book.setPicture(new FileInputStream(filea).readAllBytes());
                 book.setIllustrators(List.of(illustrator01, illustrator02));
                 cycle.setUser(user02);
-                author.setImageView(imageProviderA.getImageView());
+                author.setPicture(new FileInputStream(fileb).readAllBytes());
                 author.setUser(user02);
             }
 
