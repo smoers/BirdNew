@@ -26,6 +26,7 @@ public class Book extends ModelMetaData {
     private String collection =null;
     private String isbn_10 = null;
     private String isbn_13 = null;
+    private Cycle cycle = null;
     private byte[] picture;
     private List<Illustrator> illustrators = new ArrayList<>();
 
@@ -117,5 +118,13 @@ public class Book extends ModelMetaData {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public void setCycle(Cycle cycle) {
+        this.cycle = cycle;
+    }
+
+    public Cycle getCycle() {
+        return cycle;
     }
 }

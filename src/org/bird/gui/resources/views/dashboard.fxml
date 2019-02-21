@@ -45,4 +45,15 @@
          </top>
       </BorderPane>
    </center>
+   <bottom>
+      <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" textAlignment="CENTER" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </FlowPane>
+   </bottom>
 </BorderPane>

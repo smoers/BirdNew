@@ -106,11 +106,6 @@ public class DashboardController extends InternationalizationController implemen
                         }
                     }
                 });
-                item.setAuthor("Joe Abercrombie");
-                item.setBook("livre " + i);
-                ImageProvider imageProvider = new ImageProvider("/images/books/001.jpg");
-                item.setImage(imageProvider.getImage());
-                itemsContainer.getChildren().add(node);
             } catch (IOException e) {
                 e.printStackTrace();
             }

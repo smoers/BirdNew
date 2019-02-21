@@ -21,7 +21,7 @@ public class Mapper {
         return datastore;
     }
 
-    public <T> Paginator Paginator(Paginator<T> paginator){
+    public <T> Paginator loadPaginator(Paginator<T> paginator){
 
         //l'ojbet Paginator dispose t il d'un query
         Query<T> query = null;

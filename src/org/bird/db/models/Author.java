@@ -7,6 +7,7 @@ import xyz.morphia.annotations.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringJoiner;
 
 @Entity("authors")
 @Indexes({
@@ -127,5 +128,12 @@ public class Author extends ModelMetaData {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public String getFullName(){
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add(getLastName());
+        joiner.add(getFirstName());
+        return joiner.toString();
     }
 }

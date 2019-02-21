@@ -6,6 +6,8 @@ import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 
+import java.io.ByteArrayInputStream;
+
 /**
  * création des objects Image & ImageView au départ des fichiers images
  */
@@ -62,6 +64,15 @@ public class ImageProvider {
      */
     public ImageProvider(ImageContext imageContext){
         image = new Image(getClass().getResource(imageContext.getContext()).toExternalForm());
+        imageView = new ImageView(image);
+    }
+
+    /**
+     * Constructeur depuis un tableau de byte
+     * @param picture
+     */
+    public ImageProvider(byte[] picture){
+        image = new Image(new ByteArrayInputStream(picture));
         imageView = new ImageView(image);
     }
 
