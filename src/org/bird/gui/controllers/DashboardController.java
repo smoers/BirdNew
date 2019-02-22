@@ -35,6 +35,8 @@ public class DashboardController extends InternationalizationController implemen
     @FXML
     private FlowPane itemsContainer;
     @FXML
+    private BorderPane mainItemDashboard;
+    @FXML
     private BorderPane dashboard;
     @FXML
     private ToolBar toolbar;
@@ -79,6 +81,17 @@ public class DashboardController extends InternationalizationController implemen
         ToolBarLayout toolBarLayout = new ToolBarLayout(toolbar, layoutParameters);
         toolBarLayout.apply();
 
+        //Chargement du paginateur
+        FXMLLoader loader = new FXMLLoader();
+        System.out.println(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml").toExternalForm());
+        loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
+        try {
+            Node node = loader.load();
+            mainItemDashboard.setBottom(node);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         itemsContainer.getStyleClass().add("items_container");
 
         //evenements
@@ -88,7 +101,7 @@ public class DashboardController extends InternationalizationController implemen
         int ii = 100;
         for(int i=1;i<=ii;i++) {
             try {
-                FXMLLoader loader = new FXMLLoader();
+                //FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
                 Node node = loader.load();
                 ItemDashboardController item = (ItemDashboardController) loader.getController();

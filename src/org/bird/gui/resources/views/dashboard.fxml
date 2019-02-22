@@ -23,7 +23,7 @@
       </MenuBar>
    </top>
    <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <BorderPane fx:id="mainItemDashboard" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" BorderPane.alignment="CENTER">
                <content>
@@ -45,15 +45,4 @@
          </top>
       </BorderPane>
    </center>
-   <bottom>
-      <FlowPane alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" text="Button" />
-            <Button mnemonicParsing="false" text="Button" textAlignment="CENTER" />
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </FlowPane>
-   </bottom>
 </BorderPane>

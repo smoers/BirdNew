@@ -13,7 +13,7 @@ public class _Paginator_Test_01 {
     public static void main(String[] args) throws DBException {
         Paginator<Author> paginator = new Paginator<>(2,15, Author.class);
         Mapper mapper = MapperFactory.getInstance().getMapper();
-        paginator = mapper.<Author>Paginator(paginator);
+        paginator = mapper.<Author>loadPaginator(paginator);
         List<Author> list = paginator.getList();
         for (Author author : list){
             System.out.println(author.getLastName());

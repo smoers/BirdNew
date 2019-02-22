@@ -47,6 +47,10 @@
     -fx-text-fill: #000000;
 }
 
+.flowpane{
+    -fx-background-color: #bfbfbf;
+}
+
 /*Toolbar Default Layout*/
 .toolbar{
     -fx-background-color: #bfbfbf;
@@ -56,6 +60,16 @@
     -fx-text-fill: #074AA3;
 }
 .toolbar.button:hover{
+    -fx-background-color: #bfbfbf;
+    -fx-text-fill: #D87B1B;
+}
+
+.button{
+    -fx-background-color: #bfbfbf;
+    -fx-text-fill: #074AA3;
+}
+
+.button:hover{
     -fx-background-color: #bfbfbf;
     -fx-text-fill: #D87B1B;
 }
@@ -74,4 +88,34 @@
 }
 #buttonList:hover{
     -fx-graphic: url("../../../../../images/orange/list-view-32.png");
+}
+
+/*Paginator*/
+/*id : buttonFirst*/
+#buttonFirst{
+    -fx-graphic: url("../../../../../images/blue/first-16.png");
+}
+#buttonFirst:hover{
+    -fx-graphic: url("../../../../../images/orange/first-16.png");
+}
+/*id : buttonLast*/
+#buttonLast{
+    -fx-graphic: url("../../../../../images/blue/last-16.png");
+}
+#buttonLast:hover{
+    -fx-graphic: url("../../../../../images/orange/last-16.png");
+}
+/*id : buttonPrevious*/
+#buttonPrevious{
+    -fx-graphic: url("../../../../../images/blue/previous-16.png");
+}
+#buttonPrevious:hover{
+    -fx-graphic: url("../../../../../images/orange/previous-16.png");
+}
+/*id : buttonNext*/
+#buttonNext{
+    -fx-graphic: url("../../../../../images/blue/next-16.png");
+}
+#buttonNext:hover{
+    -fx-graphic: url("../../../../../images/orange/next-16.png");
 }
