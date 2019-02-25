@@ -43,8 +43,6 @@ public class DashboardController extends InternationalizationController implemen
     @FXML
     private Button buttonList;
     //
-    private final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
-    private InternationalizationBundle internationalizationBundle;
     private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
     private Configuration configurationLayout;
     private VBox selectedContainer = null;
@@ -86,7 +84,7 @@ public class DashboardController extends InternationalizationController implemen
                 FXMLLoader _loader = new FXMLLoader();
                 _loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
                 Node _node = _loader.load();
-                ItemDashboardController item = (ItemDashboardController) loader.getController();
+                ItemDashboardController item = (ItemDashboardController) _loader.getController();
                 item.addOnLeftClickListener(new OnLeftClickListener() {
                     @Override
                     public void onLeftClick(OnLeftClickEvent evt) {

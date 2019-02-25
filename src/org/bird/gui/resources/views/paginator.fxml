@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 
-<FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="653.0" styleClass="menu_container" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="653.0" styleClass="menu_container" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="org.bird.gui.controllers.PaginatorController">
    <children>
       <Button fx:id="buttonFirst" mnemonicParsing="false" stylesheets="@../css/fxcss.css" text="First">
          <FlowPane.margin>

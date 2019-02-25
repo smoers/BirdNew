@@ -55,7 +55,7 @@ public class PaginatorController extends InternationalizationController implemen
      * Contructeur
      */
     public PaginatorController() {
-        setInternationalizationBundle(InternationalizationBuilder.getInstance().getInternationalizationBundle(getClass()));
+        setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class PaginatorController extends InternationalizationController implemen
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        setLanguage();
     }
 
     /**
