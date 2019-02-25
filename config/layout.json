@@ -1,6 +1,7 @@
 {
   "layout": {
     "logo": "/images/logo011.png",
+    "item_by_page": 20,
     "toolbar": {
       "iftext": false
     }

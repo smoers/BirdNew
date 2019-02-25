@@ -17,9 +17,10 @@ public class GraphicalUserInterface extends Application {
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Bird Fly");
         primaryStage.getIcons().add(ImageProvider.getLogoImage());
-        Scene scene = new Scene(root, 300, 275);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 }

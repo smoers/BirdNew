@@ -6,6 +6,17 @@
 }
 
 /*
+* Peu être modifier par l'utilisateur
+*/
+.menu_container {
+    -fx-background-color: #bfbfbf;
+}
+
+.panel_container {
+    -fx-background-color: #ffffff;
+}
+
+/*
 * Affichage de la liste des livres
 */
 .items_container{
@@ -47,9 +58,6 @@
     -fx-text-fill: #000000;
 }
 
-.flowpane{
-    -fx-background-color: #bfbfbf;
-}
 
 /*Toolbar Default Layout*/
 .toolbar{

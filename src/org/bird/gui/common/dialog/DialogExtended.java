@@ -115,7 +115,7 @@ public class DialogExtended<R> extends Dialog<R> {
                     break;
             }
         }
-        System.out.println(buttons.size());
+        //System.out.println(buttons.size());
         return buttons;
     }
 

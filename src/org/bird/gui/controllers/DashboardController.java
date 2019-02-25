@@ -14,14 +14,12 @@ import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.images.ImageProvider;
-import org.bird.gui.resources.layout.*;
 import org.bird.i18n.InternationalizationBuilder;
 import org.bird.i18n.InternationalizationBundle;
 import org.bird.i18n.InternationalizationController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DashboardController extends InternationalizationController implements Initializable {
@@ -66,33 +64,17 @@ public class DashboardController extends InternationalizationController implemen
         dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-        //Configuration du layout de la toolbar
-        ArrayList<LayoutInterface> nodeLayouts = new ArrayList<>();
-        LayoutParameters layoutParameters = new LayoutParameters();
-        layoutParameters.put(LayoutParameters.SELECTOR, "toolbar");
-        try {
-            layoutParameters.put(LayoutParameters.IFTEXT, configurationLayout.get("layout.toolbar.iftext").getAsBoolean());
-        } catch (ConfigurationException e) {
-            e.getI18nMessage();
-        }
-        layoutParameters.put(LayoutParameters.CHILDREN, nodeLayouts);
-        nodeLayouts.add(new ButtonLayout(buttonLarge, layoutParameters));
-        nodeLayouts.add(new ButtonLayout(buttonList,layoutParameters));
-        ToolBarLayout toolBarLayout = new ToolBarLayout(toolbar, layoutParameters);
-        toolBarLayout.apply();
 
         //Chargement du paginateur
         FXMLLoader loader = new FXMLLoader();
-        System.out.println(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml").toExternalForm());
+        Node node = null;
         loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
         try {
-            Node node = loader.load();
+            node = loader.load();
             mainItemDashboard.setBottom(node);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        itemsContainer.getStyleClass().add("items_container");
 
         //evenements
         menuExit.setOnAction(new ExitPlatformEvent());
@@ -101,9 +83,9 @@ public class DashboardController extends InternationalizationController implemen
         int ii = 100;
         for(int i=1;i<=ii;i++) {
             try {
-                //FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
-                Node node = loader.load();
+                FXMLLoader _loader = new FXMLLoader();
+                _loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
+                Node _node = _loader.load();
                 ItemDashboardController item = (ItemDashboardController) loader.getController();
                 item.addOnLeftClickListener(new OnLeftClickListener() {
                     @Override
@@ -119,6 +101,7 @@ public class DashboardController extends InternationalizationController implemen
                         }
                     }
                 });
+                itemsContainer.getChildren().add(_node);
             } catch (IOException e) {
                 e.printStackTrace();
             }

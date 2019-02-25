@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="container" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bird.gui.controllers.ItemDashboardController">
+<VBox fx:id="container" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bird.gui.controllers.ItemDashboardController">
    <children>
       <ImageView fx:id="picture" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="label01" text="Label 01" textAlignment="CENTER" />
-      <Label fx:id="label02" text="Label 02" textAlignment="CENTER" />
+      <Label fx:id="label01" styleClass="item_author" stylesheets="@../css/fxcss.css" text="Label 01" textAlignment="CENTER" />
+      <Label fx:id="label02" styleClass="item_book" stylesheets="@../css/fxcss.css" text="Label 02" textAlignment="CENTER" />
    </children>
+   <styleClass>
+      <String fx:value="panel_container" />
+      <String fx:value="item_container" />
+   </styleClass>
 </VBox>

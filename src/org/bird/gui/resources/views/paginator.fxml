@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 
-<FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="653.0" styleClass="flowpane" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="653.0" styleClass="menu_container" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button fx:id="buttonFirst" mnemonicParsing="false" stylesheets="@../css/fxcss.css" text="First">
          <FlowPane.margin>
@@ -17,7 +17,7 @@
          <FlowPane.margin>
             <Insets right="5.0" />
          </FlowPane.margin></Button>
-      <TextField maxWidth="100.0" minWidth="100.0" prefWidth="100.0">
+      <TextField fx:id="fieldPage" maxWidth="100.0" minWidth="100.0" prefWidth="100.0">
          <FlowPane.margin>
             <Insets right="5.0" />
          </FlowPane.margin>
@@ -27,11 +27,11 @@
             <Insets right="5.0" />
          </FlowPane.margin>
       </Button>
-      <Button id="buttonLast" mnemonicParsing="false" stylesheets="@../css/fxcss.css" text="Last">
+      <Button id="buttonLast" fx:id="buttonLast" mnemonicParsing="false" stylesheets="@../css/fxcss.css" text="Last">
          <FlowPane.margin>
             <Insets right="5.0" />
          </FlowPane.margin>
       </Button>
-      <ComboBox maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+      <ComboBox fx:id="comboNbrItems" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
    </children>
 </FlowPane>

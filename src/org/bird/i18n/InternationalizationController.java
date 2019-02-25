@@ -5,6 +5,7 @@ package org.bird.i18n;
  */
 public abstract class InternationalizationController {
 
+    protected final InternationalizationBuilder internationalizationBuilder = InternationalizationBuilder.getInstance();
     protected InternationalizationBundle internationalizationBundle = null;
 
     public InternationalizationBundle getInternationalizationBundle() {
