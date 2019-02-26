@@ -6,23 +6,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import org.bird.configuration.Configuration;
-import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.query.Paginator;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
-import org.bird.gui.resources.images.ImageProvider;
-import org.bird.i18n.InternationalizationBuilder;
-import org.bird.i18n.InternationalizationBundle;
-import org.bird.i18n.InternationalizationController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DashboardController extends InternationalizationController implements Initializable {
+public class DashboardController extends ProtectedController implements Initializable {
 
     @FXML
     private MenuItem menuExit;
@@ -43,21 +37,21 @@ public class DashboardController extends InternationalizationController implemen
     @FXML
     private Button buttonList;
     //
-    private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
-    private Configuration configurationLayout;
     private VBox selectedContainer = null;
 
     /**
      * Contructeur
      */
     public DashboardController() throws ConfigurationException {
-        internationalizationBundle = internationalizationBuilder.getInternationalizationBundle(getClass());
-        configurationLayout = configurationBuilder.get("layout");
+
     }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //charge le texte de l'interface
         setLanguage();
+        setText(toolbar);
         //Layout
         dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);

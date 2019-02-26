@@ -1,28 +1,34 @@
 package org.bird.gui.controllers;
 
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnRightClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnRightClickListener;
-import org.bird.i18n.InternationalizationBuilder;
-import org.bird.i18n.InternationalizationController;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 /**
  * Classe qui assure le visuel d'un système de pagination
  */
-public class PaginatorController extends InternationalizationController implements Initializable {
+public class PaginatorController extends ProtectedController implements Initializable {
 
     private Pane itemsContainer;
+    @FXML
+    private FlowPane paneContainer;
     @FXML
     private Button buttonFirst;
     @FXML
@@ -72,6 +78,11 @@ public class PaginatorController extends InternationalizationController implemen
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setLanguage();
+        try {
+            setText(paneContainer);
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

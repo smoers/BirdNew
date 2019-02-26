@@ -6,9 +6,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import org.bird.configuration.exceptions.ConfigurationException;
 
-
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ConfigurationBuilder {
