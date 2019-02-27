@@ -49,32 +49,32 @@ public class DashboardController extends ProtectedController implements Initiali
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //charge le texte de l'interface
-        setLanguage();
-        setText(toolbar);
-        //Layout
-        dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-        dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-        dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-
-        //Chargement du paginateur
-        FXMLLoader loader = new FXMLLoader();
-        Node node = null;
-        loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
         try {
-            node = loader.load();
-            mainItemDashboard.setBottom(node);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            //charge le texte de l'interface
+            setLanguage();
+            setText(toolbar);
+            //Layout
+            dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
 
-        //evenements
-        menuExit.setOnAction(new ExitPlatformEvent());
-
-        //Charge le dashboard
-        int ii = 100;
-        for(int i=1;i<=ii;i++) {
+            //Chargement du paginateur
+            FXMLLoader loader = new FXMLLoader();
+            Node node = null;
+            loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
             try {
+                node = loader.load();
+                mainItemDashboard.setBottom(node);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //evenements
+            menuExit.setOnAction(new ExitPlatformEvent());
+
+            //Charge le dashboard
+            int ii = 100;
+            for (int i = 1; i <= ii; i++) {
                 FXMLLoader _loader = new FXMLLoader();
                 _loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
                 Node _node = _loader.load();
@@ -83,7 +83,7 @@ public class DashboardController extends ProtectedController implements Initiali
                     @Override
                     public void onLeftClick(OnLeftClickEvent evt) {
                         VBox container = (VBox) evt.getSource();
-                        if(evt.getClickCount() == 1){
+                        if (evt.getClickCount() == 1) {
                             if ((selectedContainer != null)) {
                                 selectedContainer.getStyleClass().clear();
                                 selectedContainer.getStyleClass().add("item_container");
@@ -93,10 +93,10 @@ public class DashboardController extends ProtectedController implements Initiali
                         }
                     }
                 });
-                itemsContainer.getChildren().add(_node);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    itemsContainer.getChildren().add(_node);
             }
+        } catch (ConfigurationException | IOException e) {
+            shoxException(e);
         }
     }
 

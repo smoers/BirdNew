@@ -18,5 +18,6 @@
     <orderEntry type="library" name="mongodb-driver-core-3.9.1" level="project" />
     <orderEntry type="library" name="bson-3.9.1" level="project" />
     <orderEntry type="library" name="mongo-java-driver-3.9.1" level="project" />
+    <orderEntry type="library" name="commons-lang3-3.8.1" level="project" />
   </component>
 </module>

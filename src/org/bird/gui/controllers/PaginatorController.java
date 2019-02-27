@@ -1,5 +1,7 @@
 package org.bird.gui.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnRightClickEvent;
@@ -16,9 +19,7 @@ import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnRightClickListener;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -55,7 +56,7 @@ public class PaginatorController extends ProtectedController implements Initiali
      * Dans le fichier de configuration clé item_by_page
      */
     private int itemByPage;
-    private int nbrPage;
+    private int nbrPage = 1;
 
     /**
      * Contructeur
@@ -77,11 +78,29 @@ public class PaginatorController extends ProtectedController implements Initiali
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setLanguage();
         try {
+            setLanguage();
             setText(paneContainer);
+            showPageCounterFormatted();
+            fieldPage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                    if (t1){
+                        fieldPage.setText(String.valueOf(getPageCounter()));
+                    } else {
+                        if (NumberUtils.isParsable(fieldPage.getText())){
+                            setPageCounter(Integer.parseInt(fieldPage.getText()));
+                            //Si la page demandée est supérieur au nombre de page total
+                            //on défini la page demandée comme égale au nombre de page
+                            if (getPageCounter() > getNbrPage())
+                                setPageCounter(getNbrPage());
+                        }
+                        showPageCounterFormatted();
+                    }
+                }
+            });
         } catch (ConfigurationException e) {
-            e.printStackTrace();
+            shoxException(e);
         }
     }
 
@@ -147,5 +166,12 @@ public class PaginatorController extends ProtectedController implements Initiali
 
     public void setNbrPage(int nbrPage) {
         this.nbrPage = nbrPage;
+    }
+
+    private void showPageCounterFormatted(){
+        StringJoiner joiner = new StringJoiner(" / ");
+        joiner.add(String.valueOf(getPageCounter()));
+        joiner.add(String.valueOf(getNbrPage()));
+        fieldPage.setText(joiner.toString());
     }
 }
