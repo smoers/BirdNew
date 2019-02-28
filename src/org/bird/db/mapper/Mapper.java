@@ -10,32 +10,18 @@ import java.util.List;
 /**
  * Interaction avec la base de données
  */
-public class Mapper {
+public class Mapper implements IMapper {
     private Datastore datastore;
 
-    public Mapper(Datastore datastore) {
+    public Mapper() {}
+
+    @Override
+    public void setDatastore(Datastore datastore) {
         this.datastore = datastore;
     }
-
+    @Override
     public Datastore getDatastore() {
         return datastore;
-    }
-
-    public <T> Paginator loadPaginator(Paginator<T> paginator){
-
-        //l'ojbet Paginator dispose t il d'un query
-        Query<T> query = null;
-        if (paginator.getQuery() == null){
-            query = datastore.createQuery(paginator.getEntityClass());
-        } else {
-            query = paginator.getQuery();
-        }
-        //Permet de calcul la valeur Skip au départ du numéro de page
-        int skipValue = (paginator.getPage()-1)*paginator.getItemsByPage();
-        List<T> list = query.asList(new FindOptions().limit(paginator.getItemsByPage()).skip(skipValue));
-        paginator.setPages(query.count());
-        paginator.setList(list);
-        return paginator;
     }
 
 }

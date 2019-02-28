@@ -55,13 +55,13 @@ public class MapperFactory {
 
     /**
      * Retourne un objet mapper pour les interactions avec la base de données
+     * @param mapper
      * @return
      * @throws DBException
      */
-    public Mapper getMapper() throws DBException {
-        Mapper mapper = null;
+    public IMapper getMapper(IMapper mapper) throws DBException {
         if (databaseName != null)
-            mapper = new Mapper(morphia.createDatastore(new MongoClient(), databaseName));
+            mapper.setDatastore(morphia.createDatastore(new MongoClient(), databaseName));
         else
             throw new DBException(9000);
         return mapper;

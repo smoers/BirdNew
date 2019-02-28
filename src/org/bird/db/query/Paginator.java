@@ -4,6 +4,10 @@ import xyz.morphia.query.Query;
 
 import java.util.List;
 
+/**
+ *
+ * @param <T>
+ */
 public class Paginator<T> {
 
     private Query<T> query;
@@ -59,6 +63,14 @@ public class Paginator<T> {
     }
 
     /**
+     * Defini la page en cours
+     * @param page
+     */
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    /**
      * Retourne le nombre de page de la collection
      * @return
      */
@@ -80,6 +92,14 @@ public class Paginator<T> {
      */
     public int getItemsByPage() {
         return itemsByPage;
+    }
+
+    /**
+     * Défini le nombre d'item par page
+     * @param itemsByPage
+     */
+    public void setItemsByPage(int itemsByPage) {
+        this.itemsByPage = itemsByPage;
     }
 
     public Query<T> getQuery() {
