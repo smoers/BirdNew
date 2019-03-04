@@ -15,7 +15,7 @@ public class Paginator<T> {
 
     private List<T> list = null;
     private int page = 1;
-    private long pages = 0;
+    private int pages = 0;
     private int itemsByPage;
 
     /**
@@ -74,7 +74,7 @@ public class Paginator<T> {
      * Retourne le nombre de page de la collection
      * @return
      */
-    public long getPages() {
+    public int getPages() {
         return pages;
     }
 
@@ -82,7 +82,7 @@ public class Paginator<T> {
      * Charge le nombre de page de la collection
      * @param pages
      */
-    public void setPages(long pages) {
+    public void setPages(int pages) {
         this.pages = pages;
     }
 

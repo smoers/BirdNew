@@ -2,11 +2,9 @@ package org.bird.gui.controllers;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -15,6 +13,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.db.exceptions.DBException;
+import org.bird.db.mapper.MapperFactory;
+import org.bird.db.mapper.MapperPaginator;
 import org.bird.db.query.Paginator;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnPaginatorChangePageEvent;
@@ -25,15 +26,24 @@ import org.bird.gui.listeners.OnRightClickListener;
 
 import java.net.URL;
 import java.util.*;
-import java.util.function.Predicate;
 
 /**
  * Classe qui assure le visuel d'un système de pagination
  */
 public class PaginatorController<T> extends ProtectedController implements Initializable {
 
+    /**
+     * Container destiné à accueillir les items
+     */
     private Pane itemsContainer;
+    /**
+     * Le paginateur à utiliser
+     */
     private Paginator<T> paginator = null;
+    /**
+     * Le mapper pour l'accès à la DB
+     */
+    private MapperPaginator mapper;
     @FXML
     private FlowPane paneContainer;
     @FXML
@@ -55,21 +65,17 @@ public class PaginatorController<T> extends ProtectedController implements Initi
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
     private ArrayList<OnPaginatorChangePageListener> onPaginatorChangePageListeners = new ArrayList<>();
     /**
-     * Page actuelle
-     */
-    private int pageCounter = 1;
-    /**
-     * Nombre d'items par page
-     * Dans le fichier de configuration clé item_by_page
-     */
-    private int itemByPage;
-    private int nbrPage = 1;
-
-    /**
      * Contructeur
      */
     public PaginatorController() {
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
+        //On crée une instance du mapper permettant l'interaction avec la base de données.
+        mapper = new MapperPaginator();
+        try {
+            mapper = MapperFactory.getInstance().<MapperPaginator>getMapper(mapper);
+        } catch (DBException e) {
+            showException(e);
+        }
     }
 
     /**
@@ -113,26 +119,55 @@ public class PaginatorController<T> extends ProtectedController implements Initi
                     notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this, paginator));
                 }
             });
-
+            /*bouton previous*/
+            buttonPrevious.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (paginator.getPage() > 1 ){
+                        paginator.setPage(paginator.getPage()-1);
+                        notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
+                    }
+                }
+            });
+            /*bouton next*/
+            buttonNext.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if(paginator.getPage() < paginator.getPages()){
+                        paginator.setPage(paginator.getPage()+1);
+                        notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
+                    }
+                }
+            });
+            /*bouton last*/
+            buttonLast.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    paginator.setPage(paginator.getPages());
+                    notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
+                }
+            });
+            /*champ page*/
             fieldPage.focusedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                     if (t1){
-                        fieldPage.setText(String.valueOf(pageCounter));
+                        fieldPage.setText(String.valueOf(paginator.getPage()));
                     } else {
                         if (NumberUtils.isParsable(fieldPage.getText())){
-                            pageCounter = (Integer.parseInt(fieldPage.getText()));
+                            paginator.setPage(Integer.parseInt(fieldPage.getText()));
                             //Si la page demandée est supérieur au nombre de page total
                             //on défini la page demandée comme égale au nombre de page
-                            if (pageCounter > nbrPage)
-                                pageCounter = nbrPage;
+                            if (paginator.getPage() > paginator.getPages())
+                                paginator.setPage(paginator.getPages());
+                            notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                         }
                         showPageCounterFormatted();
                     }
                 }
             });
         } catch (ConfigurationException e) {
-            shoxException(e);
+            showException(e);
         }
     }
 
@@ -213,13 +248,22 @@ public class PaginatorController<T> extends ProtectedController implements Initi
 
     }
 
+    public void refresh(){
+        try {
+            paginator = mapper.loadPaginator(paginator);
+
+        } catch (DBException e) {
+            showException(e);
+        }
+    }
+
     /**
      * Format l'affichage de la page en actuelle et du nombre total de page
      */
     private void showPageCounterFormatted(){
         StringJoiner joiner = new StringJoiner(" / ");
-        joiner.add(String.valueOf(pageCounter));
-        joiner.add(String.valueOf(nbrPage));
+        joiner.add(String.valueOf(paginator.getPage()));
+        joiner.add(String.valueOf(paginator.getPages()));
         fieldPage.setText(joiner.toString());
     }
 }

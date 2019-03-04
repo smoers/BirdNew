@@ -72,31 +72,9 @@ public class DashboardController extends ProtectedController implements Initiali
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
 
-            //Charge le dashboard
-            int ii = 100;
-            for (int i = 1; i <= ii; i++) {
-                FXMLLoader _loader = new FXMLLoader();
-                _loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
-                Node _node = _loader.load();
-                ItemDashboardController item = (ItemDashboardController) _loader.getController();
-                item.addOnLeftClickListener(new OnLeftClickListener() {
-                    @Override
-                    public void onLeftClick(OnLeftClickEvent evt) {
-                        VBox container = (VBox) evt.getSource();
-                        if (evt.getClickCount() == 1) {
-                            if ((selectedContainer != null)) {
-                                selectedContainer.getStyleClass().clear();
-                                selectedContainer.getStyleClass().add("item_container");
-                            }
-                            container.getStyleClass().add("item_container_active");
-                            selectedContainer = container;
-                        }
-                    }
-                });
-                    itemsContainer.getChildren().add(_node);
-            }
-        } catch (ConfigurationException | IOException e) {
-            shoxException(e);
+
+        } catch (ConfigurationException e) {
+            showException(e);
         }
     }
 

@@ -7,6 +7,7 @@ import xyz.morphia.query.FindOptions;
 import xyz.morphia.query.Query;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Cette classe mapper est destinée aux interactions avec la DB
@@ -51,7 +52,8 @@ public class MapperPaginator implements IMapper {
             //Permet de calcul la valeur Skip au départ du numéro de page
             int skipValue = (paginator.getPage() - 1) * paginator.getItemsByPage();
             List<T> list = query.asList(new FindOptions().limit(paginator.getItemsByPage()).skip(skipValue));
-            paginator.setPages(query.count());
+            Long l = query.count();
+            paginator.setPages(l.intValue());
             paginator.setList(list);
             return paginator;
         } else {

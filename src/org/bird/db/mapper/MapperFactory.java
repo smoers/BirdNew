@@ -59,11 +59,11 @@ public class MapperFactory {
      * @return
      * @throws DBException
      */
-    public IMapper getMapper(IMapper mapper) throws DBException {
+    public <T> T getMapper(IMapper mapper) throws DBException {
         if (databaseName != null)
             mapper.setDatastore(morphia.createDatastore(new MongoClient(), databaseName));
         else
             throw new DBException(9000);
-        return mapper;
+        return (T) mapper;
     }
 }

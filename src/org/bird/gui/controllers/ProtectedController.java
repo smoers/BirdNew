@@ -73,7 +73,7 @@ public abstract class ProtectedController extends InternationalizationController
      * Facilite la gestion des exceptions en centralisant l'affichage
      * @param e
      */
-    protected void shoxException(Exception e){
+    protected void showException(Exception e){
         System.out.println(e.getMessage());
         DialogAlert alert = new DialogAlert(DialogExtended.TYPE.BUTTON_CANCEL,"Error",getClass().getCanonicalName(),e.getMessage(),e,getInternationalizationBundle());
         alert.showAndWait();
