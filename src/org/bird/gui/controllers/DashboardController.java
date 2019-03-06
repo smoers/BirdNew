@@ -7,7 +7,9 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
+import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
@@ -58,22 +60,23 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
 
+            //Configuration du controller
+            Paginator<Author> paginator = new Paginator<Author>(1,15,Author.class);
+            DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
+            PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement du paginateur
             FXMLLoader loader = new FXMLLoader();
             Node node = null;
             loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
-            try {
-                node = loader.load();
-                mainItemDashboard.setBottom(node);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            loader.setController(paginatorController);
+            node = loader.load();
+            mainItemDashboard.setBottom(node);
+            paginatorController.refresh();
 
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
 
-
-        } catch (ConfigurationException e) {
+        } catch (ConfigurationException | IOException e) {
             showException(e);
         }
     }

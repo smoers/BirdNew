@@ -10,13 +10,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.mapper.MapperPaginator;
 import org.bird.db.query.Paginator;
+import org.bird.gui.controllers.display.IDisplayItemDashboard;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnPaginatorChangePageEvent;
 import org.bird.gui.events.OnRightClickEvent;
@@ -24,22 +24,23 @@ import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnPaginatorChangePageListener;
 import org.bird.gui.listeners.OnRightClickListener;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 /**
  * Classe qui assure le visuel d'un système de pagination
  */
-public class PaginatorController<T> extends ProtectedController implements Initializable {
+public class PaginatorController extends ProtectedController implements Initializable {
 
     /**
      * Container destiné à accueillir les items
      */
-    private Pane itemsContainer;
+    private IDisplayItemDashboard displayItemDashboard;
     /**
      * Le paginateur à utiliser
      */
-    private Paginator<T> paginator = null;
+    private Paginator paginator = null;
     /**
      * Le mapper pour l'accès à la DB
      */
@@ -64,10 +65,15 @@ public class PaginatorController<T> extends ProtectedController implements Initi
     private ArrayList<OnRightClickListener> onRightClickListeners = new ArrayList<>();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
     private ArrayList<OnPaginatorChangePageListener> onPaginatorChangePageListeners = new ArrayList<>();
+
     /**
      * Contructeur
+     * @param paginator
+     * @param displayItemDashboard
      */
-    public PaginatorController() {
+    public PaginatorController(Paginator paginator, IDisplayItemDashboard displayItemDashboard) {
+        this.paginator = paginator;
+        this.displayItemDashboard = displayItemDashboard;
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
         //On crée une instance du mapper permettant l'interaction avec la base de données.
         mapper = new MapperPaginator();
@@ -107,7 +113,7 @@ public class PaginatorController<T> extends ProtectedController implements Initi
             addOnPaginatorChangePageListener(new OnPaginatorChangePageListener() {
                 @Override
                 public void onPaginatorChangePage(OnPaginatorChangePageEvent evt) {
-
+                    refresh();
                 }
             });
             //Events
@@ -224,41 +230,30 @@ public class PaginatorController<T> extends ProtectedController implements Initi
     }
 
     /**
-     * Panneau dans lequel les items doivent être affichés
-     * @param itemsContainer
-     */
-    public void setItemsContainer(Pane itemsContainer) {
-        this.itemsContainer = itemsContainer;
-    }
-
-    /**
      * Retourne l'objet Paginator
      * @return
      */
-    public Paginator<T> getPaginator() {
+    public Paginator getPaginator() {
         return paginator;
     }
 
     /**
-     * Defini l'objet Paginator à utiliser
-     * @param paginator
+     * Se charge de rafraichir l'affichage au départ d'un objet Paginator
      */
-    public void setPaginator(Paginator<T> paginator) {
-        this.paginator = paginator;
-
-    }
-
     public void refresh(){
         try {
+            //Charge le paginator avec le résultat de la requete vers la db
             paginator = mapper.loadPaginator(paginator);
-
-        } catch (DBException e) {
+            //On affiche les Items
+            displayItemDashboard.display(paginator);
+            //On mets à jour le compteur de page
+        } catch (DBException | IOException e) {
             showException(e);
         }
     }
 
     /**
-     * Format l'affichage de la page en actuelle et du nombre total de page
+     * Format l'affichage de la page actuelle et du nombre total de page
      */
     private void showPageCounterFormatted(){
         StringJoiner joiner = new StringJoiner(" / ");
@@ -266,4 +261,9 @@ public class PaginatorController<T> extends ProtectedController implements Initi
         joiner.add(String.valueOf(paginator.getPages()));
         fieldPage.setText(joiner.toString());
     }
+
+    public IDisplayItemDashboard getDisplayItemDashboard() {
+        return displayItemDashboard;
+    }
+
 }

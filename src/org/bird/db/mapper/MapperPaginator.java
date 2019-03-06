@@ -2,6 +2,7 @@ package org.bird.db.mapper;
 
 import org.bird.db.exceptions.DBException;
 import org.bird.db.query.Paginator;
+import org.bird.utils.Utils;
 import xyz.morphia.Datastore;
 import xyz.morphia.query.FindOptions;
 import xyz.morphia.query.Query;
@@ -55,6 +56,7 @@ public class MapperPaginator implements IMapper {
             Long l = query.count();
             paginator.setPages(l.intValue());
             paginator.setList(list);
+            System.out.println(Utils.roundUp(l.intValue(),paginator.getItemsByPage()));
             return paginator;
         } else {
             throw new DBException(9000);
