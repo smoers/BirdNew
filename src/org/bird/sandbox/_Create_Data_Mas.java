@@ -132,20 +132,20 @@ public class _Create_Data_Mas {
                 File filea = new File("src/images/authors/tolkien.jpg");
                 File fileb = new File("src/images/books/001.jpg");
                 book.setUser(user01);
-                book.setPicture(new FileInputStream(filea).readAllBytes());
+                book.setPicture(new FileInputStream(fileb).readAllBytes());
                 book.setIllustrators(List.of(illustrator01));
                 cycle.setUser(user01);
-                author.setPicture(new FileInputStream(fileb).readAllBytes());
+                author.setPicture(new FileInputStream(filea).readAllBytes());
                 author.setUser(user01);
 
             } else {
                 File filea = new File("src/images/authors/martin.jpg");
                 File fileb = new File("src/images/books/004.jpg");
                 book.setUser(user02);
-                book.setPicture(new FileInputStream(filea).readAllBytes());
+                book.setPicture(new FileInputStream(fileb).readAllBytes());
                 book.setIllustrators(List.of(illustrator01, illustrator02));
                 cycle.setUser(user02);
-                author.setPicture(new FileInputStream(fileb).readAllBytes());
+                author.setPicture(new FileInputStream(filea).readAllBytes());
                 author.setUser(user02);
             }
 

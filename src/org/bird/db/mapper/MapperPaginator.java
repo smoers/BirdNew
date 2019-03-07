@@ -54,9 +54,8 @@ public class MapperPaginator implements IMapper {
             int skipValue = (paginator.getPage() - 1) * paginator.getItemsByPage();
             List<T> list = query.asList(new FindOptions().limit(paginator.getItemsByPage()).skip(skipValue));
             Long l = query.count();
-            paginator.setPages(l.intValue());
+            paginator.setPages(Utils.roundUp(l.intValue(),paginator.getItemsByPage()));
             paginator.setList(list);
-            System.out.println(Utils.roundUp(l.intValue(),paginator.getItemsByPage()));
             return paginator;
         } else {
             throw new DBException(9000);

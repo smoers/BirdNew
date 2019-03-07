@@ -162,10 +162,15 @@ public class PaginatorController extends ProtectedController implements Initiali
                     } else {
                         if (NumberUtils.isParsable(fieldPage.getText())){
                             paginator.setPage(Integer.parseInt(fieldPage.getText()));
-                            //Si la page demandée est supérieur au nombre de page total
-                            //on défini la page demandée comme égale au nombre de page
-                            if (paginator.getPage() > paginator.getPages())
+                            if (paginator.getPage() < 1){
+                                //Si la page demandée est inférieur à 1
+                                //on défini la page demandée comme égale à 1
+                                paginator.setPage(1);
+                            } else if (paginator.getPage() > paginator.getPages()) {
+                                //Si la page demandée est supérieur au nombre de page total
+                                //on défini la page demandée comme égale au nombre de page
                                 paginator.setPage(paginator.getPages());
+                            }
                             notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                         }
                         showPageCounterFormatted();
@@ -247,6 +252,7 @@ public class PaginatorController extends ProtectedController implements Initiali
             //On affiche les Items
             displayItemDashboard.display(paginator);
             //On mets à jour le compteur de page
+            showPageCounterFormatted();
         } catch (DBException | IOException e) {
             showException(e);
         }
