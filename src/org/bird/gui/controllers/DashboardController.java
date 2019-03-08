@@ -38,8 +38,8 @@ public class DashboardController extends ProtectedController implements Initiali
     private Button buttonLarge;
     @FXML
     private Button buttonList;
-    //
-    private VBox selectedContainer = null;
+    @FXML
+    private VBox bottonPane;
 
     /**
      * Contructeur
@@ -64,13 +64,17 @@ public class DashboardController extends ProtectedController implements Initiali
             Paginator<Author> paginator = new Paginator<Author>(1,15,Author.class);
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
+            //Chargement de la WaitingBar
+            FXMLLoader loaderWaitingBar = new FXMLLoader();
+            loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar.fxml"));
+            Node nodeWaitingBar = loaderWaitingBar.load();
+            bottonPane.getChildren().add(nodeWaitingBar);
             //Chargement du paginateur
-            FXMLLoader loader = new FXMLLoader();
-            Node node = null;
-            loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
-            loader.setController(paginatorController);
-            node = loader.load();
-            mainItemDashboard.setBottom(node);
+            FXMLLoader loaderPaginator = new FXMLLoader();
+            loaderPaginator.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
+            loaderPaginator.setController(paginatorController);
+            Node nodePaginator = loaderPaginator.load();
+            bottonPane.getChildren().add(nodePaginator);
             paginatorController.refresh();
 
             //evenements

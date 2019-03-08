@@ -265,6 +265,7 @@ public class PaginatorController extends ProtectedController implements Initiali
         StringJoiner joiner = new StringJoiner(" / ");
         joiner.add(String.valueOf(paginator.getPage()));
         joiner.add(String.valueOf(paginator.getPages()));
+        System.out.println(fieldPage == null);
         fieldPage.setText(joiner.toString());
     }
 
