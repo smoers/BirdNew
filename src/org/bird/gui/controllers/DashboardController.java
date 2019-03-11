@@ -68,7 +68,17 @@ public class DashboardController extends ProtectedController implements Initiali
             FXMLLoader loaderWaitingBar = new FXMLLoader();
             loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar.fxml"));
             Node nodeWaitingBar = loaderWaitingBar.load();
+            WaitingBarController waitingBarController = loaderWaitingBar.getController();
             bottonPane.getChildren().add(nodeWaitingBar);
+            System.out.println("Waiting ...");
+            waitingBarController.start();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            waitingBarController.stop();
+
             //Chargement du paginateur
             FXMLLoader loaderPaginator = new FXMLLoader();
             loaderPaginator.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
