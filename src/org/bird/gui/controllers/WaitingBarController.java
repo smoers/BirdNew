@@ -3,6 +3,7 @@ package org.bird.gui.controllers;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 
@@ -15,6 +16,8 @@ public class WaitingBarController implements Initializable {
     private ProgressBar waitingBar;
     @FXML
     private AnchorPane progressBarPane;
+    @FXML
+    private Label lbl;
     private ServiceTask service;
 
     @Override
@@ -22,14 +25,17 @@ public class WaitingBarController implements Initializable {
     }
 
     public void start(){
-        waitingBar.setProgress(0);
+        System.out.println("start");
         service = new ServiceTask();
         waitingBar.progressProperty().unbind();
         waitingBar.progressProperty().bind(service.progressProperty());
-        new Thread(service).start();
+        lbl.textProperty().bind(service.messageProperty());
+        Thread thread = new Thread(service);
+        thread.start();
     }
 
     public void stop(){
+        System.out.println("stop");
         service.setStop(true);
         //service.cancel();
         //waitingBar.setProgress(0);
@@ -38,7 +44,7 @@ public class WaitingBarController implements Initializable {
     private class ServiceTask extends Task<Boolean>{
 
         private long speed = 50;
-        private int counterSize = 100;
+        private int counterSize = 5;
         private boolean loop = true;
         private boolean stop = false;
 
@@ -47,8 +53,11 @@ public class WaitingBarController implements Initializable {
             while (!stop) {
                 for (int i = 0; i < counterSize; i++) {
                     Thread.sleep(speed);
-                    updateMessage("Task Completed : " + ((i * counterSize) + counterSize) + "%");
+                    updateMessage("% " + i);
                     updateProgress(i + 1, counterSize);
+                    System.out.println(i + 1);
+                    if(stop)
+                        break;
                 }
                 if (!loop)
                     stop = true;

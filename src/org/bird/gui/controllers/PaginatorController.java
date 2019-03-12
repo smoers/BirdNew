@@ -19,9 +19,11 @@ import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.IDisplayItemDashboard;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnPaginatorChangePageEvent;
+import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnRightClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnPaginatorChangePageListener;
+import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.listeners.OnRightClickListener;
 
 import java.io.IOException;
@@ -65,6 +67,7 @@ public class PaginatorController extends ProtectedController implements Initiali
     private ArrayList<OnRightClickListener> onRightClickListeners = new ArrayList<>();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
     private ArrayList<OnPaginatorChangePageListener> onPaginatorChangePageListeners = new ArrayList<>();
+    private ArrayList<OnProcessListener> onProcessListeners = new ArrayList<>();
 
     /**
      * Contructeur
@@ -205,6 +208,13 @@ public class PaginatorController extends ProtectedController implements Initiali
     public void addOnPaginatorChangePageListener(OnPaginatorChangePageListener listener) { onPaginatorChangePageListeners.add(listener); }
 
     /**
+     * Ajoute  un listener sur le début ou la fin d'un processus
+     * Dans ce cas la recherche des données suite à un changement de page
+     * @param listener
+     */
+    public void addOnProcessListener(OnProcessListener listener) { onProcessListeners.add(listener); }
+
+    /**
      * Notifie le listener du click droit
      * @param evt
      */
@@ -225,12 +235,22 @@ public class PaginatorController extends ProtectedController implements Initiali
     }
 
     /**
-     * Notifie le listner du changement de page
+     * Notifie le listener du changement de page
      * @param evt
      */
     private void notifyOnPaginatorChangePageListener(OnPaginatorChangePageEvent evt){
         for (OnPaginatorChangePageListener listener : onPaginatorChangePageListeners){
             listener.onPaginatorChangePage(evt);
+        }
+    }
+
+    /**
+     * Notifie le listener de process
+     * @param evt
+     */
+    private void notifyOnProcessListener(OnProcessEvent evt){
+        for (OnProcessListener listener : onProcessListeners){
+            listener.onProcess(evt);
         }
     }
 
@@ -247,13 +267,18 @@ public class PaginatorController extends ProtectedController implements Initiali
      */
     public void refresh(){
         try {
+            //Notifie le début du processus
+            notifyOnProcessListener(new OnProcessEvent(this, true));
             //Charge le paginator avec le résultat de la requete vers la db
             paginator = mapper.loadPaginator(paginator);
             //On affiche les Items
             displayItemDashboard.display(paginator);
             //On mets à jour le compteur de page
             showPageCounterFormatted();
+            //notifie la fin du processus
+            notifyOnProcessListener(new OnProcessEvent(this, false));
         } catch (DBException | IOException e) {
+            notifyOnProcessListener(new OnProcessEvent(this, false));
             showException(e);
         }
     }
@@ -265,7 +290,6 @@ public class PaginatorController extends ProtectedController implements Initiali
         StringJoiner joiner = new StringJoiner(" / ");
         joiner.add(String.valueOf(paginator.getPage()));
         joiner.add(String.valueOf(paginator.getPages()));
-        System.out.println(fieldPage == null);
         fieldPage.setText(joiner.toString());
     }
 

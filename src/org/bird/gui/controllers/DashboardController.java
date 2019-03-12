@@ -1,5 +1,6 @@
 package org.bird.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,8 +12,8 @@ import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
-import org.bird.gui.events.OnLeftClickEvent;
-import org.bird.gui.listeners.OnLeftClickListener;
+import org.bird.gui.events.OnProcessEvent;
+import org.bird.gui.listeners.OnProcessListener;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,9 +45,7 @@ public class DashboardController extends ProtectedController implements Initiali
     /**
      * Contructeur
      */
-    public DashboardController() throws ConfigurationException {
-
-    }
+    public DashboardController(){}
 
 
     @Override
@@ -61,7 +60,7 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
 
             //Configuration du controller
-            Paginator<Author> paginator = new Paginator<Author>(1,15,Author.class);
+            Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
@@ -70,14 +69,18 @@ public class DashboardController extends ProtectedController implements Initiali
             Node nodeWaitingBar = loaderWaitingBar.load();
             WaitingBarController waitingBarController = loaderWaitingBar.getController();
             bottonPane.getChildren().add(nodeWaitingBar);
-            System.out.println("Waiting ...");
-            waitingBarController.start();
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            waitingBarController.stop();
+
+            paginatorController.addOnProcessListener(new OnProcessListener() {
+                @Override
+                public void onProcess(OnProcessEvent evt) {
+                    if (evt.isStarted()) {
+                        waitingBarController.start();
+                    }
+                    else {
+                         waitingBarController.stop();
+                    }
+                }
+            });
 
             //Chargement du paginateur
             FXMLLoader loaderPaginator = new FXMLLoader();
@@ -110,7 +113,4 @@ public class DashboardController extends ProtectedController implements Initiali
 
     }
 
-    public void showDashboardItems(Paginator paginator){
-
-    }
 }
