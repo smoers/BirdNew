@@ -16,8 +16,6 @@ public class WaitingBarController implements Initializable {
     private ProgressBar waitingBar;
     @FXML
     private AnchorPane progressBarPane;
-    @FXML
-    private Label lbl;
     private ServiceTask service;
 
     @Override
@@ -29,7 +27,6 @@ public class WaitingBarController implements Initializable {
         service = new ServiceTask();
         waitingBar.progressProperty().unbind();
         waitingBar.progressProperty().bind(service.progressProperty());
-        lbl.textProperty().bind(service.messageProperty());
         Thread thread = new Thread(service);
         thread.start();
     }
@@ -37,8 +34,6 @@ public class WaitingBarController implements Initializable {
     public void stop(){
         System.out.println("stop");
         service.setStop(true);
-        //service.cancel();
-        //waitingBar.setProgress(0);
     }
 
     private class ServiceTask extends Task<Boolean>{

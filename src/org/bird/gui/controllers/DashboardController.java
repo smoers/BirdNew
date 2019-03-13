@@ -14,6 +14,7 @@ import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.listeners.OnProcessListener;
+import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,23 +65,14 @@ public class DashboardController extends ProtectedController implements Initiali
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
+            ImageProvider provider = new ImageProvider("/images/loading3.gif");
+            WaitingBarAnimatedController waitingBarController = new WaitingBarAnimatedController(provider);
             FXMLLoader loaderWaitingBar = new FXMLLoader();
-            loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar.fxml"));
+            loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar_animated.fxml"));
+            loaderWaitingBar.setController(waitingBarController);
             Node nodeWaitingBar = loaderWaitingBar.load();
-            WaitingBarController waitingBarController = loaderWaitingBar.getController();
             bottonPane.getChildren().add(nodeWaitingBar);
 
-            paginatorController.addOnProcessListener(new OnProcessListener() {
-                @Override
-                public void onProcess(OnProcessEvent evt) {
-                    if (evt.isStarted()) {
-                        waitingBarController.start();
-                    }
-                    else {
-                         waitingBarController.stop();
-                    }
-                }
-            });
 
             //Chargement du paginateur
             FXMLLoader loaderPaginator = new FXMLLoader();

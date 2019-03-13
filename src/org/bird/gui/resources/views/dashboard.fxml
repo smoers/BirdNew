@@ -47,6 +47,6 @@
       </BorderPane>
    </center>
    <bottom>
-      <VBox fx:id="bottonPane" BorderPane.alignment="CENTER" />
+      <VBox fx:id="bottonPane" alignment="CENTER" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
