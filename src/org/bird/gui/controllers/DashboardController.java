@@ -1,6 +1,5 @@
 package org.bird.gui.controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,9 +11,6 @@ import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
-import org.bird.gui.events.OnProcessEvent;
-import org.bird.gui.listeners.OnProcessListener;
-import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,6 +38,8 @@ public class DashboardController extends ProtectedController implements Initiali
     private Button buttonList;
     @FXML
     private VBox bottonPane;
+    @FXML
+    private Label lbl;
 
     /**
      * Contructeur
@@ -62,9 +60,10 @@ public class DashboardController extends ProtectedController implements Initiali
 
             //Configuration du controller
             Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
-            DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
+            DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer, lbl);
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
+            /*
             ImageProvider provider = new ImageProvider("/images/loading3.gif");
             WaitingBarAnimatedController waitingBarController = new WaitingBarAnimatedController(provider);
             FXMLLoader loaderWaitingBar = new FXMLLoader();
@@ -72,7 +71,13 @@ public class DashboardController extends ProtectedController implements Initiali
             loaderWaitingBar.setController(waitingBarController);
             Node nodeWaitingBar = loaderWaitingBar.load();
             bottonPane.getChildren().add(nodeWaitingBar);
-
+            */
+            WaitingBarController waitingBarController = new WaitingBarController(displayItemDashboardAuthor);
+            FXMLLoader loaderWaitingBar = new FXMLLoader();
+            loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar.fxml"));
+            loaderWaitingBar.setController(waitingBarController);
+            Node nodeWaitingBar = loaderWaitingBar.load();
+            bottonPane.getChildren().add(nodeWaitingBar);
 
             //Chargement du paginateur
             FXMLLoader loaderPaginator = new FXMLLoader();
