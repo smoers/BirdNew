@@ -1,16 +1,19 @@
 package org.bird.gui.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
+import org.bird.gui.services.ProgressService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,8 +41,6 @@ public class DashboardController extends ProtectedController implements Initiali
     private Button buttonList;
     @FXML
     private VBox bottonPane;
-    @FXML
-    private Label lbl;
 
     /**
      * Contructeur
@@ -60,7 +61,7 @@ public class DashboardController extends ProtectedController implements Initiali
 
             //Configuration du controller
             Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
-            DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer, lbl);
+            DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
             /*
@@ -89,6 +90,15 @@ public class DashboardController extends ProtectedController implements Initiali
 
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
+            buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    ProgressService service = new ProgressService();
+                    waitingBarController.getWaitingBar().progressProperty().bind(service.progressProperty());
+                    service.start();
+
+                }
+            });
 
         } catch (ConfigurationException | IOException e) {
             showException(e);

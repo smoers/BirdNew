@@ -2,7 +2,6 @@ package org.bird.gui.controllers.display;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
@@ -17,15 +16,13 @@ public class DisplayItemDashboardAuthor extends DisplayItemDashboard<Author> {
 
     private Pane itemsContainer;
     private Pane selected = null;
-    private Label lbl;
 
     /**
      * Contructeur
      * @param itemsContainer
      */
-    public DisplayItemDashboardAuthor(Pane itemsContainer, Label lbl){
+    public DisplayItemDashboardAuthor(Pane itemsContainer){
         this.itemsContainer = itemsContainer;
-        this.lbl = lbl;
     }
 
     /**
@@ -42,7 +39,6 @@ public class DisplayItemDashboardAuthor extends DisplayItemDashboard<Author> {
         //Charge le dashboard
         for (Author author : paginator.getList()) {
             notifyOnProgressChangeListener(new OnProgressChangeEvent(this,value,size));
-            lbl.setText(String.valueOf(value));
             FXMLLoader _loader = new FXMLLoader();
             _loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
             Node _node = _loader.load();

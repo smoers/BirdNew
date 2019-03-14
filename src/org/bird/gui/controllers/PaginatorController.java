@@ -112,19 +112,13 @@ public class PaginatorController extends ProtectedController implements Initiali
             setText(paneContainer);
             //Affiche le champs avec la page en cours et le nombre de page
             showPageCounterFormatted();
-            //je m'inscris dans l'écouteur de changement de page
-            addOnPaginatorChangePageListener(new OnPaginatorChangePageListener() {
-                @Override
-                public void onPaginatorChangePage(OnPaginatorChangePageEvent evt) {
-                    refresh();
-                }
-            });
             //Events
             /* bouton first */
             buttonFirst.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     paginator.setPage(1);
+                    refresh();
                     notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this, paginator));
                 }
             });
@@ -134,6 +128,7 @@ public class PaginatorController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if (paginator.getPage() > 1 ){
                         paginator.setPage(paginator.getPage()-1);
+                        refresh();
                         notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                     }
                 }
@@ -144,6 +139,7 @@ public class PaginatorController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if(paginator.getPage() < paginator.getPages()){
                         paginator.setPage(paginator.getPage()+1);
+                        refresh();
                         notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                     }
                 }
@@ -153,6 +149,7 @@ public class PaginatorController extends ProtectedController implements Initiali
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     paginator.setPage(paginator.getPages());
+                    refresh();
                     notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                 }
             });
@@ -174,6 +171,7 @@ public class PaginatorController extends ProtectedController implements Initiali
                                 //on défini la page demandée comme égale au nombre de page
                                 paginator.setPage(paginator.getPages());
                             }
+                            refresh();
                             notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                         }
                         showPageCounterFormatted();

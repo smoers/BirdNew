@@ -33,11 +33,14 @@ public class WaitingBarController implements Initializable {
             @Override
             public void onProcessChange(OnProgressChangeEvent evt) {
                 double tmp = (evt.getValue()*100)/evt.getSize();
-                System.out.println(tmp);
                 lbl.setText(String.valueOf(tmp));
                 waitingBar.setProgress((evt.getValue()*100)/evt.getSize());
+                System.out.println(waitingBar.getProgress());
             }
         });
     }
 
+    public ProgressBar getWaitingBar() {
+        return waitingBar;
+    }
 }
