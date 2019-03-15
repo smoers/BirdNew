@@ -1,5 +1,6 @@
 package org.bird.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,10 +33,12 @@ public class WaitingBarController implements Initializable {
         listener.addOnProgressChangeListener(new OnProgressChangeListener() {
             @Override
             public void onProcessChange(OnProgressChangeEvent evt) {
-                double tmp = (evt.getValue()*100)/evt.getSize();
-                lbl.setText(String.valueOf(tmp));
-                waitingBar.setProgress((evt.getValue()*100)/evt.getSize());
-                System.out.println(waitingBar.getProgress());
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        waitingBar.setProgress((evt.getValue()*100)/evt.getSize());
+                    }
+                });
             }
         });
     }

@@ -25,6 +25,7 @@ import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnPaginatorChangePageListener;
 import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.listeners.OnRightClickListener;
+import org.bird.gui.services.MapperPaginatorService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -264,21 +265,31 @@ public class PaginatorController extends ProtectedController implements Initiali
      * Se charge de rafraichir l'affichage au départ d'un objet Paginator
      */
     public void refresh(){
-        try {
-            //Notifie le début du processus
-            notifyOnProcessListener(new OnProcessEvent(this, true));
-            //Charge le paginator avec le résultat de la requete vers la db
-            paginator = mapper.loadPaginator(paginator);
-            //On affiche les Items
-            displayItemDashboard.display(paginator);
-            //On mets à jour le compteur de page
-            showPageCounterFormatted();
-            //notifie la fin du processus
-            notifyOnProcessListener(new OnProcessEvent(this, false));
-        } catch (DBException | IOException e) {
-            notifyOnProcessListener(new OnProcessEvent(this, false));
-            showException(e);
-        }
+        //Notifie le début du processus
+        notifyOnProcessListener(new OnProcessEvent(this, true));
+        //Charge le paginator avec le résultat de la requete vers la db
+        //paginator = mapper.loadPaginator(paginator);
+        MapperPaginatorService service = new MapperPaginatorService(paginator);
+        service.addOnProcessListener(new OnProcessListener() {
+            @Override
+            public void onProcess(OnProcessEvent evt) {
+                if (evt.isStarted()) {
+                    paginator = service.getValue();
+                    //On affiche les Items
+                    try {
+                        displayItemDashboard.display(paginator);
+                    } catch (IOException e) {
+                        notifyOnProcessListener(new OnProcessEvent(this, false));
+                        showException(e);
+                    }
+                    //On mets à jour le compteur de page
+                    showPageCounterFormatted();
+                    //notifie la fin du processus
+                    notifyOnProcessListener(new OnProcessEvent(this, false));
+                }
+            }
+        });
+        service.start();
     }
 
     /**
