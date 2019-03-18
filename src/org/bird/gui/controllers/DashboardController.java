@@ -1,19 +1,16 @@
 package org.bird.gui.controllers;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
-import org.bird.gui.services.ProgressService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,15 +61,6 @@ public class DashboardController extends ProtectedController implements Initiali
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
-            /*
-            ImageProvider provider = new ImageProvider("/images/loading3.gif");
-            WaitingBarAnimatedController waitingBarController = new WaitingBarAnimatedController(provider);
-            FXMLLoader loaderWaitingBar = new FXMLLoader();
-            loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar_animated.fxml"));
-            loaderWaitingBar.setController(waitingBarController);
-            Node nodeWaitingBar = loaderWaitingBar.load();
-            bottonPane.getChildren().add(nodeWaitingBar);
-            */
             WaitingBarController waitingBarController = new WaitingBarController(displayItemDashboardAuthor);
             FXMLLoader loaderWaitingBar = new FXMLLoader();
             loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar.fxml"));
@@ -90,15 +78,6 @@ public class DashboardController extends ProtectedController implements Initiali
 
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
-            buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    ProgressService service = new ProgressService();
-                    waitingBarController.getWaitingBar().progressProperty().bind(service.progressProperty());
-                    service.start();
-
-                }
-            });
 
         } catch (ConfigurationException | IOException e) {
             showException(e);

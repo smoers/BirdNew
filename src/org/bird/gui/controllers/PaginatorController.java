@@ -16,7 +16,7 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.mapper.MapperPaginator;
 import org.bird.db.query.Paginator;
-import org.bird.gui.controllers.display.IDisplayItemDashboard;
+import org.bird.gui.controllers.display.IOnDisplayItemDashboardChange;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnPaginatorChangePageEvent;
 import org.bird.gui.events.OnProcessEvent;
@@ -39,7 +39,7 @@ public class PaginatorController extends ProtectedController implements Initiali
     /**
      * Container destiné à accueillir les items
      */
-    private IDisplayItemDashboard displayItemDashboard;
+    private IOnDisplayItemDashboardChange displayItemDashboard;
     /**
      * Le paginateur à utiliser
      */
@@ -75,7 +75,7 @@ public class PaginatorController extends ProtectedController implements Initiali
      * @param paginator
      * @param displayItemDashboard
      */
-    public PaginatorController(Paginator paginator, IDisplayItemDashboard displayItemDashboard) {
+    public PaginatorController(Paginator paginator, IOnDisplayItemDashboardChange displayItemDashboard) {
         this.paginator = paginator;
         this.displayItemDashboard = displayItemDashboard;
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
@@ -302,7 +302,7 @@ public class PaginatorController extends ProtectedController implements Initiali
         fieldPage.setText(joiner.toString());
     }
 
-    public IDisplayItemDashboard getDisplayItemDashboard() {
+    public IOnDisplayItemDashboardChange getDisplayItemDashboard() {
         return displayItemDashboard;
     }
 

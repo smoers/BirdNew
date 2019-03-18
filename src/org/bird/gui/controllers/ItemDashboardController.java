@@ -73,6 +73,21 @@ public class ItemDashboardController implements Initializable {
         picture.setImage(imageProvider.getImage());
     }
 
+    /**
+     * Permet de charger un objet en précisant le type lors de l'exécution
+     * @param objet
+     * @param <T>
+     */
+    public <T> void setItem(T objet){
+
+        if (objet instanceof Author){
+            setItem(objet);
+        } else if (objet instanceof Book){
+            setItem(objet);
+        }
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         container.getStyleClass().add("item_container");
