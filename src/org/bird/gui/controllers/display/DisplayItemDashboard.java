@@ -71,6 +71,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
 
         @Override
         protected Task<Void> createTask() {
+
             return new Task<Void>(){
                 @Override
                 protected Void call() throws Exception {
@@ -104,18 +105,15 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
                             }
                         });
                         list.add(_node);
-                        value++;
-                    }
-                    System.out.println(list.size());
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (Node node : list) {
+                        final Node node = _node;
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
                                 pane.getChildren().add(node);
                             }
-                        }
-                    });
-
+                        });
+                        value++;
+                    }
                     return null;
                 }
             };

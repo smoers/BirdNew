@@ -79,11 +79,10 @@ public class ItemDashboardController implements Initializable {
      * @param <T>
      */
     public <T> void setItem(T objet){
-
         if (objet instanceof Author){
-            setItem(objet);
+            setItem((Author) objet);
         } else if (objet instanceof Book){
-            setItem(objet);
+            setItem((Book) objet);
         }
 
     }
