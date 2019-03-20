@@ -8,8 +8,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
-import org.bird.gui.common.progress.IOnProgessChangeListener;
+import org.bird.gui.common.progress.IOnWaitingBarListener;
+import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
+import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.listeners.OnProgressChangeListener;
 
 import java.net.URL;
@@ -23,14 +25,15 @@ public class WaitingBarController implements Initializable {
     private AnchorPane progressBarPane;
     @FXML
     private Label lbl;
-    private IOnProgessChangeListener listener;
+    private IOnWaitingBarListener listener;
 
-    public WaitingBarController(IOnProgessChangeListener listener) {
+    public WaitingBarController(IOnWaitingBarListener listener) {
         this.listener = listener;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        progressBarPane.visibleProperty().set(false);
         ProgressService service = new ProgressService(listener);
         waitingBar.progressProperty().bind(service.progressProperty());
         service.start();
@@ -40,11 +43,14 @@ public class WaitingBarController implements Initializable {
         return waitingBar;
     }
 
+    /**
+     * Ce service exécute dans un thread l'affichage de la WaitingBar
+     */
     private class ProgressService extends Service<Void>{
 
-        private IOnProgessChangeListener listener;
+        private IOnWaitingBarListener listener;
 
-        public ProgressService(IOnProgessChangeListener listener) {
+        public ProgressService(IOnWaitingBarListener listener) {
             this.listener = listener;
         }
 
@@ -53,6 +59,17 @@ public class WaitingBarController implements Initializable {
             return new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
+                    //ecoute la fin et le début du processus de chargement
+                    listener.addOnProcessListener(new OnProcessListener() {
+                        @Override
+                        public void onProcess(OnProcessEvent evt) {
+                            if (evt.isStarted())
+                                progressBarPane.visibleProperty().set(true);
+                            else
+                                progressBarPane.visibleProperty().set(false);
+                        }
+                    });
+                    //ecoute l'évolution du chargement
                     listener.addOnProgressChangeListener(new OnProgressChangeListener(){
 
                         @Override

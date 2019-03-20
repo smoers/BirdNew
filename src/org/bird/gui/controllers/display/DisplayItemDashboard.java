@@ -9,13 +9,16 @@ import javafx.scene.layout.Pane;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.ItemDashboardController;
 import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
+import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.listeners.OnProgressChangeListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Classe abstraite implémentant les méthodes de l'interface IOnDisplayItemDashboardChange
@@ -26,6 +29,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
      * Liste des listener
      */
     private ArrayList<OnProgressChangeListener> onProgressChangeListeners = new ArrayList<>();
+    private ArrayList<OnProcessListener> onProcessListeners = new ArrayList<>();
     /**
      * L'item sélectionné
      */
@@ -44,15 +48,34 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
         onProgressChangeListeners.add(listener);
     }
 
+    @Override
+    public void addOnProcessListener(OnProcessListener listener) {
+        onProcessListeners.add(listener);
+    }
+
     /**
      * Notifie les listeners
      * @param evt
      */
     protected void notifyOnProgressChangeListener(OnProgressChangeEvent evt){
-        for (OnProgressChangeListener listener : onProgressChangeListeners){
-            listener.onProcessChange(evt);
-        }
+        onProgressChangeListeners.forEach(new Consumer<OnProgressChangeListener>() {
+            @Override
+            public void accept(OnProgressChangeListener onProgressChangeListener) {
+                onProgressChangeListener.onProcessChange(evt);
+            }
+        });
     }
+
+    protected void notifyOnProcessListener(OnProcessEvent evt){
+        onProcessListeners.forEach(new Consumer<OnProcessListener>() {
+            @Override
+            public void accept(OnProcessListener listener) {
+                listener.onProcess(evt);
+            }
+        });
+    }
+
+
 
     /**
      * Ce service se charge de l'affichage dans un autre thread que le thread JavaFX
@@ -78,6 +101,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
                     List<Node> list = new ArrayList<>();
                     double size = paginator.getItemsByPage();
                     double value = 1;
+                    notifyOnProcessListener(new OnProcessEvent(this, true));
                     for (T author : paginator.getList()) {
                         notifyOnProgressChangeListener(new OnProgressChangeEvent(this,value,size));
                         FXMLLoader _loader = new FXMLLoader();
@@ -114,6 +138,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
                         });
                         value++;
                     }
+                    notifyOnProcessListener(new OnProcessEvent(this, false));
                     return null;
                 }
             };

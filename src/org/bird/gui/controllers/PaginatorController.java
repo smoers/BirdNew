@@ -17,14 +17,8 @@ import org.bird.db.mapper.MapperFactory;
 import org.bird.db.mapper.MapperPaginator;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.IOnDisplayItemDashboardChange;
-import org.bird.gui.events.OnLeftClickEvent;
-import org.bird.gui.events.OnPaginatorChangePageEvent;
 import org.bird.gui.events.OnProcessEvent;
-import org.bird.gui.events.OnRightClickEvent;
-import org.bird.gui.listeners.OnLeftClickListener;
-import org.bird.gui.listeners.OnPaginatorChangePageListener;
 import org.bird.gui.listeners.OnProcessListener;
-import org.bird.gui.listeners.OnRightClickListener;
 import org.bird.gui.services.MapperPaginatorService;
 
 import java.io.IOException;
@@ -62,13 +56,6 @@ public class PaginatorController extends ProtectedController implements Initiali
     private TextField fieldPage;
     @FXML
     private ComboBox<Integer> comboNbrItems;
-    /**
-     * Event
-     */
-    private ArrayList<OnRightClickListener> onRightClickListeners = new ArrayList<>();
-    private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
-    private ArrayList<OnPaginatorChangePageListener> onPaginatorChangePageListeners = new ArrayList<>();
-    private ArrayList<OnProcessListener> onProcessListeners = new ArrayList<>();
 
     /**
      * Contructeur
@@ -120,7 +107,6 @@ public class PaginatorController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     paginator.setPage(1);
                     refresh();
-                    notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this, paginator));
                 }
             });
             /*bouton previous*/
@@ -130,7 +116,6 @@ public class PaginatorController extends ProtectedController implements Initiali
                     if (paginator.getPage() > 1 ){
                         paginator.setPage(paginator.getPage()-1);
                         refresh();
-                        notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                     }
                 }
             });
@@ -141,7 +126,6 @@ public class PaginatorController extends ProtectedController implements Initiali
                     if(paginator.getPage() < paginator.getPages()){
                         paginator.setPage(paginator.getPage()+1);
                         refresh();
-                        notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                     }
                 }
             });
@@ -151,7 +135,6 @@ public class PaginatorController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     paginator.setPage(paginator.getPages());
                     refresh();
-                    notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                 }
             });
             /*champ page*/
@@ -173,7 +156,6 @@ public class PaginatorController extends ProtectedController implements Initiali
                                 paginator.setPage(paginator.getPages());
                             }
                             refresh();
-                            notifyOnPaginatorChangePageListener(new OnPaginatorChangePageEvent(this,paginator));
                         }
                         showPageCounterFormatted();
                     }
@@ -184,74 +166,6 @@ public class PaginatorController extends ProtectedController implements Initiali
         }
     }
 
-    /**
-     * Ajoute un listener sur le click droit de la souris
-     * @param listener
-     */
-    public void addOnRightClickListener(OnRightClickListener listener){
-        onRightClickListeners.add(listener);
-    }
-
-    /**
-     * Ajoute un listener sur le click gauche de la souris
-     * @param listener
-     */
-    public void addOnLeftClickListener(OnLeftClickListener listener){
-        onLeftClickListeners.add(listener);
-    }
-
-    /**
-     * Ajoute  un listener sur le changement de page
-     * @param listener
-     */
-    public void addOnPaginatorChangePageListener(OnPaginatorChangePageListener listener) { onPaginatorChangePageListeners.add(listener); }
-
-    /**
-     * Ajoute  un listener sur le début ou la fin d'un processus
-     * Dans ce cas la recherche des données suite à un changement de page
-     * @param listener
-     */
-    public void addOnProcessListener(OnProcessListener listener) { onProcessListeners.add(listener); }
-
-    /**
-     * Notifie le listener du click droit
-     * @param evt
-     */
-    private void notifyOnRightClickListener(OnRightClickEvent evt){
-        for (OnRightClickListener listener : onRightClickListeners){
-            listener.onRightClick(evt);
-        }
-    }
-
-    /**
-     * Notifie le listener du click gauche
-     * @param evt
-     */
-    private void notifyOnLeftClickListener(OnLeftClickEvent evt){
-        for (OnLeftClickListener listener : onLeftClickListeners){
-            listener.onLeftClick(evt);
-        }
-    }
-
-    /**
-     * Notifie le listener du changement de page
-     * @param evt
-     */
-    private void notifyOnPaginatorChangePageListener(OnPaginatorChangePageEvent evt){
-        for (OnPaginatorChangePageListener listener : onPaginatorChangePageListeners){
-            listener.onPaginatorChangePage(evt);
-        }
-    }
-
-    /**
-     * Notifie le listener de process
-     * @param evt
-     */
-    private void notifyOnProcessListener(OnProcessEvent evt){
-        for (OnProcessListener listener : onProcessListeners){
-            listener.onProcess(evt);
-        }
-    }
 
     /**
      * Retourne l'objet Paginator
@@ -265,8 +179,6 @@ public class PaginatorController extends ProtectedController implements Initiali
      * Se charge de rafraichir l'affichage au départ d'un objet Paginator
      */
     public void refresh(){
-        //Notifie le début du processus
-        notifyOnProcessListener(new OnProcessEvent(this, true));
         //Charge le paginator avec le résultat de la requete vers la db
         //paginator = mapper.loadPaginator(paginator);
         MapperPaginatorService service = new MapperPaginatorService(paginator);
@@ -277,15 +189,14 @@ public class PaginatorController extends ProtectedController implements Initiali
                     paginator = service.getValue();
                     //On affiche les Items
                     try {
+                        //cette objet va éxecuter un service charger du cahrgempent des items
                         displayItemDashboard.display(paginator);
                     } catch (IOException e) {
-                        notifyOnProcessListener(new OnProcessEvent(this, false));
                         showException(e);
                     }
                     //On mets à jour le compteur de page
                     showPageCounterFormatted();
                     //notifie la fin du processus
-                    notifyOnProcessListener(new OnProcessEvent(this, false));
                 }
             }
         });
