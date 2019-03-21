@@ -1,5 +1,7 @@
 package org.bird.gui.controllers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -8,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -24,6 +27,7 @@ import org.bird.gui.services.MapperPaginatorService;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Classe qui assure le visuel d'un système de pagination
@@ -98,9 +102,28 @@ public class PaginatorController extends ProtectedController implements Initiali
             setLanguage();
             //Affichage des textes dans le boutons
             setText(paneContainer);
+            //Défini le combobox avec les valeurs
+            JsonArray jsonArray = getConfigurationLayout().get("layout.item_by_page.large").getAsJsonArray();
+            jsonArray.forEach(new Consumer<JsonElement>() {
+                @Override
+                public void accept(JsonElement jsonElement) {
+                    comboNbrItems.getItems().add(jsonElement.getAsInt());
+                }
+            });
+            paginator.setItemsByPage(getConfigurationLayout().get("layout.item_by_page.value").getAsInt());
+            comboNbrItems.setValue(paginator.getItemsByPage());
             //Affiche le champs avec la page en cours et le nombre de page
             showPageCounterFormatted();
             //Events
+            /* Combo avec le nombre d'item par page*/
+            comboNbrItems.valueProperty().addListener(new ChangeListener<Integer>() {
+                @Override
+                public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                    paginator.setItemsByPage(observableValue.getValue());
+
+                    refresh();
+                }
+            });
             /* bouton first */
             buttonFirst.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
