@@ -1,12 +1,12 @@
 package org.bird.configuration;
 
 import com.google.common.io.Files;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import org.bird.configuration.exceptions.ConfigurationException;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public class ConfigurationBuilder {
@@ -24,9 +24,9 @@ public class ConfigurationBuilder {
         autoLoad(ConfigurationBuilder.DEFAULT_CONFIGURATION_FOLDER);
     }
 
-    public void load(String key, String pathFileName) throws FileNotFoundException {
-        JsonReader jsonReader = new JsonReader(new InputStreamReader(new FileInputStream(pathFileName)));
-        Configuration configuration = new Configuration(new JsonParser().parse(jsonReader));
+    public void load(String key, Path pathFileName) throws FileNotFoundException {
+        JsonReader jsonReader = new JsonReader(new InputStreamReader(new FileInputStream(pathFileName.toString())));
+        Configuration configuration = new Configuration(new JsonParser().parse(jsonReader), pathFileName);
         configurations.put(key,configuration);
     }
 
@@ -36,7 +36,7 @@ public class ConfigurationBuilder {
                 String key = Files.getNameWithoutExtension(path.getPath());
                 String pathFileName = path.getPath();
                 try {
-                    load(key,pathFileName);
+                    load(key,path.toPath());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -78,6 +78,12 @@ public class ConfigurationBuilder {
             throw new ConfigurationException(8001);
         }
         return element;
+    }
+
+    public void write(Configuration configuration) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        String json = gson.toJson(configuration.get());
+        Files.write(json.getBytes(), configuration.getPathFileName().toFile());
     }
 
 

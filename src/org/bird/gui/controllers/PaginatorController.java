@@ -120,7 +120,12 @@ public class PaginatorController extends ProtectedController implements Initiali
                 @Override
                 public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
                     paginator.setItemsByPage(observableValue.getValue());
-
+                    //Cela permet de sauvegarder le nombre d'items par page.
+                    try {
+                        getConfigurationLayout().write();
+                    } catch (IOException | ConfigurationException e) {
+                        showException(e);
+                    }
                     refresh();
                 }
             });

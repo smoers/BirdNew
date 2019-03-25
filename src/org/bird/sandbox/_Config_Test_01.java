@@ -5,6 +5,8 @@ import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 
+import java.io.IOException;
+
 public class _Config_Test_01 {
 
     public static void main(String[] args) {
@@ -18,8 +20,9 @@ public class _Config_Test_01 {
             jsonObject.addProperty("value",14);
             System.out.println(jsonObject.toString());
             System.out.println(jsonObject2.toString());
-        } catch (ConfigurationException e){
-            System.out.println(e.getI18nMessage());
+            configuration.write();
+        } catch (ConfigurationException | IOException e){
+            System.out.println(e.getMessage());
         }
     }
 }

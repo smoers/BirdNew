@@ -1,8 +1,12 @@
 package org.bird.configuration;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.utils.Utils;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -14,13 +18,16 @@ import java.util.Iterator;
 public class Configuration {
 
     private JsonElement jsonElement;
+    private Path pathFileName;
+    private JsonElement parentJsonElement;
 
     /**
      * Contructeur
      * @param jsonElement
      */
-    public Configuration(JsonElement jsonElement) {
+    public Configuration(JsonElement jsonElement, Path pathFileName) {
         this.jsonElement = jsonElement;
+        this.pathFileName = pathFileName;
     }
 
     /**
@@ -46,6 +53,7 @@ public class Configuration {
         while (iterator.hasNext()){
             String key = iterator.next();
             if(!jsonElement.isJsonNull() && jsonElement.isJsonObject()){
+                parentJsonElement = jsonElement;
                 jsonElement = jsonElement.getAsJsonObject().get(key);
                 response = jsonElement;
             }
@@ -54,5 +62,46 @@ public class Configuration {
             throw new ConfigurationException(8003);
         }
         return response;
+    }
+
+    public void edit(String path, String value) throws ConfigurationException {
+        JsonObject jsonObject = getParent(path);
+        String property = Utils.groupOneString("(\\w+$)", path);
+        jsonObject.addProperty(property, value);
+    }
+
+    /**
+     * Retourne l'objet parent de la clé passé en paramètre
+     * @param path
+     * @return
+     * @throws ConfigurationException
+     */
+    public JsonObject getParent(String path) throws ConfigurationException {
+        JsonObject jsonObject = null;
+        get(path);
+        if (!parentJsonElement.isJsonNull() && parentJsonElement.isJsonObject()){
+            jsonObject = parentJsonElement.getAsJsonObject();
+        }
+        if (jsonObject == null){
+            throw new ConfigurationException(8004);
+        }
+        return jsonObject;
+    }
+
+    /**
+     * Permet de sauvegarder la configuration
+     * @throws IOException
+     */
+    public void write() throws IOException {
+        ConfigurationBuilder builder = ConfigurationBuilder.getInstance();
+        builder.write(this);
+    }
+
+    /**
+     * Retourne le Path de cette configuration
+     * @return
+     */
+    public Path getPathFileName() {
+        return pathFileName;
     }
 }
