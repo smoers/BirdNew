@@ -20,6 +20,7 @@ public class Configuration {
     private JsonElement jsonElement;
     private Path pathFileName;
     private JsonElement parentJsonElement;
+    private final String property_regex = "(\\w+$)";
 
     /**
      * Contructeur
@@ -64,10 +65,60 @@ public class Configuration {
         return response;
     }
 
+    /**
+     * Edite une propriété String
+     * @param path
+     * @param value
+     * @throws ConfigurationException
+     */
     public void edit(String path, String value) throws ConfigurationException {
         JsonObject jsonObject = getParent(path);
-        String property = Utils.groupOneString("(\\w+$)", path);
-        jsonObject.addProperty(property, value);
+        if (jsonObject != null) {
+            String property = Utils.groupOneString(property_regex, path);
+            jsonObject.addProperty(property, value);
+        }
+    }
+
+    /**
+     * Edite une propriété Number
+     * @param path
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(String path, Number value) throws ConfigurationException {
+        JsonObject jsonObject = getParent(path);
+        if (jsonObject != null) {
+            String property = Utils.groupOneString(property_regex, path);
+            jsonObject.addProperty(property, value);
+        }
+    }
+
+    /**
+     * Edite une propriété Character
+     * @param path
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(String path, Character value) throws ConfigurationException {
+        JsonObject jsonObject = getParent(path);
+        if (jsonObject != null) {
+            String property = Utils.groupOneString(property_regex, path);
+            jsonObject.addProperty(property, value);
+        }
+    }
+
+    /**
+     * Edite une propriété Character
+     * @param path
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(String path, Boolean value) throws ConfigurationException {
+        JsonObject jsonObject = getParent(path);
+        if (jsonObject != null) {
+            String property = Utils.groupOneString(property_regex, path);
+            jsonObject.addProperty(property, value);
+        }
     }
 
     /**
@@ -104,4 +155,6 @@ public class Configuration {
     public Path getPathFileName() {
         return pathFileName;
     }
+
+
 }

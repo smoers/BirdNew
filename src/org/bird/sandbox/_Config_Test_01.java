@@ -17,9 +17,7 @@ public class _Config_Test_01 {
             JsonObject jsonObject2 = configuration.get().getAsJsonObject();
             JsonObject jsonObject = configuration.get("layout.item_by_page").getAsJsonObject();
             System.out.println(jsonObject.toString());
-            jsonObject.addProperty("value",14);
-            System.out.println(jsonObject.toString());
-            System.out.println(jsonObject2.toString());
+            configuration.edit("layout.item_by_page.value",5);
             configuration.write();
         } catch (ConfigurationException | IOException e){
             System.out.println(e.getMessage());

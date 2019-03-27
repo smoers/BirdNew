@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints vgrow="SOMETIMES" />
+        <RowConstraints vgrow="SOMETIMES" />
+        <RowConstraints vgrow="SOMETIMES" />
+      </rowConstraints>
+       <children>
+          <ImageView fitHeight="136.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+             <image>
+                <Image url="@../../../../../images/orange/user-512.png" />
+             </image>
+             <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+             </GridPane.margin>
+          </ImageView>
+          <Label fx:id="lbName" text="Name" GridPane.rowIndex="1">
+             <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+             </GridPane.margin></Label>
+          <Label fx:id="flFullName" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+             <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+             </GridPane.margin>
+          </Label>
+          <Label fx:id="lbBiography" text="Biography" GridPane.rowIndex="2">
+             <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+             </GridPane.margin>
+          </Label>
+         <Label fx:id="flBiography" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </GridPane.margin>
+         </Label>
+       </children>
+    </GridPane>
+</AnchorPane>
