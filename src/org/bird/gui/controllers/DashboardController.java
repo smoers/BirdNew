@@ -11,6 +11,8 @@ import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
+import org.bird.gui.events.OnSelectedEvent;
+import org.bird.gui.listeners.OnSelectedListener;
 
 import java.io.IOException;
 import java.net.URL;
@@ -59,6 +61,13 @@ public class DashboardController extends ProtectedController implements Initiali
             //Configuration du controller
             Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
+            //On défini un écouteur
+            displayItemDashboardAuthor.addOnSelectedListener(new OnSelectedListener<Author>() {
+                @Override
+                public void OnSelected(OnSelectedEvent<Author> evt) {
+                    System.out.println(evt.getItem().getFullName());
+                }
+            });
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
             WaitingBarController waitingBarController = new WaitingBarController(displayItemDashboardAuthor);

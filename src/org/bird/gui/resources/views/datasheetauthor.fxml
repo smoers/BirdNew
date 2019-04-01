@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane styleClass="root" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
@@ -29,21 +29,21 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
              </GridPane.margin>
           </ImageView>
-          <Label fx:id="lbName" text="Name" GridPane.rowIndex="1">
+          <Label fx:id="lbName" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Name" GridPane.rowIndex="1">
              <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
              </GridPane.margin></Label>
-          <Label fx:id="flFullName" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+          <Label fx:id="flFullName" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
              <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
              </GridPane.margin>
           </Label>
-          <Label fx:id="lbBiography" text="Biography" GridPane.rowIndex="2">
+          <Label fx:id="lbBiography" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Biography" GridPane.rowIndex="2">
              <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
              </GridPane.margin>
           </Label>
-         <Label fx:id="flBiography" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <Label fx:id="flBiography" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <GridPane.margin>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </GridPane.margin>

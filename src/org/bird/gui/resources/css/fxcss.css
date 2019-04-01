@@ -6,7 +6,7 @@
 }
 
 /*
-* Peu être modifier par l'utilisateur
+* Peut être modifier par l'utilisateur
 */
 .menu_container {
     -fx-background-color: #bfbfbf;
@@ -45,7 +45,7 @@
     -fx-text-alignment: center;
     -fx-font-size: 12px;
     -fx-font-style: italic;
-    -fx-font-weigh: bolder;
+    -fx-font-weight: bolder;
     -fx-text-fill: #ff0000;
 }
 /*Personnalisation du label livre*/
@@ -53,10 +53,38 @@
     -fx-text-alignment: center;
     -fx-font-size: 10px;
     -fx-font-style: normal;
-    -fx-font-weigh: normal;
+    -fx-font-weight: normal;
     -fx-text-fill: #000000;
 }
 
+/*Personnalisation des label dans les formulaires*/
+.form_label{
+    -fx-text-alignment: right;
+    -fx-font-size: 12px;
+    -fx-font-style: normal;
+    -fx-font-weight: normal;
+    -fx-text-fill: #000000;
+    -fx-padding: 2px;
+    -fx-border-color: red;
+    -fx-border-style: solid outside;
+    -fx-border-width: 0px;
+    -fx-border-radius: 5px 5px;
+    -fx-background-color: #ffffff;
+}
+
+.form_label_field{
+    -fx-text-alignment: right;
+    -fx-font-size: 12px;
+    -fx-font-style: normal;
+    -fx-font-weight: normal;
+    -fx-text-fill: #000000;
+    -fx-padding: 2px;
+    -fx-border-color: #d3d3d3;
+    -fx-border-style: solid outside;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px 5px;
+    -fx-background-color: #d3d3d3;
+}
 
 /*Toolbar Default Layout*/
 .toolbar{

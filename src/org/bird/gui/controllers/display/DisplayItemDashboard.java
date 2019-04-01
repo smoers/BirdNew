@@ -11,9 +11,11 @@ import org.bird.gui.controllers.ItemDashboardController;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
+import org.bird.gui.events.OnSelectedEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.listeners.OnProgressChangeListener;
+import org.bird.gui.listeners.OnSelectedListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
      */
     private ArrayList<OnProgressChangeListener> onProgressChangeListeners = new ArrayList<>();
     private ArrayList<OnProcessListener> onProcessListeners = new ArrayList<>();
+    private ArrayList<OnSelectedListener<T>> onSelectedListeners = new ArrayList<>();
     /**
      * L'item sélectionné
      */
@@ -40,7 +43,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
     public abstract void display(Paginator<T> paginator) throws IOException;
 
     /**
-     * Ajoute un listener
+     * Ajoute un listener pour la gestion de la Waiting Bar
      * @param listener
      */
     @Override
@@ -48,10 +51,20 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
         onProgressChangeListeners.add(listener);
     }
 
+    /**
+     * Ajoute un Listener pour la gestion de la Waiting Bar
+     * @param listener
+     */
     @Override
     public void addOnProcessListener(OnProcessListener listener) {
         onProcessListeners.add(listener);
     }
+
+    /**
+     * Ajoute un listener pour l'item qui est selectionner
+     * @param listener
+     */
+    public void addOnSelectedListener(OnSelectedListener<T> listener) { onSelectedListeners.add(listener); }
 
     /**
      * Notifie les listeners
@@ -66,11 +79,28 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
         });
     }
 
+    /**
+     * Notifie les listeners
+     * @param evt
+     */
     protected void notifyOnProcessListener(OnProcessEvent evt){
         onProcessListeners.forEach(new Consumer<OnProcessListener>() {
             @Override
             public void accept(OnProcessListener listener) {
                 listener.onProcess(evt);
+            }
+        });
+    }
+
+    /**
+     * Notifie les listeners
+     * @param evt
+     */
+    protected void notifyOnSelectedListener(OnSelectedEvent<T> evt){
+        onSelectedListeners.forEach(new Consumer<OnSelectedListener<T>>() {
+            @Override
+            public void accept(OnSelectedListener<T> listener) {
+                listener.OnSelected(evt);
             }
         });
     }
@@ -102,7 +132,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
                     double size = paginator.getItemsByPage();
                     double value = 1;
                     notifyOnProcessListener(new OnProcessEvent(this, true));
-                    for (T author : paginator.getList()) {
+                    for (T item : paginator.getList()) {
                         notifyOnProgressChangeListener(new OnProgressChangeEvent(this,value,size));
                         FXMLLoader _loader = new FXMLLoader();
                         _loader.setLocation(getClass().getResource("/org/bird/gui/resources/views/itemDashboard.fxml"));
@@ -112,9 +142,9 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        ItemDashboardController item = (ItemDashboardController) _loader.getController();
-                        item.<T>setItem((T) author);
-                        item.addOnLeftClickListener(new OnLeftClickListener() {
+                        ItemDashboardController itemDashboardController = (ItemDashboardController) _loader.getController();
+                        itemDashboardController.<T>setItem((T) item);
+                        itemDashboardController.addOnLeftClickListener(new OnLeftClickListener() {
                             @Override
                             public void onLeftClick(OnLeftClickEvent evt) {
                                 Pane container = (Pane) evt.getSource();
@@ -125,6 +155,7 @@ public abstract class DisplayItemDashboard<T> implements IOnDisplayItemDashboard
                                     }
                                     container.getStyleClass().add("item_container_active");
                                     selected = container;
+                                    notifyOnSelectedListener(new OnSelectedEvent(this, item));
                                 }
                             }
                         });
