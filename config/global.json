@@ -3,6 +3,9 @@
     "language": "fr",
     "database": {
       "name": "bird"
+    },
+    "fxml": {
+      "packagename": "/org/bird/gui/resources/views/"
     }
   }
 }

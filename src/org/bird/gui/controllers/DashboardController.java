@@ -1,5 +1,6 @@
 package org.bird.gui.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,6 +10,8 @@ import javafx.scene.layout.*;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
+import org.bird.gui.common.FXMLLoaderImpl;
+import org.bird.gui.controllers.display.DisplayDataSheet;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnSelectedEvent;
@@ -41,15 +44,21 @@ public class DashboardController extends ProtectedController implements Initiali
     @FXML
     private VBox bottonPane;
 
+    private FXMLLoaderImpl fxmlLoaderImpl;
+    private DisplayDataSheet displayDataSheet;
+
     /**
      * Contructeur
      */
-    public DashboardController(){}
+    public DashboardController(){
+    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            //le Loader
+            fxmlLoaderImpl = new FXMLLoaderImpl();
             //charge le texte de l'interface
             setLanguage();
             setText(toolbar);
@@ -57,7 +66,8 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-
+            //Display datasheet
+            displayDataSheet = new DisplayDataSheet()
             //Configuration du controller
             Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
@@ -71,15 +81,13 @@ public class DashboardController extends ProtectedController implements Initiali
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
             //Chargement de la WaitingBar
             WaitingBarController waitingBarController = new WaitingBarController(displayItemDashboardAuthor);
-            FXMLLoader loaderWaitingBar = new FXMLLoader();
-            loaderWaitingBar.setLocation(getClass().getResource("/org/bird/gui/resources/views/waitingbar.fxml"));
+            FXMLLoader loaderWaitingBar = fxmlLoaderImpl.getFXMLLoader("waitingbar");
             loaderWaitingBar.setController(waitingBarController);
             Node nodeWaitingBar = loaderWaitingBar.load();
             bottonPane.getChildren().add(nodeWaitingBar);
 
             //Chargement du paginateur
-            FXMLLoader loaderPaginator = new FXMLLoader();
-            loaderPaginator.setLocation(getClass().getResource("/org/bird/gui/resources/views/paginator.fxml"));
+            FXMLLoader loaderPaginator = fxmlLoaderImpl.getFXMLLoader("paginator");
             loaderPaginator.setController(paginatorController);
             Node nodePaginator = loaderPaginator.load();
             bottonPane.getChildren().add(nodePaginator);
@@ -87,6 +95,7 @@ public class DashboardController extends ProtectedController implements Initiali
 
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
+
 
         } catch (ConfigurationException | IOException e) {
             showException(e);
