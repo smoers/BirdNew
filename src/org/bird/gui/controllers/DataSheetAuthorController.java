@@ -35,7 +35,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
     @Override
     public void setLanguage() {
         lbName.setText(getInternationalizationBundle().getString(lbName.getText()));
-        lbName.setText(getInternationalizationBundle().getString(lbBiography.getText()));
+        lbBiography.setText(getInternationalizationBundle().getString(lbBiography.getText()));
     }
 
     @Override
@@ -43,7 +43,8 @@ public class DataSheetAuthorController extends ProtectedController implements In
         //set language
         setLanguage();
         ImageProvider imageProvider = new ImageProvider(author.getPicture());
-        flImage.setImage(imageProvider.getImage());
+
+        //flImage.setImage(imageProvider.getImage());
         flFullName.setText(author.getFullName());
         flBiography.setText(author.getBiography());
     }

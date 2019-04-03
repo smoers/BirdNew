@@ -1,9 +1,9 @@
 package org.bird.gui.controllers.display;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.gui.common.FXMLLoaderImpl;
@@ -13,10 +13,10 @@ import java.io.IOException;
 
 public class DisplayDataSheet {
 
-    private Pane container;
+    private ObservableList<Node> container;
     private FXMLLoaderImpl fxmlLoader;
 
-    public DisplayDataSheet(Pane container) throws ConfigurationException {
+    public DisplayDataSheet(ObservableList<Node> container) throws ConfigurationException {
         this.container = container;
         this.fxmlLoader = new FXMLLoaderImpl();
     }
@@ -32,11 +32,11 @@ public class DisplayDataSheet {
         FXMLLoader loader = fxmlLoader.getFXMLLoader("datasheetauthor");
         loader.setController(controller);
         Node node = loader.load();
-        container.getChildren().clear();
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                container.getChildren().add(node);
+                 container.add(node);
             }
         });
     }

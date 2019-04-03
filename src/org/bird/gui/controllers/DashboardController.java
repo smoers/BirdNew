@@ -1,6 +1,5 @@
 package org.bird.gui.controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,6 +42,8 @@ public class DashboardController extends ProtectedController implements Initiali
     private Button buttonList;
     @FXML
     private VBox bottonPane;
+    @FXML
+    private SplitPane dashboardSplitPane;
 
     private FXMLLoaderImpl fxmlLoaderImpl;
     private DisplayDataSheet displayDataSheet;
@@ -66,8 +67,9 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+
             //Display datasheet
-            displayDataSheet = new DisplayDataSheet()
+            displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
             //Configuration du controller
             Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
@@ -75,7 +77,11 @@ public class DashboardController extends ProtectedController implements Initiali
             displayItemDashboardAuthor.addOnSelectedListener(new OnSelectedListener<Author>() {
                 @Override
                 public void OnSelected(OnSelectedEvent<Author> evt) {
-                    System.out.println(evt.getItem().getFullName());
+                    try {
+                        displayDataSheet.display(evt.getItem());
+                    } catch (IOException e) {
+                        showException(e);
+                    }
                 }
             });
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
@@ -95,7 +101,6 @@ public class DashboardController extends ProtectedController implements Initiali
 
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
-
 
         } catch (ConfigurationException | IOException e) {
             showException(e);
