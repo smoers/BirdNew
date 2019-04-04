@@ -25,10 +25,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
     @FXML
     private ImageView flImage;
 
-    private Author author;
-
-    public DataSheetAuthorController(Author author){
-        this.author = author;
+    public DataSheetAuthorController(){
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
     }
 
@@ -42,10 +39,14 @@ public class DataSheetAuthorController extends ProtectedController implements In
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //set language
         setLanguage();
+    }
+
+    public void update(Author author){
         ImageProvider imageProvider = new ImageProvider(author.getPicture());
 
         //flImage.setImage(imageProvider.getImage());
         flFullName.setText(author.getFullName());
         flBiography.setText(author.getBiography());
+
     }
 }

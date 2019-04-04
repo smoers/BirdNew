@@ -10,11 +10,13 @@ import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.controllers.DataSheetAuthorController;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public class DisplayDataSheet {
 
     private ObservableList<Node> container;
     private FXMLLoaderImpl fxmlLoader;
+    private DataSheetAuthorController dataSheetAuthorController = null;
 
     public DisplayDataSheet(ObservableList<Node> container) throws ConfigurationException {
         this.container = container;
@@ -28,15 +30,34 @@ public class DisplayDataSheet {
     }
 
     public void display(Author author) throws IOException {
-        DataSheetAuthorController controller = new DataSheetAuthorController(author);
-        FXMLLoader loader = fxmlLoader.getFXMLLoader("datasheetauthor");
-        loader.setController(controller);
-        Node node = loader.load();
+        if (dataSheetAuthorController == null) {
+            dataSheetAuthorController = new DataSheetAuthorController();
+            FXMLLoader loader = fxmlLoader.getFXMLLoader("datasheetauthor");
+            loader.setController(dataSheetAuthorController);
+            Node node = loader.load();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    node.setId("datasheet");
+                    container.add(node);
+                }
+            });
+        }
+        dataSheetAuthorController.update(author);
+    }
 
-        Platform.runLater(new Runnable() {
+    public void remove(){
+        container.forEach(new Consumer<Node>() {
             @Override
-            public void run() {
-                 container.add(node);
+            public void accept(Node node) {
+                if (node.getId().equalsIgnoreCase("datasheet")){
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            container.remove(node);
+                        }
+                    });
+                }
             }
         });
     }

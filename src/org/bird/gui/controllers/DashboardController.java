@@ -1,5 +1,7 @@
 package org.bird.gui.controllers;
 
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -67,13 +69,12 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-
             //Display datasheet
             displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
             //Configuration du controller
             Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
             DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
-            //On défini un écouteur
+            //On défini un écouteur sur la selection d'un item
             displayItemDashboardAuthor.addOnSelectedListener(new OnSelectedListener<Author>() {
                 @Override
                 public void OnSelected(OnSelectedEvent<Author> evt) {
