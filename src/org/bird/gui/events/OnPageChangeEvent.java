@@ -2,13 +2,15 @@ package org.bird.gui.events;
 
 import java.util.EventObject;
 
-public class OnPageChange extends EventObject {
+public class OnPageChangeEvent extends EventObject {
 
     public enum TYPE{
         FIRST,
         PREVIOUS,
         NEXT,
-        LAST
+        LAST,
+        NUMBEROFITEMS,
+        COUNTER
     }
 
     private TYPE type;
@@ -20,7 +22,7 @@ public class OnPageChange extends EventObject {
      * @param source the object on which the Event initially occurred
      * @throws IllegalArgumentException if source is null
      */
-    public OnPageChange(Object source,TYPE type, int page) {
+    public OnPageChangeEvent(Object source, TYPE type, int page) {
         super(source);
         this.type = type;
         this.page = page;

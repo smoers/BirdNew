@@ -8,6 +8,7 @@ import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.controllers.DataSheetAuthorController;
+import org.bird.gui.controllers.DataSheetController;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -16,7 +17,7 @@ public class DisplayDataSheet {
 
     private ObservableList<Node> container;
     private FXMLLoaderImpl fxmlLoader;
-    private DataSheetAuthorController dataSheetAuthorController = null;
+    private DataSheetController dataSheetController = null;
 
     public DisplayDataSheet(ObservableList<Node> container) throws ConfigurationException {
         this.container = container;
@@ -24,16 +25,10 @@ public class DisplayDataSheet {
     }
 
     public <T> void display(T item) throws IOException {
-        if (item instanceof Author){
-            display((Author) item);
-        }
-    }
-
-    public void display(Author author) throws IOException {
-        if (dataSheetAuthorController == null) {
-            dataSheetAuthorController = new DataSheetAuthorController();
+        if (dataSheetController == null) {
+            dataSheetController = new DataSheetAuthorController();
             FXMLLoader loader = fxmlLoader.getFXMLLoader("datasheetauthor");
-            loader.setController(dataSheetAuthorController);
+            loader.setController(dataSheetController);
             Node node = loader.load();
             Platform.runLater(new Runnable() {
                 @Override
@@ -43,7 +38,7 @@ public class DisplayDataSheet {
                 }
             });
         }
-        dataSheetAuthorController.update(author);
+        dataSheetController.update((T) item);
     }
 
     public void remove(){
@@ -51,6 +46,8 @@ public class DisplayDataSheet {
             @Override
             public void accept(Node node) {
                 if (node.getId().equalsIgnoreCase("datasheet")){
+                    //détruit l'instance du controller
+                    dataSheetController = null;
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {

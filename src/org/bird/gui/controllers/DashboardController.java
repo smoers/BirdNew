@@ -15,7 +15,9 @@ import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.controllers.display.DisplayDataSheet;
 import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
+import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
+import org.bird.gui.listeners.OnPageChangeListener;
 import org.bird.gui.listeners.OnSelectedListener;
 
 import java.io.IOException;
@@ -86,6 +88,12 @@ public class DashboardController extends ProtectedController implements Initiali
                 }
             });
             PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
+            paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
+                @Override
+                public void onChangePage(OnPageChangeEvent evt) {
+                    displayDataSheet.remove();
+                }
+            });
             //Chargement de la WaitingBar
             WaitingBarController waitingBarController = new WaitingBarController(displayItemDashboardAuthor);
             FXMLLoader loaderWaitingBar = fxmlLoaderImpl.getFXMLLoader("waitingbar");

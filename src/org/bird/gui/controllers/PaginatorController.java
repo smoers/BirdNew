@@ -20,7 +20,9 @@ import org.bird.db.mapper.MapperFactory;
 import org.bird.db.mapper.MapperPaginator;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.display.IOnDisplayItemDashboardChange;
+import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnProcessEvent;
+import org.bird.gui.listeners.OnPageChangeListener;
 import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.services.MapperPaginatorService;
 
@@ -60,6 +62,8 @@ public class PaginatorController extends ProtectedController implements Initiali
     private TextField fieldPage;
     @FXML
     private ComboBox<Integer> comboNbrItems;
+
+    private ArrayList<OnPageChangeListener> onPageChangeListeners = new ArrayList<>();
 
     /**
      * Contructeur
@@ -119,6 +123,8 @@ public class PaginatorController extends ProtectedController implements Initiali
             comboNbrItems.valueProperty().addListener(new ChangeListener<Integer>() {
                 @Override
                 public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                    //léve un événement de changement de page
+                    notifyOnPageChangeListener(new OnPageChangeEvent(this,OnPageChangeEvent.TYPE.NUMBEROFITEMS,paginator.getPage()));
                     paginator.setItemsByPage(observableValue.getValue());
                     //Cela permet de sauvegarder le nombre d'items par page.
                     try {
@@ -135,6 +141,8 @@ public class PaginatorController extends ProtectedController implements Initiali
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     paginator.setPage(1);
+                    //léve un événement de changement de page
+                    notifyOnPageChangeListener(new OnPageChangeEvent(this,OnPageChangeEvent.TYPE.FIRST,paginator.getPage()));
                     refresh();
                 }
             });
@@ -144,6 +152,8 @@ public class PaginatorController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if (paginator.getPage() > 1 ){
                         paginator.setPage(paginator.getPage()-1);
+                        //léve un événement de changement de page
+                        notifyOnPageChangeListener(new OnPageChangeEvent(this,OnPageChangeEvent.TYPE.PREVIOUS,paginator.getPage()));
                         refresh();
                     }
                 }
@@ -154,6 +164,8 @@ public class PaginatorController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if(paginator.getPage() < paginator.getPages()){
                         paginator.setPage(paginator.getPage()+1);
+                        //léve un événement de changement de page
+                        notifyOnPageChangeListener(new OnPageChangeEvent(this,OnPageChangeEvent.TYPE.NEXT,paginator.getPage()));
                         refresh();
                     }
                 }
@@ -163,6 +175,8 @@ public class PaginatorController extends ProtectedController implements Initiali
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     paginator.setPage(paginator.getPages());
+                    //léve un événement de changement de page
+                    notifyOnPageChangeListener(new OnPageChangeEvent(this,OnPageChangeEvent.TYPE.LAST,paginator.getPage()));
                     refresh();
                 }
             });
@@ -184,6 +198,8 @@ public class PaginatorController extends ProtectedController implements Initiali
                                 //on défini la page demandée comme égale au nombre de page
                                 paginator.setPage(paginator.getPages());
                             }
+                            //léve un événement de changement de page
+                            notifyOnPageChangeListener(new OnPageChangeEvent(this,OnPageChangeEvent.TYPE.COUNTER,paginator.getPage()));
                             refresh();
                         }
                         showPageCounterFormatted();
@@ -244,6 +260,27 @@ public class PaginatorController extends ProtectedController implements Initiali
 
     public IOnDisplayItemDashboardChange getDisplayItemDashboard() {
         return displayItemDashboard;
+    }
+
+    /**
+     * écouteur pour le changement de page
+     * @param listener
+     */
+    public void addOnPageChangeListener(OnPageChangeListener listener){
+        onPageChangeListeners.add(listener);
+    }
+
+    /**
+     * Notifie le changement de page
+     * @param evt
+     */
+    private void notifyOnPageChangeListener(OnPageChangeEvent evt){
+        onPageChangeListeners.forEach(new Consumer<OnPageChangeListener>() {
+            @Override
+            public void accept(OnPageChangeListener listener) {
+                listener.onChangePage(evt);
+            }
+        });
     }
 
 }

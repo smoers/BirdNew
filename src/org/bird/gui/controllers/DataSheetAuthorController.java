@@ -10,7 +10,7 @@ import org.bird.gui.resources.images.ImageProvider;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DataSheetAuthorController extends ProtectedController implements Initializable {
+public class DataSheetAuthorController extends ProtectedController implements Initializable,DataSheetController<Author> {
 
     /**Labels**/
     @FXML
@@ -41,12 +41,12 @@ public class DataSheetAuthorController extends ProtectedController implements In
         setLanguage();
     }
 
-    public void update(Author author){
-        ImageProvider imageProvider = new ImageProvider(author.getPicture());
+    @Override
+    public void update(Author item) {
+        ImageProvider imageProvider = new ImageProvider(item.getPicture());
 
         //flImage.setImage(imageProvider.getImage());
-        flFullName.setText(author.getFullName());
-        flBiography.setText(author.getBiography());
-
+        flFullName.setText(item.getFullName());
+        flBiography.setText(item.getBiography());
     }
 }
