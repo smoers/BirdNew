@@ -155,3 +155,11 @@
 #buttonNext:hover{
     -fx-graphic: url("../../../../../images/orange/next-16.png");
 }
+/*For all*/
+/*id : buttonClose*/
+#buttonClose{
+    -fx-graphic: url("../../../../../images/blue/close-16.png");
+}
+#buttonClose:hover{
+    -fx-graphic: url("../../../../../images/orange/close-16.png");
+}

@@ -82,7 +82,7 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void OnSelected(OnSelectedEvent<Author> evt) {
                     try {
                         displayDataSheet.display(evt.getItem());
-                    } catch (IOException e) {
+                    } catch (IOException | ConfigurationException e) {
                         showException(e);
                     }
                 }

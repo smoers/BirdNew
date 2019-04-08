@@ -48,16 +48,20 @@ public class Configuration {
     public JsonElement get(String path) throws ConfigurationException {
         JsonElement jsonElement = this.jsonElement;
         JsonElement response = null;
-        String delimiter = "\\.";
-        ArrayList<String> keys = new ArrayList<String>(Arrays.asList(path.split(delimiter)));
-        Iterator<String> iterator = keys.iterator();
-        while (iterator.hasNext()){
-            String key = iterator.next();
-            if(!jsonElement.isJsonNull() && jsonElement.isJsonObject()){
-                parentJsonElement = jsonElement;
-                jsonElement = jsonElement.getAsJsonObject().get(key);
-                response = jsonElement;
+        try {
+            String delimiter = "\\.";
+            ArrayList<String> keys = new ArrayList<String>(Arrays.asList(path.split(delimiter)));
+            Iterator<String> iterator = keys.iterator();
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                if (!jsonElement.isJsonNull() && jsonElement.isJsonObject()) {
+                    parentJsonElement = jsonElement;
+                    jsonElement = jsonElement.getAsJsonObject().get(key);
+                    response = jsonElement;
+                }
             }
+        } catch (Exception e){
+            throw new ConfigurationException(8003);
         }
         if (response == null){
             throw new ConfigurationException(8003);

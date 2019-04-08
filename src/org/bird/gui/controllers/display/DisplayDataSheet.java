@@ -13,21 +13,35 @@ import org.bird.gui.controllers.DataSheetController;
 import java.io.IOException;
 import java.util.function.Consumer;
 
+/**
+ * Se charge de l'affichage des informations d'un item (Auteurs ou Livres)
+ */
 public class DisplayDataSheet {
 
     private ObservableList<Node> container;
     private FXMLLoaderImpl fxmlLoader;
     private DataSheetController dataSheetController = null;
 
+    /**
+     * Constructeur
+     * @param container
+     * @throws ConfigurationException
+     */
     public DisplayDataSheet(ObservableList<Node> container) throws ConfigurationException {
         this.container = container;
         this.fxmlLoader = new FXMLLoaderImpl();
     }
 
-    public <T> void display(T item) throws IOException {
+    /**
+     * Affiche l'item
+     * @param item
+     * @param <T>
+     * @throws IOException
+     */
+    public <T> void display(T item) throws IOException, ConfigurationException {
         if (dataSheetController == null) {
             dataSheetController = new DataSheetAuthorController();
-            FXMLLoader loader = fxmlLoader.getFXMLLoader("datasheetauthor");
+            FXMLLoader loader = fxmlLoader.getFXMLLoader(DisplayDataSheet.class, Author.class);
             loader.setController(dataSheetController);
             Node node = loader.load();
             Platform.runLater(new Runnable() {

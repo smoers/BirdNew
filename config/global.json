@@ -5,7 +5,13 @@
       "name": "bird"
     },
     "fxml": {
-      "packagename": "/org/bird/gui/resources/views/"
+      "packagename": "/org/bird/gui/resources/views/",
+      "fxmlloader": {
+        "DisplayDataSheet": {
+          "Author": "datasheetauthor",
+          "Book": "datasheetbook"
+        }
+      }
     }
   }
 }

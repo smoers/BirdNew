@@ -136,4 +136,11 @@ public class Author extends ModelMetaData {
         joiner.add(getFirstName());
         return joiner.toString();
     }
+
+    public String getBornFullName(){
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add(getBornLastName());
+        joiner.add(getBornFirstname());
+        return joiner.toString();
+    }
 }

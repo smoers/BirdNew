@@ -23,9 +23,14 @@
                     <RowConstraints vgrow="SOMETIMES" />
                     <RowConstraints vgrow="SOMETIMES" />
                     <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                    <children>
-                      <ImageView fitHeight="136.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                      <ImageView fx:id="flImage" fitHeight="136.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                          <image>
                             <Image url="@../../../../../images/orange/user-512.png" />
                          </image>
@@ -43,16 +48,58 @@
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                          </GridPane.margin>
                       </Label>
-                      <Label fx:id="lbBiography" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Biography" GridPane.rowIndex="2">
+                  <Label fx:id="lbBornName" styleClass="form_label" stylesheets="@../css/fxcss.css" text="BornName" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin></Label>
+                      <Label fx:id="lbBiography" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Biography" GridPane.rowIndex="5">
                          <GridPane.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                          </GridPane.margin>
                       </Label>
-                     <Label fx:id="flBiography" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <Label fx:id="flBiography" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
                         <GridPane.margin>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </GridPane.margin>
                      </Label>
+                  <Label fx:id="flBornFullName" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lbBornDate" styleClass="form_label" stylesheets="@../css/fxcss.css" text="BornDate" GridPane.rowIndex="3">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lbDeathDate" styleClass="form_label" stylesheets="@../css/fxcss.css" text="DeathDate" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lbComment" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Comment" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="flBornDate" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="flDeathDate" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="flComment" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </Label>
                    </children>
                 </GridPane>
             </children>
