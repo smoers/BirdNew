@@ -48,6 +48,8 @@ public class DashboardController extends ProtectedController implements Initiali
     private VBox bottonPane;
     @FXML
     private SplitPane dashboardSplitPane;
+    @FXML
+    private FlowPane dataSheetPane;
 
     private FXMLLoaderImpl fxmlLoaderImpl;
     private DisplayDataSheet displayDataSheet;
