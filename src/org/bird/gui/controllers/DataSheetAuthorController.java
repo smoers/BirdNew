@@ -3,6 +3,7 @@ package org.bird.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import org.bird.db.models.Author;
 import org.bird.gui.resources.images.ImageProvider;
@@ -41,6 +42,9 @@ public class DataSheetAuthorController extends ProtectedController implements In
     private Label flComment;
     @FXML
     private ImageView flImage;
+    /**Others**/
+    @FXML
+    private TitledPane titledPane;
 
     public DataSheetAuthorController(){
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
@@ -54,6 +58,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
         lbDeathDate.setText(getInternationalizationBundle().getString(lbDeathDate.getText()));
         lbBiography.setText(getInternationalizationBundle().getString(lbBiography.getText()));
         lbComment.setText(getInternationalizationBundle().getString(lbComment.getText()));
+        titledPane.setText(getInternationalizationBundle().getString(titledPane.getText()));
     }
 
     @Override
