@@ -1,16 +1,24 @@
 package org.bird.gui.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import org.bird.db.models.Author;
+import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class DataSheetAuthorController extends ProtectedController implements Initializable,DataSheetController<Author> {
 
@@ -37,7 +45,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
     @FXML
     private Label flDeathDate;
     @FXML
-    private Label flBiography;
+    private TextArea flBiography;
     @FXML
     private Label flComment;
     @FXML
@@ -45,6 +53,10 @@ public class DataSheetAuthorController extends ProtectedController implements In
     /**Others**/
     @FXML
     private TitledPane titledPane;
+    @FXML
+    private Button buttonClose;
+    private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
+
 
     public DataSheetAuthorController(){
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
@@ -65,6 +77,14 @@ public class DataSheetAuthorController extends ProtectedController implements In
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //set language
         setLanguage();
+        buttonClose.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.isPrimaryButtonDown()){
+                    notifyOnLeftClickListener(new OnLeftClickEvent(this, mouseEvent.getClickCount()));
+                }
+            }
+        });
     }
 
     @Override
@@ -78,5 +98,27 @@ public class DataSheetAuthorController extends ProtectedController implements In
         flDeathDate.setText(format.format(item.getDeathDate()));
         flBiography.setText(item.getBiography());
         flComment.setText(item.getComment());
+    }
+
+    /**
+     * Ajoute un écouteur sur les boutons
+     * @param listener
+     */
+    @Override
+    public void addOnLeftClickListener(OnLeftClickListener listener){
+        onLeftClickListeners.add(listener);
+    }
+
+    /**
+     * Notifie les évouteurs qu'un bouton a été pressé
+     * @param evt
+     */
+    private void notifyOnLeftClickListener(OnLeftClickEvent evt){
+        onLeftClickListeners.forEach(new Consumer<OnLeftClickListener>() {
+            @Override
+            public void accept(OnLeftClickListener listener) {
+                listener.onLeftClick(evt);
+            }
+        });
     }
 }

@@ -176,3 +176,10 @@
 #buttonClose:hover{
     -fx-graphic: url("../../../../../images/orange/close-16.png");
 }
+/*id : buttonShow*/
+#buttonShow{
+    -fx-graphic: url("../../../../../images/blue/top-navigation-16.png");
+}
+#buttonShow:hover{
+    -fx-graphic: url("../../../../../images/orange/top-navigation-16.png");
+}

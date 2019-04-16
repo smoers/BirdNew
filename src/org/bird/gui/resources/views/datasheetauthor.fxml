@@ -11,9 +11,10 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane styleClass="root" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="486.0" prefWidth="380.0" styleClass="root" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <TitledPane fx:id="titledPane" animated="false" collapsible="false" text="Author" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
      <content>
        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -22,7 +23,7 @@
                         <FlowPane rowValignment="TOP">
                                 <AnchorPane>
                         <children>
-                            <GridPane minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-85.0" AnchorPane.topAnchor="0.0">
                               <columnConstraints>
                                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -33,9 +34,9 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                               <RowConstraints vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="69.0" minHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               </rowConstraints>
                                <children>
                                   <ImageView fx:id="flImage" fitHeight="136.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -61,16 +62,11 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Label>
-                                  <Label fx:id="lbBiography" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Biography" GridPane.rowIndex="5">
+                                  <Label fx:id="lbBiography" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Biography" wrapText="true" GridPane.rowIndex="5">
                                      <GridPane.margin>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                      </GridPane.margin>
                                   </Label>
-                                 <Label fx:id="flBiography" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                    <GridPane.margin>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </GridPane.margin>
-                                 </Label>
                               <Label fx:id="flBornFullName" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -109,6 +105,19 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Label>
+                                 <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <children>
+                                       <HBox fx:id="limitedLabelPane" alignment="CENTER_LEFT" styleClass="root" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <children>
+                                             <Button fx:id="buttonShow" mnemonicParsing="false" styleClass="smallButton" text="Button">
+                                                <HBox.margin>
+                                                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                </HBox.margin>
+                                             </Button>
+                                          </children>
+                                       </HBox>
+                                    </children>
+                                 </AnchorPane>
                                </children>
                             </GridPane>
                         </children>
