@@ -9,9 +9,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import org.bird.db.models.Author;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
+import org.bird.gui.resources.controls.TextLong;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.net.URL;
@@ -55,6 +57,9 @@ public class DataSheetAuthorController extends ProtectedController implements In
     private TitledPane titledPane;
     @FXML
     private Button buttonClose;
+    @FXML
+    private GridPane gridPane;
+    private TextLong fltextLong;
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
 
@@ -85,6 +90,14 @@ public class DataSheetAuthorController extends ProtectedController implements In
                 }
             }
         });
+        fltextLong = new TextLong();
+        fltextLong.addOnLeftClickListener(new OnLeftClickListener() {
+            @Override
+            public void onLeftClick(OnLeftClickEvent evt) {
+                System.out.println("Pressed !");
+            }
+        });
+        gridPane.add(fltextLong.getHbox(),1,5);
     }
 
     @Override
@@ -96,7 +109,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
         flBornFullName.setText(item.getBornFullName());
         flBornDate.setText(format.format(item.getBornDate()));
         flDeathDate.setText(format.format(item.getDeathDate()));
-        flBiography.setText(item.getBiography());
+        fltextLong.getLabel().setLimitedText(item.getBiography());
         flComment.setText(item.getComment());
     }
 

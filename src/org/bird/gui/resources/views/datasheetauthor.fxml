@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane prefHeight="486.0" prefWidth="380.0" styleClass="root" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
@@ -23,7 +22,7 @@
                         <FlowPane rowValignment="TOP">
                                 <AnchorPane>
                         <children>
-                            <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-85.0" AnchorPane.topAnchor="0.0">
+                            <GridPane fx:id="gridPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-85.0" AnchorPane.topAnchor="0.0">
                               <columnConstraints>
                                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -105,19 +104,6 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Label>
-                                 <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                    <children>
-                                       <HBox fx:id="limitedLabelPane" alignment="CENTER_LEFT" styleClass="root" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                          <children>
-                                             <Button fx:id="buttonShow" mnemonicParsing="false" styleClass="smallButton" text="Button">
-                                                <HBox.margin>
-                                                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                </HBox.margin>
-                                             </Button>
-                                          </children>
-                                       </HBox>
-                                    </children>
-                                 </AnchorPane>
                                </children>
                             </GridPane>
                         </children>

@@ -1,7 +1,12 @@
 package org.bird.gui.resources.controls;
 
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 
+/**
+ * Cet objet étend l'objet Label afin de limiter la taille du texte
+ * à la valeur du paramêtre LimitedSize
+ */
 public class LabelLimited extends Label {
 
     protected int limitedSize = 100;
@@ -9,6 +14,9 @@ public class LabelLimited extends Label {
 
     public LabelLimited() {
         super();
+        setMinSize(Control.USE_PREF_SIZE, Control.USE_COMPUTED_SIZE);
+        setPrefSize(Control.USE_COMPUTED_SIZE,Control.USE_COMPUTED_SIZE);
+        setMaxSize(Control.USE_COMPUTED_SIZE,Control.USE_COMPUTED_SIZE);
     }
 
     /**
