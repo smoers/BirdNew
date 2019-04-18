@@ -183,3 +183,10 @@
 #buttonShow:hover{
     -fx-graphic: url("../../../../../images/orange/top-navigation-16.png");
 }
+/*id : buttonSave*/
+#buttonSave{
+    -fx-graphic: url("../../../../../images/blue/save-24.png");
+}
+#buttonSave:hover{
+    -fx-graphic: url("../../../../../images/orange/save-24.png");
+}

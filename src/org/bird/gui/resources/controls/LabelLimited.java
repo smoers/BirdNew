@@ -11,6 +11,7 @@ public class LabelLimited extends Label {
 
     protected int limitedSize = 100;
     protected boolean isLimited = false;
+    protected String originalText;
 
     public LabelLimited() {
         super();
@@ -24,6 +25,7 @@ public class LabelLimited extends Label {
      * @param value
      */
     public void setLimitedText(String value) {
+        originalText = value;
         if (value.length() > limitedSize) {
             value = value.substring(0, limitedSize) + " ...";
             isLimited = true;
@@ -61,5 +63,13 @@ public class LabelLimited extends Label {
      */
     public void setLimitedSize(int limitedSize) {
         this.limitedSize = limitedSize;
+    }
+
+    /**
+     * Retourne le texte original
+     * @return
+     */
+    public String getOriginalText(){
+        return originalText;
     }
 }

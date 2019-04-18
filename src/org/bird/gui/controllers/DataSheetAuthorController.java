@@ -3,6 +3,7 @@ package org.bird.gui.controllers;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -10,12 +11,14 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.controls.TextLong;
 import org.bird.gui.resources.images.ImageProvider;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +97,15 @@ public class DataSheetAuthorController extends ProtectedController implements In
         fltextLong.addOnLeftClickListener(new OnLeftClickListener() {
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
-                System.out.println("Pressed !");
+                try {
+                    TextLongController textLongController = new TextLongController(titledPane.getScene().getWindow());
+                    textLongController.setShowSave(false);
+                    textLongController.setTitle(lbBiography.getText());
+                    textLongController.setText(fltextLong.getLabel().getOriginalText());
+                    textLongController.show();
+                } catch (ConfigurationException | IOException e) {
+                    showException(e);
+                }
             }
         });
         gridPane.add(fltextLong.getHbox(),1,5);
