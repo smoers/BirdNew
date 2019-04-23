@@ -52,8 +52,6 @@ public class DataSheetAuthorController extends ProtectedController implements In
     @FXML
     private TextArea flBiography;
     @FXML
-    private Label flComment;
-    @FXML
     private ImageView flImage;
     /**Others**/
     @FXML
@@ -63,6 +61,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
     @FXML
     private GridPane gridPane;
     private TextLong fltextLong;
+    private TextLong flComment;
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
 
@@ -94,6 +93,8 @@ public class DataSheetAuthorController extends ProtectedController implements In
             }
         });
         fltextLong = new TextLong();
+        flComment = new TextLong();
+        /*Event Biography*/
         fltextLong.addOnLeftClickListener(new OnLeftClickListener() {
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
@@ -102,13 +103,46 @@ public class DataSheetAuthorController extends ProtectedController implements In
                     textLongController.setShowSave(false);
                     textLongController.setTitle(lbBiography.getText());
                     textLongController.setText(fltextLong.getLabel().getOriginalText());
+                    textLongController.addOnLeftClickListener(new OnLeftClickListener() {
+                        @Override
+                        public void onLeftClick(OnLeftClickEvent evt) {
+                            if (evt.getId().equalsIgnoreCase("buttonCancel")){
+                                textLongController.close();
+                            }
+                        }
+                    });
                     textLongController.show();
                 } catch (ConfigurationException | IOException e) {
                     showException(e);
                 }
             }
         });
+        /*Event Biography*/
+        flComment.addOnLeftClickListener(new OnLeftClickListener() {
+            @Override
+            public void onLeftClick(OnLeftClickEvent evt) {
+                try {
+                    TextLongController textLongController = new TextLongController(titledPane.getScene().getWindow());
+                    textLongController.setShowSave(false);
+                    textLongController.setTitle(lbComment.getText());
+                    textLongController.setText(flComment.getLabel().getOriginalText());
+                    textLongController.addOnLeftClickListener(new OnLeftClickListener() {
+                        @Override
+                        public void onLeftClick(OnLeftClickEvent evt) {
+                            if (evt.getId().equalsIgnoreCase("buttonCancel")){
+                                textLongController.close();
+                            }
+                        }
+                    });
+                    textLongController.show();
+                } catch (ConfigurationException | IOException e) {
+                    showException(e);
+                }
+            }
+        });
+
         gridPane.add(fltextLong.getHbox(),1,5);
+        gridPane.add(flComment.getHbox(),1,6);
     }
 
     @Override
@@ -121,7 +155,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
         flBornDate.setText(format.format(item.getBornDate()));
         flDeathDate.setText(format.format(item.getDeathDate()));
         fltextLong.getLabel().setLimitedText(item.getBiography());
-        flComment.setText(item.getComment());
+        flComment.getLabel().setLimitedText(item.getComment());
     }
 
     /**

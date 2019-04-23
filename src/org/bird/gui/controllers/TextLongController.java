@@ -37,6 +37,7 @@ public class TextLongController implements Initializable {
     private String title;
     private String text;
     private Window owner;
+    private Stage stage = new Stage();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
     public TextLongController(Window owner){
@@ -75,7 +76,6 @@ public class TextLongController implements Initializable {
      * @throws IOException
      */
     public void show() throws ConfigurationException, IOException {
-        Stage stage = new Stage();
         FXMLLoaderImpl loaderImpl = new FXMLLoaderImpl();
         FXMLLoader loader = loaderImpl.getFXMLLoader("textlong");
         loader.setController(this);
@@ -85,6 +85,13 @@ public class TextLongController implements Initializable {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(owner);
         stage.show();
+    }
+
+    /**
+     * Ferme la fenetre
+     */
+    public void close(){
+        stage.close();
     }
 
     /**

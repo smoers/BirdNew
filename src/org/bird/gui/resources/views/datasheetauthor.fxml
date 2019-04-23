@@ -99,11 +99,6 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label fx:id="flComment" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </GridPane.margin>
-                              </Label>
                                </children>
                             </GridPane>
                         </children>

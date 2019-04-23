@@ -23,12 +23,12 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="buttonSave" mnemonicParsing="false" text="Button">
+                  <Button fx:id="buttonSave" mnemonicParsing="false" styleClass="formButton" stylesheets="@../css/fxcss.css" text="Button">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="buttonCancel" mnemonicParsing="false" text="Button">
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" styleClass="formButton" stylesheets="@../css/fxcss.css" text="Button">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

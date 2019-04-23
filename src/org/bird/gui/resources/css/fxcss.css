@@ -112,6 +112,17 @@
     -fx-text-fill: #D87B1B;
 }
 
+.formButton{
+    -fx-background-color: #dfdfdf;
+    -fx-content-display: graphic-only;
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-max-width: 24px;
+    -fx-max-height: 24px;
+}
+
 .smallButton{
     -fx-background-color: #dfdfdf;
     -fx-content-display: graphic-only;
@@ -190,3 +201,11 @@
 #buttonSave:hover{
     -fx-graphic: url("../../../../../images/orange/save-24.png");
 }
+/*id : buttonCancel*/
+#buttonCancel{
+    -fx-graphic: url("../../../../../images/blue/close-24.png");
+}
+#buttonCancel:hover{
+    -fx-graphic: url("../../../../../images/orange/close-24.png");
+}
+

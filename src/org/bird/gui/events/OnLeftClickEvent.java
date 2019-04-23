@@ -5,7 +5,7 @@ import java.util.EventObject;
 public class OnLeftClickEvent extends EventObject {
 
     private int clickCount;
-    private String id;
+    private String id = null;
     /**
      * Constructs a prototypical Event.
      *
@@ -25,5 +25,9 @@ public class OnLeftClickEvent extends EventObject {
 
     public int getClickCount() {
         return clickCount;
+    }
+
+    public String getId() {
+        return id;
     }
 }

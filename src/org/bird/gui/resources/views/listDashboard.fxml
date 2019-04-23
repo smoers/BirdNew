@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bird.gui.resources.views.ListDashboard">
+   <children>
+      <TableView fx:id="tbItems" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="clImages" editable="false" prefWidth="75.0" sortable="false" text="Images" />
+          <TableColumn fx:id="clLastname" editable="false" prefWidth="75.0" text="Lastname" />
+            <TableColumn fx:id="clFirstname" editable="false" prefWidth="75.0" text="Firstname" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

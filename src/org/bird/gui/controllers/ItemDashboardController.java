@@ -74,14 +74,14 @@ public class ItemDashboardController implements Initializable {
 
     /**
      * Permet de charger un objet en précisant le type lors de l'exécution
-     * @param objet
+     * @param object
      * @param <T>
      */
-    public <T> void setItem(T objet){
-        if (objet instanceof Author){
-            setItem((Author) objet);
-        } else if (objet instanceof Book){
-            setItem((Book) objet);
+    public <T> void setItem(T object){
+        if (object instanceof Author){
+            setItem((Author) object);
+        } else if (object instanceof Book){
+            setItem((Book) object);
         }
 
     }
