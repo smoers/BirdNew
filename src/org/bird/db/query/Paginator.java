@@ -18,6 +18,10 @@ public class Paginator<T> {
     private int pages = 0;
     private int itemsByPage;
 
+    public static Paginator build(Class clazz){
+        return new Paginator(1,30,clazz);
+    }
+
     /**
      * Contructeur
      */

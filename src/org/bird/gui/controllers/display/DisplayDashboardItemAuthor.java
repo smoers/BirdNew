@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Permet l'affichage des objets Author sur le panneau
  */
-public class DisplayItemDashboardAuthor extends DisplayItemDashboard<Author> {
+public class DisplayDashboardItemAuthor extends DisplayDashboardItem<Author> {
 
     private Pane itemsContainer;
 
@@ -17,7 +17,7 @@ public class DisplayItemDashboardAuthor extends DisplayItemDashboard<Author> {
      * Contructeur
      * @param itemsContainer
      */
-    public DisplayItemDashboardAuthor(Pane itemsContainer){
+    public DisplayDashboardItemAuthor(Pane itemsContainer){
         this.itemsContainer = itemsContainer;
     }
 
@@ -34,5 +34,6 @@ public class DisplayItemDashboardAuthor extends DisplayItemDashboard<Author> {
         DisplayService<Author> service = new DisplayService<Author>(itemsContainer, paginator);
         service.start();
     }
+
 
 }

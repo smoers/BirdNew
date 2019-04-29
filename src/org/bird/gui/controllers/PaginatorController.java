@@ -10,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -19,7 +18,7 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.mapper.MapperPaginator;
 import org.bird.db.query.Paginator;
-import org.bird.gui.controllers.display.IOnDisplayItemDashboardChange;
+import org.bird.gui.controllers.display.IDisplayDashboard;
 import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.listeners.OnPageChangeListener;
@@ -39,7 +38,7 @@ public class PaginatorController extends ProtectedController implements Initiali
     /**
      * Container destiné à accueillir les items
      */
-    private IOnDisplayItemDashboardChange displayItemDashboard;
+    private IDisplayDashboard displayDashboard;
     /**
      * Le paginateur à utiliser
      */
@@ -68,11 +67,11 @@ public class PaginatorController extends ProtectedController implements Initiali
     /**
      * Contructeur
      * @param paginator
-     * @param displayItemDashboard
+     * @param displayDashboard
      */
-    public PaginatorController(Paginator paginator, IOnDisplayItemDashboardChange displayItemDashboard) {
+    public PaginatorController(Paginator paginator, IDisplayDashboard displayDashboard) {
         this.paginator = paginator;
-        this.displayItemDashboard = displayItemDashboard;
+        this.displayDashboard = displayDashboard;
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
         //On crée une instance du mapper permettant l'interaction avec la base de données.
         mapper = new MapperPaginator();
@@ -235,7 +234,7 @@ public class PaginatorController extends ProtectedController implements Initiali
                     //On affiche les Items
                     try {
                         //cette objet va éxecuter un service charger du cahrgempent des items
-                        displayItemDashboard.display(paginator);
+                        displayDashboard.display(paginator);
                     } catch (IOException e) {
                         showException(e);
                     }
@@ -258,8 +257,8 @@ public class PaginatorController extends ProtectedController implements Initiali
         fieldPage.setText(joiner.toString());
     }
 
-    public IOnDisplayItemDashboardChange getDisplayItemDashboard() {
-        return displayItemDashboard;
+    public IDisplayDashboard getDisplayDashboard() {
+        return displayDashboard;
     }
 
     /**

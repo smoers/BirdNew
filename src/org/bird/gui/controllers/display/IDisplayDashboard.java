@@ -9,7 +9,7 @@ import java.io.IOException;
  * Permet de rendre un objet utilisable par un paginator
  * @param <T>
  */
-public interface IOnDisplayItemDashboardChange<T> extends IOnWaitingBarListener {
+public interface IDisplayDashboard<T> extends IOnWaitingBarListener {
 
     public void display(Paginator<T> paginator) throws IOException;
 

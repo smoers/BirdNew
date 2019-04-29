@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.gui.common.FXMLLoaderImpl;

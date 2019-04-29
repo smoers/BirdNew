@@ -1,7 +1,5 @@
 package org.bird.gui.controllers;
 
-import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +11,7 @@ import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.controllers.display.DisplayDataSheet;
-import org.bird.gui.controllers.display.DisplayItemDashboardAuthor;
+import org.bird.gui.controllers.display.DisplayDashboardItemAuthor;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
@@ -76,10 +74,10 @@ public class DashboardController extends ProtectedController implements Initiali
             //Display datasheet
             displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
             //Configuration du controller
-            Paginator<Author> paginator = new Paginator<Author>(1,30,Author.class);
-            DisplayItemDashboardAuthor displayItemDashboardAuthor = new DisplayItemDashboardAuthor(itemsContainer);
+            Paginator<Author> paginator = Paginator.build(Author.class);
+            DisplayDashboardItemAuthor displayDashboardItemAuthor = new DisplayDashboardItemAuthor(itemsContainer);
             //On défini un écouteur sur la selection d'un item
-            displayItemDashboardAuthor.addOnSelectedListener(new OnSelectedListener<Author>() {
+            displayDashboardItemAuthor.addOnSelectedListener(new OnSelectedListener<Author>() {
                 @Override
                 public void OnSelected(OnSelectedEvent<Author> evt) {
                     try {
@@ -89,7 +87,7 @@ public class DashboardController extends ProtectedController implements Initiali
                     }
                 }
             });
-            PaginatorController paginatorController = new PaginatorController(paginator, displayItemDashboardAuthor);
+            PaginatorController paginatorController = new PaginatorController(paginator, displayDashboardItemAuthor);
             paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
                 @Override
                 public void onChangePage(OnPageChangeEvent evt) {
@@ -97,7 +95,7 @@ public class DashboardController extends ProtectedController implements Initiali
                 }
             });
             //Chargement de la WaitingBar
-            WaitingBarController waitingBarController = new WaitingBarController(displayItemDashboardAuthor);
+            WaitingBarController waitingBarController = new WaitingBarController(displayDashboardItemAuthor);
             FXMLLoader loaderWaitingBar = fxmlLoaderImpl.getFXMLLoader("waitingbar");
             loaderWaitingBar.setController(waitingBarController);
             Node nodeWaitingBar = loaderWaitingBar.load();
@@ -132,5 +130,14 @@ public class DashboardController extends ProtectedController implements Initiali
         }
 
     }
+
+    public FlowPane getItemsContainer() {
+        return itemsContainer;
+    }
+
+    public SplitPane getDashboardSplitPane() {
+        return dashboardSplitPane;
+    }
+
 
 }

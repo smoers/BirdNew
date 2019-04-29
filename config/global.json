@@ -10,7 +10,8 @@
         "DisplayDataSheet": {
           "Author": "datasheetauthor",
           "Book": "datasheetbook"
-        }
+        },
+        "DisplayDashboardListAuthor": "listDashboard"
       }
     }
   }

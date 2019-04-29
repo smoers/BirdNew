@@ -24,33 +24,7 @@ public class ListDashboardController implements Initializable {
 
     }
 
-    public void setItem(Author author){
-        ConverterTableViewColumn<ImageView,Void,Void> converterTableViewColumn = new ConverterTableViewColumn<>();
-
-    }
-
-    public void setItem(Book book){
-
-    }
-
-    /**
-     *
-     * @param object
-     * @param <T>
-     */
-    public <T> void setItem(T object){
-        if (object instanceof Author){
-            setItem((Author) object);
-        } else if (object instanceof Book){
-            setItem((Book) object);
-        }
-    }
-
-    /**
-     * Cette classe standardise l'objet passé au TableView
-     */
-    protected class Item<T,U,V>{
 
 
-    }
+
 }
