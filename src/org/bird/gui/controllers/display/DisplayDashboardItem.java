@@ -63,6 +63,7 @@ public abstract class DisplayDashboardItem<T> implements IDisplayDashboard<T> {
      * Ajoute un listener pour l'item qui est selectionner
      * @param listener
      */
+    @Override
     public void addOnSelectedListener(OnSelectedListener<T> listener) { onSelectedListeners.add(listener); }
 
     /**

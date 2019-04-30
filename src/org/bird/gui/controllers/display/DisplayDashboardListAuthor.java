@@ -1,6 +1,7 @@
 package org.bird.gui.controllers.display;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,6 +13,7 @@ import org.bird.db.query.Paginator;
 import org.bird.gui.common.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
+import org.bird.gui.controllers.ListDashboardController;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
     private Pane itemsContainer;
 
     /**
-     *
+     * Constructeur
      * @param itemsContainer
      */
     public DisplayDashboardListAuthor(Pane itemsContainer) {
@@ -42,17 +44,31 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
         try {
             //Vide le container
             itemsContainer.getChildren().clear();
+            //instance le controller pour la vue
+            ListDashboardController controller = new ListDashboardController();
             //Crée la vue
             FXMLLoaderImpl fxmlLoader = new FXMLLoaderImpl();
             FXMLLoader _loader = fxmlLoader.getFXMLLoader(this.getClass());
-            _loader.setController();
+            _loader.setController(controller);
+            Node node = _loader.load();
+            //Ajoute la vue dans le container du dashboard
+            itemsContainer.getChildren().add(node);
+            //Récupère le tableau
+            tableView = controller.getTableView();
+            //Ajoute les colonnes pour la liste des auteurs
             TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, ImageView> imageCol = new TableColumn<>("Images");
             imageCol.setCellValueFactory(new PropertyValueFactory<>("objectColumn01"));
             TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, String> lastNameCol = new TableColumn<>("LastName");
             lastNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn01"));
             TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, String> firstNameCol = new TableColumn<>("FirstName");
             firstNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn02"));
+            //Récupère le tableau
+            tableView = controller.getTableView();
+            //On cahrge les colonnes dans le tableau
             tableView.getColumns().setAll(imageCol, lastNameCol, firstNameCol);
+            //On demande au controller de charger la traduction des titres des colonnes
+            controller.setLanguage();
+            //Instance & start le service qui va se charger d'afficher la liste des auteurs
             DisplayService service = new DisplayService(tableView, paginator);
             service.start();
         } catch (ConfigurationException e) {

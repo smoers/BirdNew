@@ -1,22 +1,23 @@
 package org.bird.gui.controllers.display;
 
+import javafx.scene.layout.Pane;
 import org.bird.configuration.exceptions.ConfigurationException;
-import org.bird.gui.controllers.DashboardController;
 
 public class DisplayDashboardBuilder {
 
-    private DashboardController controller;
+    private Pane itemsContainer;
 
-    public DisplayDashboardBuilder(DashboardController controller) {
-        this.controller = controller;
+    public DisplayDashboardBuilder(Pane itemsContainer) {
+        this.itemsContainer = itemsContainer;
     }
 
     public IDisplayDashboard build(Class clazz) throws ConfigurationException {
-        if (clazz.isInstance(DisplayDashboardItemAuthor.class)){
-            return  new DisplayDashboardItemAuthor(controller.getItemsContainer());
-        } else if (clazz.isInstance(DisplayDashboardListAuthor.class)){
-
+        IDisplayDashboard displayDashboard = null;
+        if (clazz.getSimpleName().equals(DisplayDashboardItemAuthor.class.getSimpleName())){
+            displayDashboard = new DisplayDashboardItemAuthor(itemsContainer);
+        } else if (clazz.getSimpleName().equals(DisplayDashboardListAuthor.class.getSimpleName())){
+            displayDashboard = new DisplayDashboardListAuthor(itemsContainer);
         }
-        return null;
+        return displayDashboard;
     }
 }

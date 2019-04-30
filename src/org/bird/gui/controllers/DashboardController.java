@@ -10,8 +10,10 @@ import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.FXMLLoaderImpl;
+import org.bird.gui.controllers.display.DisplayDashboardBuilder;
 import org.bird.gui.controllers.display.DisplayDataSheet;
 import org.bird.gui.controllers.display.DisplayDashboardItemAuthor;
+import org.bird.gui.controllers.display.IDisplayDashboard;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
@@ -51,6 +53,7 @@ public class DashboardController extends ProtectedController implements Initiali
 
     private FXMLLoaderImpl fxmlLoaderImpl;
     private DisplayDataSheet displayDataSheet;
+    private PaginatorController paginatorController;
 
     /**
      * Contructeur
@@ -71,47 +74,14 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-            //Display datasheet
-            displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
-            //Configuration du controller
-            Paginator<Author> paginator = Paginator.build(Author.class);
-            DisplayDashboardItemAuthor displayDashboardItemAuthor = new DisplayDashboardItemAuthor(itemsContainer);
-            //On défini un écouteur sur la selection d'un item
-            displayDashboardItemAuthor.addOnSelectedListener(new OnSelectedListener<Author>() {
-                @Override
-                public void OnSelected(OnSelectedEvent<Author> evt) {
-                    try {
-                        displayDataSheet.display(evt.getItem());
-                    } catch (IOException | ConfigurationException e) {
-                        showException(e);
-                    }
-                }
-            });
-            PaginatorController paginatorController = new PaginatorController(paginator, displayDashboardItemAuthor);
-            paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
-                @Override
-                public void onChangePage(OnPageChangeEvent evt) {
-                    displayDataSheet.remove();
-                }
-            });
-            //Chargement de la WaitingBar
-            WaitingBarController waitingBarController = new WaitingBarController(displayDashboardItemAuthor);
-            FXMLLoader loaderWaitingBar = fxmlLoaderImpl.getFXMLLoader("waitingbar");
-            loaderWaitingBar.setController(waitingBarController);
-            Node nodeWaitingBar = loaderWaitingBar.load();
-            bottonPane.getChildren().add(nodeWaitingBar);
 
-            //Chargement du paginateur
-            FXMLLoader loaderPaginator = fxmlLoaderImpl.getFXMLLoader("paginator");
-            loaderPaginator.setController(paginatorController);
-            Node nodePaginator = loaderPaginator.load();
-            bottonPane.getChildren().add(nodePaginator);
-            paginatorController.refresh();
-
+            IDisplayDashboard displayDashboard= setItemAuthor();
+            setWaitingBar(displayDashboard);
+            setPaginator();
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
 
-        } catch (ConfigurationException | IOException e) {
+        } catch (Exception e) {
             showException(e);
         }
     }
@@ -131,13 +101,65 @@ public class DashboardController extends ProtectedController implements Initiali
 
     }
 
-    public FlowPane getItemsContainer() {
-        return itemsContainer;
+    /**
+     * Charge le pnneau centrale avec les auteurs sous le format d'Item
+     * @throws ConfigurationException
+     */
+    protected IDisplayDashboard<Author> setItemAuthor() throws ConfigurationException {
+        //Display datasheet
+        displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
+        //Configuration du controller
+        Paginator<Author> paginator = Paginator.build(Author.class);
+        //Display objet
+        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(itemsContainer);
+        IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardItemAuthor.class);
+        //On défini un écouteur sur la selection d'un item
+        displayDashboard.addOnSelectedListener(new OnSelectedListener<Author>() {
+            @Override
+            public void OnSelected(OnSelectedEvent<Author> evt) {
+                try {
+                    displayDataSheet.display(evt.getItem());
+                } catch (IOException | ConfigurationException e) {
+                    showException(e);
+                }
+            }
+        });
+        paginatorController = new PaginatorController(paginator, displayDashboard);
+        paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onChangePage(OnPageChangeEvent evt) {
+                displayDataSheet.remove();
+            }
+        });
+        bottonPane.getChildren().clear();
+        return displayDashboard;
     }
 
-    public SplitPane getDashboardSplitPane() {
-        return dashboardSplitPane;
+    /**
+     * ajoute la waitingbar dans le panneau du dessous
+     * @param displayDashboard
+     * @throws IOException
+     */
+    protected void setWaitingBar(IDisplayDashboard displayDashboard) throws IOException {
+        //Chargement de la WaitingBar
+        WaitingBarController waitingBarController = new WaitingBarController(displayDashboard);
+        FXMLLoader loaderWaitingBar = fxmlLoaderImpl.getFXMLLoader("waitingbar");
+        loaderWaitingBar.setController(waitingBarController);
+        Node nodeWaitingBar = loaderWaitingBar.load();
+        bottonPane.getChildren().add(nodeWaitingBar);
     }
 
+    /**
+     * ajoute le paginateur dans le panneau du dessous
+     * @throws IOException
+     */
+    protected void setPaginator() throws IOException {
+        //Chargement du paginateur
+        FXMLLoader loaderPaginator = fxmlLoaderImpl.getFXMLLoader("paginator");
+        loaderPaginator.setController(paginatorController);
+        Node nodePaginator = loaderPaginator.load();
+        bottonPane.getChildren().add(nodePaginator);
+        paginatorController.refresh();
+    }
 
 }
