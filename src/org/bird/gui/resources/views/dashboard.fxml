@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -30,8 +32,14 @@
          <top>
             <ToolBar fx:id="toolbar" styleClass="menu_container" stylesheets="@../css/fxcss.css" BorderPane.alignment="CENTER">
               <items>
-                <Button fx:id="buttonLarge" mnemonicParsing="false" styleClass="toolbar" stylesheets="@../css/fxcss.css" text="Large" />
-                  <Button fx:id="buttonList" mnemonicParsing="false" text="List" />
+                <Button fx:id="buttonLarge" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Large" />
+                  <Button fx:id="buttonList" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="List" />
+                  <ToggleButton fx:id="buttonAuthor" mnemonicParsing="false" selected="true" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Author">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="toggleGroup" />
+                     </toggleGroup>
+                  </ToggleButton>
+                  <ToggleButton fx:id="buttonBook" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Book" toggleGroup="$toggleGroup" />
               </items>
             </ToolBar>
          </top>

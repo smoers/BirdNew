@@ -91,24 +91,35 @@
 .toolbar{
     -fx-background-color: #bfbfbf;
 }
-.toolbar.button{
+.toolbar_button{
     -fx-background-color: #bfbfbf;
     -fx-text-fill: #074AA3;
     -fx-content-display: graphic-only;
 }
-.toolbar.button:hover{
+.toolbar_button:hover{
     -fx-background-color: #bfbfbf;
     -fx-text-fill: #D87B1B;
     -fx-content-display: graphic-only;
 }
+.toolbar_button:selected{
+    -fx-background-color: #bfbfbf;
+    -fx-text-fill: #D87B1B;
+    -fx-content-display: graphic-only;
+    -fx-border-style: solid;
+    -fx-border-color: #D87B1B;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+}
+
+/*End Toolbar*/
 
 .button{
-    -fx-background-color: #bfbfbf;
+    /*-fx-background-color: #bfbfbf;*/
     -fx-text-fill: #074AA3;
 }
 
 .button:hover{
-    -fx-background-color: #bfbfbf;
+    /*-fx-background-color: #bfbfbf;*/
     -fx-text-fill: #D87B1B;
 }
 
@@ -148,6 +159,20 @@
 }
 #buttonList:hover{
     -fx-graphic: url("../../../../../images/orange/list-view-32.png");
+}
+/*id : buttonAuthor*/
+#buttonAuthor{
+    -fx-graphic: url("../../../../../images/blue/group-32.png");
+}
+#buttonAuthor:hover{
+    -fx-graphic: url("../../../../../images/orange/group-32.png");
+}
+/*id : buttonBook*/
+#buttonBook{
+    -fx-graphic: url("../../../../../images/blue/books-32.png");
+}
+#buttonBook:hover{
+    -fx-graphic: url("../../../../../images/orange/books-32.png");
 }
 
 /*Paginator*/

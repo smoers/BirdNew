@@ -23,6 +23,11 @@
     "iftext": {
       "button": false
     },
-    "dashboard_display_default": "item_author"
+    "dashboard_display_default": {
+      "item_author": true,
+      "list_author": false,
+      "item_book": false,
+      "list_book": false
+    }
   }
 }

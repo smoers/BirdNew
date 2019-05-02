@@ -10,10 +10,7 @@ import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.FXMLLoaderImpl;
-import org.bird.gui.controllers.display.DisplayDashboardBuilder;
-import org.bird.gui.controllers.display.DisplayDataSheet;
-import org.bird.gui.controllers.display.DisplayDashboardItemAuthor;
-import org.bird.gui.controllers.display.IDisplayDashboard;
+import org.bird.gui.controllers.display.*;
 import org.bird.gui.events.ExitPlatformEvent;
 import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
@@ -69,15 +66,20 @@ public class DashboardController extends ProtectedController implements Initiali
             fxmlLoaderImpl = new FXMLLoaderImpl();
             //charge le texte de l'interface
             setLanguage();
-            setText(toolbar);
+            //setText(toolbar);
             //Layout
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-
-            IDisplayDashboard displayDashboard= setItemAuthor();
+            IDisplayDashboard displayDashboard = null;
+            if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()) {
+                displayDashboard = setItemAuthor();
+            } else if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()){
+                displayDashboard = setListAuthor();
+            }
             setWaitingBar(displayDashboard);
             setPaginator();
+
             //evenements
             menuExit.setOnAction(new ExitPlatformEvent());
 
@@ -102,7 +104,8 @@ public class DashboardController extends ProtectedController implements Initiali
     }
 
     /**
-     * Charge le pnneau centrale avec les auteurs sous le format d'Item
+     * Charge le panneau centrale avec les auteurs sous le format d'Item
+     * @return
      * @throws ConfigurationException
      */
     protected IDisplayDashboard<Author> setItemAuthor() throws ConfigurationException {
@@ -124,6 +127,30 @@ public class DashboardController extends ProtectedController implements Initiali
                 }
             }
         });
+        paginatorController = new PaginatorController(paginator, displayDashboard);
+        paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onChangePage(OnPageChangeEvent evt) {
+                displayDataSheet.remove();
+            }
+        });
+        bottonPane.getChildren().clear();
+        return displayDashboard;
+    }
+
+    /**
+     * Charge le panneau centrale avec les auteurs sous le format d'une List
+     * @return
+     * @throws ConfigurationException
+     */
+    protected IDisplayDashboard<Author> setListAuthor() throws ConfigurationException {
+        //Display datasheet
+        displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
+        //Configuration du controller
+        Paginator<Author> paginator = Paginator.build(Author.class);
+        //Display objet
+        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(itemsContainer);
+        IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardListAuthor.class);
         paginatorController = new PaginatorController(paginator, displayDashboard);
         paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
