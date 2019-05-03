@@ -103,8 +103,6 @@ public class PaginatorController extends ProtectedController implements Initiali
         try {
             //Le texte dans la bonne langue
             setLanguage();
-            //Affichage des textes dans le boutons
-            setText(paneContainer);
             //Défini le combobox avec les valeurs
             JsonArray jsonArray = getConfigurationLayout().get("layout.item_by_page.large").getAsJsonArray();
             jsonArray.forEach(new Consumer<JsonElement>() {

@@ -16,6 +16,7 @@ module org.bird {
     exports org.bird.gui.controllers to javafx.fxml;
     exports org.bird.sandbox to javafx.graphics;
     opens org.bird.gui.controllers to javafx.fxml;
+    opens org.bird.gui.common to javafx.base;
     opens org.bird.db.models to core;
     opens org.bird.db.models.metadata to core;
 }

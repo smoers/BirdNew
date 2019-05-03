@@ -1,10 +1,12 @@
 package org.bird.gui.controllers;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
@@ -47,6 +49,8 @@ public class DashboardController extends ProtectedController implements Initiali
     private SplitPane dashboardSplitPane;
     @FXML
     private FlowPane dataSheetPane;
+    @FXML
+    private AnchorPane dashboardDivider01;
 
     private FXMLLoaderImpl fxmlLoaderImpl;
     private DisplayDataSheet displayDataSheet;
@@ -66,11 +70,40 @@ public class DashboardController extends ProtectedController implements Initiali
             fxmlLoaderImpl = new FXMLLoaderImpl();
             //charge le texte de l'interface
             setLanguage();
-            //setText(toolbar);
             //Layout
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            // Event sur les boutons
+            buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if(mouseEvent.isPrimaryButtonDown()){
+                        try {
+                            IDisplayDashboard<Author> displayDashboard = setItemAuthor();
+                            setWaitingBar(displayDashboard);
+                            setPaginator();
+                        } catch (Exception e) {
+                            showException(e);
+                        }
+                    }
+                }
+            });
+            buttonList.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()){
+                        try {
+                            IDisplayDashboard<Author> displayDashboard = setListAuthor();
+                            setWaitingBar(displayDashboard);
+                            setPaginator();
+                        } catch (Exception e) {
+                            showException(e);
+                        }
+                    }
+                }
+            });
+            //Dashboard par défaut
             IDisplayDashboard displayDashboard = null;
             if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()) {
                 displayDashboard = setItemAuthor();
@@ -149,7 +182,7 @@ public class DashboardController extends ProtectedController implements Initiali
         //Configuration du controller
         Paginator<Author> paginator = Paginator.build(Author.class);
         //Display objet
-        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(itemsContainer);
+        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardDivider01);
         IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardListAuthor.class);
         paginatorController = new PaginatorController(paginator, displayDashboard);
         paginatorController.addOnPageChangeListener(new OnPageChangeListener() {

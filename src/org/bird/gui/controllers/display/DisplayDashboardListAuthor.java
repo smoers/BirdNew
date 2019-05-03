@@ -6,7 +6,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import org.bird.configuration.Configuration;
+import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
@@ -25,13 +28,16 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
 
     private TableView<ConverterTableViewColumn<ImageView, Void, Void>> tableView;
     private Pane itemsContainer;
+    private Configuration configuration;
 
     /**
      * Constructeur
      * @param itemsContainer
      */
-    public DisplayDashboardListAuthor(Pane itemsContainer) {
+    public DisplayDashboardListAuthor(Pane itemsContainer) throws ConfigurationException {
         this.itemsContainer = itemsContainer;
+        ConfigurationBuilder builder = ConfigurationBuilder.getInstance();
+        configuration = builder.get("layout");
     }
 
     /**
@@ -52,7 +58,12 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
             _loader.setController(controller);
             Node node = _loader.load();
             //Ajoute la vue dans le container du dashboard
-            itemsContainer.getChildren().add(node);
+            AnchorPane anchorPane = (AnchorPane) itemsContainer;
+            AnchorPane.setTopAnchor(node,0.0);
+            AnchorPane.setRightAnchor(node,0.0);
+            AnchorPane.setLeftAnchor(node,0.0);
+            AnchorPane.setBottomAnchor(node,0.0);
+            anchorPane.getChildren().add(node);
             //Récupère le tableau
             tableView = controller.getTableView();
             //Ajoute les colonnes pour la liste des auteurs
@@ -84,10 +95,14 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
      * @return
      */
     @Override
-    public ConverterTableViewColumn<ImageView, Void, Void> getConverterTableViewColumn(Author item) {
+    public ConverterTableViewColumn<ImageView, Void, Void> getConverterTableViewColumn(Author item) throws ConfigurationException {
         ConverterTableViewColumn<ImageView,Void,Void> column = new ConverterTableViewColumn<>();
         ImageProvider provider = new ImageProvider(item.getPicture());
-        column.setObjectColumn01(provider.getImageView());
+        ImageView imageView = provider.getImageView();
+        imageView.setPreserveRatio(true);
+        Double fitHeight = configuration.get("layout.list_dashboard.image_view_height").getAsDouble();
+        imageView.setFitHeight(fitHeight);
+        column.setObjectColumn01(imageView);
         column.setStringColumn01(item.getLastName());
         column.setStringColumn02(item.getFirstName());
         return column;

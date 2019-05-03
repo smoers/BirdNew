@@ -114,13 +114,15 @@
 /*End Toolbar*/
 
 .button{
-    /*-fx-background-color: #bfbfbf;*/
+    -fx-background-color: #bfbfbf;
     -fx-text-fill: #074AA3;
+    -fx-content-display: graphic-only;
 }
 
 .button:hover{
-    /*-fx-background-color: #bfbfbf;*/
+    -fx-background-color: #bfbfbf;
     -fx-text-fill: #D87B1B;
+    -fx-content-display: graphic-only;
 }
 
 .formButton{

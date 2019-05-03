@@ -5,8 +5,10 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.ShowException;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
@@ -40,7 +42,7 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
      * @param item
      * @return
      */
-    public abstract ConverterTableViewColumn<ImageView,Void,Void> getConverterTableViewColumn(T item);
+    public abstract ConverterTableViewColumn<ImageView,Void,Void> getConverterTableViewColumn(T item) throws ConfigurationException;
 
     /**
      * Ajoute un listener pour la gestion de la Waiting Bar
@@ -129,7 +131,12 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                tableView.getItems().add(getConverterTableViewColumn(item));
+                                try {
+                                    tableView.getItems().add(getConverterTableViewColumn(item));
+                                } catch (ConfigurationException e) {
+                                    ShowException showException = new ShowException(e);
+                                    showException.show("ConfigurationException");
+                                }
                             }
                         });
 
