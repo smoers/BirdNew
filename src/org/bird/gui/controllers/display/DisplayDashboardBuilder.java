@@ -1,13 +1,14 @@
 package org.bird.gui.controllers.display;
 
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import org.bird.configuration.exceptions.ConfigurationException;
 
 public class DisplayDashboardBuilder {
 
-    private Pane itemsContainer;
+    private ObservableList itemsContainer;
 
-    public DisplayDashboardBuilder(Pane itemsContainer) {
+    public DisplayDashboardBuilder(ObservableList itemsContainer) {
         this.itemsContainer = itemsContainer;
     }
 

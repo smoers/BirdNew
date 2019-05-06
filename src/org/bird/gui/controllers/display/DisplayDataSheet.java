@@ -67,7 +67,7 @@ public class DisplayDataSheet {
         container.forEach(new Consumer<Node>() {
             @Override
             public void accept(Node node) {
-                if (node.getId().equalsIgnoreCase("datasheet")){
+                if (node.getId() != null && node.getId().equalsIgnoreCase("datasheet")){
                     //détruit l'instance du controller
                     dataSheetController = null;
                     Platform.runLater(new Runnable() {

@@ -1,5 +1,6 @@
 package org.bird.gui.controllers.display;
 
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
@@ -11,14 +12,8 @@ import java.io.IOException;
  */
 public class DisplayDashboardItemAuthor extends DisplayDashboardItem<Author> {
 
-    private Pane itemsContainer;
-
-    /**
-     * Contructeur
-     * @param itemsContainer
-     */
-    public DisplayDashboardItemAuthor(Pane itemsContainer){
-        this.itemsContainer = itemsContainer;
+    public DisplayDashboardItemAuthor(ObservableList itemsContainer) {
+        super(itemsContainer);
     }
 
     /**

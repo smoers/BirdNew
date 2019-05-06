@@ -1,10 +1,18 @@
 package org.bird.gui.controllers.display;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.bird.db.query.Paginator;
 import org.bird.gui.controllers.ItemDashboardController;
@@ -16,6 +24,9 @@ import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.listeners.OnProcessListener;
 import org.bird.gui.listeners.OnProgressChangeListener;
 import org.bird.gui.listeners.OnSelectedListener;
+import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
+import org.bird.gui.resources.controls.DefaultFlowPane;
+import org.bird.gui.resources.controls.DefaultScrollPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +47,24 @@ public abstract class DisplayDashboardItem<T> implements IDisplayDashboard<T> {
      * L'item sélectionné
      */
     private Pane selected = null;
+    protected Pane itemsContainer;
+
+
+    /**
+     * Contructeur
+     * @param itemsContainer
+     */
+    public DisplayDashboardItem(ObservableList<Node> itemsContainer){
+        /**Crée le container**/
+        ScrollPane scrollPane = new DefaultScrollPane();
+        AnchorPane anchorPane = new DefaultAnchorPaneZero(scrollPane);
+        FlowPane flowPane = new DefaultFlowPane();
+        scrollPane.setContent(flowPane);
+        /**Vide le container**/
+        itemsContainer.clear();
+        itemsContainer.add(anchorPane);
+        this.itemsContainer = flowPane;
+    }
 
 
     @Override

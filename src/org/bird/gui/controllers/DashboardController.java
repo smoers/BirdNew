@@ -147,7 +147,7 @@ public class DashboardController extends ProtectedController implements Initiali
         //Configuration du controller
         Paginator<Author> paginator = Paginator.build(Author.class);
         //Display objet
-        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(itemsContainer);
+        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
         IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardItemAuthor.class);
         //On défini un écouteur sur la selection d'un item
         displayDashboard.addOnSelectedListener(new OnSelectedListener<Author>() {
@@ -182,7 +182,7 @@ public class DashboardController extends ProtectedController implements Initiali
         //Configuration du controller
         Paginator<Author> paginator = Paginator.build(Author.class);
         //Display objet
-        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardDivider01);
+        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
         IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardListAuthor.class);
         paginatorController = new PaginatorController(paginator, displayDashboard);
         paginatorController.addOnPageChangeListener(new OnPageChangeListener() {

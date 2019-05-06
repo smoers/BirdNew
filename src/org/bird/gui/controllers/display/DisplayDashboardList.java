@@ -1,6 +1,7 @@
 package org.bird.gui.controllers.display;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TableView;
@@ -32,6 +33,16 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
     private ArrayList<OnProgressChangeListener> onProgressChangeListeners = new ArrayList<>();
     private ArrayList<OnProcessListener> onProcessListeners = new ArrayList<>();
     private ArrayList<OnSelectedListener<T>> onSelectedListeners = new ArrayList<>();
+
+    protected ObservableList itemsContainer;
+
+    /**
+     * Constructeur
+     * @param itemsContainer
+     */
+    public DisplayDashboardList(ObservableList itemsContainer){
+        this.itemsContainer = itemsContainer;
+    }
 
     @Override
     public abstract void display(Paginator<T> paginator) throws IOException;
@@ -128,19 +139,16 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
                     notifyOnProcessListener(new OnProcessEvent(this, true));
                     for (T item : paginator.getList()){
                         notifyOnProgressChangeListener(new OnProgressChangeEvent(this,value,size));
+                        ConverterTableViewColumn column = getConverterTableViewColumn(item);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                try {
-                                    tableView.getItems().add(getConverterTableViewColumn(item));
-                                } catch (ConfigurationException e) {
-                                    ShowException showException = new ShowException(e);
-                                    showException.show("ConfigurationException");
-                                }
+                                tableView.getItems().add(column);
                             }
                         });
-
+                        value++;
                     }
+                    notifyOnProcessListener(new OnProcessEvent(this, false));
                     return null;
                 }
             };

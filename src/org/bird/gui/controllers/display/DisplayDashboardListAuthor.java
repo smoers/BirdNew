@@ -1,5 +1,6 @@
 package org.bird.gui.controllers.display;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
@@ -27,15 +28,14 @@ import java.io.IOException;
 public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
 
     private TableView<ConverterTableViewColumn<ImageView, Void, Void>> tableView;
-    private Pane itemsContainer;
     private Configuration configuration;
 
     /**
      * Constructeur
      * @param itemsContainer
      */
-    public DisplayDashboardListAuthor(Pane itemsContainer) throws ConfigurationException {
-        this.itemsContainer = itemsContainer;
+    public DisplayDashboardListAuthor(ObservableList itemsContainer) throws ConfigurationException {
+        super(itemsContainer);
         ConfigurationBuilder builder = ConfigurationBuilder.getInstance();
         configuration = builder.get("layout");
     }
@@ -49,7 +49,7 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
     public void display(Paginator<Author> paginator) throws IOException {
         try {
             //Vide le container
-            itemsContainer.getChildren().clear();
+            itemsContainer.clear();
             //instance le controller pour la vue
             ListDashboardController controller = new ListDashboardController();
             //Crée la vue
@@ -58,12 +58,7 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
             _loader.setController(controller);
             Node node = _loader.load();
             //Ajoute la vue dans le container du dashboard
-            AnchorPane anchorPane = (AnchorPane) itemsContainer;
-            AnchorPane.setTopAnchor(node,0.0);
-            AnchorPane.setRightAnchor(node,0.0);
-            AnchorPane.setLeftAnchor(node,0.0);
-            AnchorPane.setBottomAnchor(node,0.0);
-            anchorPane.getChildren().add(node);
+            itemsContainer.add(node);
             //Récupère le tableau
             tableView = controller.getTableView();
             //Ajoute les colonnes pour la liste des auteurs
