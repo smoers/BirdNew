@@ -23,6 +23,15 @@ public class ConverterTableViewColumn<T,U,V> {
     private BooleanProperty booleanColumn01;
     private BooleanProperty booleanColumn02;
     private BooleanProperty booleanColumn03;
+    private Object source = null;
+
+    public void setSource(Object source){
+        this.source = source;
+    }
+
+    public <W> Object getSource(){
+        return source;
+    }
 
     /**
      * Object

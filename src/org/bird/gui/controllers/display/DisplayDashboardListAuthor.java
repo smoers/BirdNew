@@ -92,6 +92,7 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
     @Override
     public ConverterTableViewColumn<ImageView, Void, Void> getConverterTableViewColumn(Author item) throws ConfigurationException {
         ConverterTableViewColumn<ImageView,Void,Void> column = new ConverterTableViewColumn<>();
+        column.setSource(item);
         ImageProvider provider = new ImageProvider(item.getPicture());
         ImageView imageView = provider.getImageView();
         imageView.setPreserveRatio(true);

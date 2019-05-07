@@ -9,7 +9,6 @@ import javafx.scene.image.ImageView;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.ConverterTableViewColumn;
-import org.bird.gui.common.ShowException;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
