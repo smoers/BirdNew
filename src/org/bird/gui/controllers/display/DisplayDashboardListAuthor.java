@@ -1,5 +1,7 @@
 package org.bird.gui.controllers.display;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,6 +20,7 @@ import org.bird.gui.common.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
 import org.bird.gui.controllers.ListDashboardController;
+import org.bird.gui.events.OnSelectedEvent;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
@@ -59,8 +62,6 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
             Node node = _loader.load();
             //Ajoute la vue dans le container du dashboard
             itemsContainer.add(node);
-            //Récupère le tableau
-            tableView = controller.getTableView();
             //Ajoute les colonnes pour la liste des auteurs
             TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, ImageView> imageCol = new TableColumn<>("Images");
             imageCol.setCellValueFactory(new PropertyValueFactory<>("objectColumn01"));
@@ -70,8 +71,16 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
             firstNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn02"));
             //Récupère le tableau
             tableView = controller.getTableView();
-            //On cahrge les colonnes dans le tableau
+            //On charge les colonnes dans le tableau
             tableView.getColumns().setAll(imageCol, lastNameCol, firstNameCol);
+            //On defini l'event
+            tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConverterTableViewColumn<ImageView, Void, Void>>() {
+                @Override
+                public void changed(ObservableValue<? extends ConverterTableViewColumn<ImageView, Void, Void>> observableValue, ConverterTableViewColumn<ImageView, Void, Void> oldVal, ConverterTableViewColumn<ImageView, Void, Void> newVal) {
+                    Author author = (Author) newVal.getSource();
+                    notifyOnSelectedListener(new OnSelectedEvent<Author>(this, author));
+                }
+            });
             //On demande au controller de charger la traduction des titres des colonnes
             controller.setLanguage();
             //Instance & start le service qui va se charger d'afficher la liste des auteurs

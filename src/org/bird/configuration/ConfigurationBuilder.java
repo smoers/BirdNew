@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonReader;
 import org.bird.configuration.exceptions.ConfigurationException;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -60,6 +61,15 @@ public class ConfigurationBuilder {
         }
 
         return conf;
+    }
+
+    public <T> T get(String key, Class configurationExtended) throws ConfigurationException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Class[] cArg = new Class[2];
+        cArg[0] = JsonElement.class;
+        cArg[1] = Path.class;
+        Configuration conf = get(key);
+        T confExt = (T) configurationExtended.getClass().getDeclaredConstructor(cArg).newInstance(conf.get(), conf.getPathFileName());
+        return confExt;
     }
 
     /**

@@ -184,6 +184,16 @@ public class DashboardController extends ProtectedController implements Initiali
         //Display objet
         DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
         IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardListAuthor.class);
+        displayDashboard.addOnSelectedListener(new OnSelectedListener<Author>() {
+            @Override
+            public void OnSelected(OnSelectedEvent<Author> evt) {
+                try {
+                    displayDataSheet.display(evt.getItem());
+                } catch (Exception e) {
+                    showException(e);
+                }
+            }
+        });
         paginatorController = new PaginatorController(paginator, displayDashboard);
         paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
