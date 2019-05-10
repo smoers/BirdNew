@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import org.bird.configuration.ConfigurationDashboardDisplayDefault;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
@@ -55,6 +56,7 @@ public class DashboardController extends ProtectedController implements Initiali
     private FXMLLoaderImpl fxmlLoaderImpl;
     private DisplayDataSheet displayDataSheet;
     private PaginatorController paginatorController;
+    private ConfigurationDashboardDisplayDefault configurationDefault;
 
     /**
      * Contructeur
@@ -62,64 +64,6 @@ public class DashboardController extends ProtectedController implements Initiali
     public DashboardController(){
     }
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            //le Loader
-            fxmlLoaderImpl = new FXMLLoaderImpl();
-            //charge le texte de l'interface
-            setLanguage();
-            //Layout
-            dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-            dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-            dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-            // Event sur les boutons
-            buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if(mouseEvent.isPrimaryButtonDown()){
-                        try {
-                            IDisplayDashboard<Author> displayDashboard = setItemAuthor();
-                            setWaitingBar(displayDashboard);
-                            setPaginator();
-                        } catch (Exception e) {
-                            showException(e);
-                        }
-                    }
-                }
-            });
-            buttonList.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if (mouseEvent.isPrimaryButtonDown()){
-                        try {
-                            IDisplayDashboard<Author> displayDashboard = setListAuthor();
-                            setWaitingBar(displayDashboard);
-                            setPaginator();
-                        } catch (Exception e) {
-                            showException(e);
-                        }
-                    }
-                }
-            });
-            //Dashboard par défaut
-            IDisplayDashboard displayDashboard = null;
-            if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()) {
-                displayDashboard = setItemAuthor();
-            } else if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()){
-                displayDashboard = setListAuthor();
-            }
-            setWaitingBar(displayDashboard);
-            setPaginator();
-
-            //evenements
-            menuExit.setOnAction(new ExitPlatformEvent());
-
-        } catch (Exception e) {
-            showException(e);
-        }
-    }
 
     /**
      * Charge le texte sur base de la langue
@@ -230,6 +174,67 @@ public class DashboardController extends ProtectedController implements Initiali
         Node nodePaginator = loaderPaginator.load();
         bottonPane.getChildren().add(nodePaginator);
         paginatorController.refresh();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            configurationDefault = configurationBuilder.<ConfigurationDashboardDisplayDefault>get("layout", ConfigurationDashboardDisplayDefault.class);
+            //le Loader
+            fxmlLoaderImpl = new FXMLLoaderImpl();
+            //charge le texte de l'interface
+            setLanguage();
+            //Layout
+            dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            // Event sur les boutons
+            buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if(mouseEvent.isPrimaryButtonDown()){
+                        try {
+                            IDisplayDashboard<Author> displayDashboard = setItemAuthor();
+                            setWaitingBar(displayDashboard);
+                            setPaginator();
+                            configurationDefault.setDefault("item_author");
+                        } catch (Exception e) {
+                            showException(e);
+                        }
+                    }
+                }
+            });
+            buttonList.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()){
+                        try {
+                            IDisplayDashboard<Author> displayDashboard = setListAuthor();
+                            setWaitingBar(displayDashboard);
+                            setPaginator();
+                            configurationDefault.setDefault("list_author");
+                        } catch (Exception e) {
+                            showException(e);
+                        }
+                    }
+                }
+            });
+            //Dashboard par défaut
+            IDisplayDashboard displayDashboard = null;
+            if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()) {
+                displayDashboard = setItemAuthor();
+            } else if (getConfigurationLayout().get("layout.dashboard_display_default.list_author").getAsBoolean()){
+                displayDashboard = setListAuthor();
+            }
+            setWaitingBar(displayDashboard);
+            setPaginator();
+
+            //evenements
+            menuExit.setOnAction(new ExitPlatformEvent());
+
+        } catch (Exception e) {
+            showException(e);
+        }
     }
 
 }

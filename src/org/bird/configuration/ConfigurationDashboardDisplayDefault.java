@@ -7,6 +7,8 @@ import org.bird.utils.Utils;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Cette classe étend la classe Configuration
@@ -14,6 +16,9 @@ import java.nio.file.Path;
  * Ici permet de placer par défaut le type de container charger dans le dashboard
  */
 public class ConfigurationDashboardDisplayDefault extends Configuration {
+
+    public final String PATH_DASHBOARD_DISPLAY_DEFAULT = "layout.dashboard_display_default";
+
     /**
      * Contructeur
      *
@@ -26,18 +31,20 @@ public class ConfigurationDashboardDisplayDefault extends Configuration {
 
     /**
      * Va fixer par défaut le chemin passé en paramètre
-     * @param path
+     * @param key
      * @throws ConfigurationException
      * @throws IOException
      */
-    public void setDefault(String path) throws ConfigurationException, IOException {
-        JsonObject parent = getParent(path);
-        if (parent.isJsonArray()){
-            for (JsonElement jsonElement : parent.getAsJsonArray()) {
-                if (Utils.findString(jsonElement.getAsString(), path)){
-                    edit(path, true);
+    public void setDefault(String key) throws ConfigurationException, IOException {
+        JsonObject parent = getParent(PATH_DASHBOARD_DISPLAY_DEFAULT+"."+key);
+        if (parent.isJsonObject()){
+            Iterator<Map.Entry<String, JsonElement>> iterator = parent.entrySet().iterator();
+            while (iterator.hasNext()){
+                Map.Entry<String, JsonElement> entry = iterator.next();
+                if (Utils.findString(entry.getKey(), key)){
+                    edit(PATH_DASHBOARD_DISPLAY_DEFAULT+"."+entry.getKey(), true);
                 } else {
-                    edit(path, false);
+                    edit(PATH_DASHBOARD_DISPLAY_DEFAULT+"."+entry.getKey(), false);
                 }
             }
             write();
