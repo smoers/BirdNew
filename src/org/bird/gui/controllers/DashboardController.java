@@ -8,9 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationDashboardDisplayDefault;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
+import org.bird.db.models.Book;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.controllers.display.*;
@@ -44,6 +46,10 @@ public class DashboardController extends ProtectedController implements Initiali
     private Button buttonLarge;
     @FXML
     private Button buttonList;
+    @FXML
+    private ToggleButton buttonBook;
+    @FXML
+    private ToggleButton buttonAuthor;
     @FXML
     private VBox bottonPane;
     @FXML
@@ -149,6 +155,25 @@ public class DashboardController extends ProtectedController implements Initiali
         return displayDashboard;
     }
 
+    protected IDisplayDashboard<Book> setItemBook() throws ConfigurationException {
+        //Display datasheet
+        displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
+        //Configuration du controller
+        Paginator<Author> paginator = Paginator.build(Book.class);
+        //Display objet
+        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
+        IDisplayDashboard<Book> displayDashboard = builder.build(DisplayDashboardItemBook.class);
+        paginatorController = new PaginatorController(paginator, displayDashboard);
+        paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
+            @Override
+            public void onChangePage(OnPageChangeEvent evt) {
+                displayDataSheet.remove();
+            }
+        });
+        bottonPane.getChildren().clear();
+        return displayDashboard;
+    }
+
     /**
      * ajoute la waitingbar dans le panneau du dessous
      * @param displayDashboard
@@ -194,10 +219,16 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if(mouseEvent.isPrimaryButtonDown()){
                         try {
-                            IDisplayDashboard<Author> displayDashboard = setItemAuthor();
-                            setWaitingBar(displayDashboard);
+                            if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("author")) {
+                                IDisplayDashboard<Author> displayDashboard = setItemAuthor();
+                                setWaitingBar(displayDashboard);
+                            } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("book")){
+                                IDisplayDashboard<Book> displayDashboard = setItemBook();
+                                setWaitingBar(displayDashboard);
+
+                            }
                             setPaginator();
-                            configurationDefault.setDefault("item_author");
+                            configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE,"item");
                         } catch (Exception e) {
                             showException(e);
                         }
@@ -209,22 +240,44 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.isPrimaryButtonDown()){
                         try {
-                            IDisplayDashboard<Author> displayDashboard = setListAuthor();
-                            setWaitingBar(displayDashboard);
+                            if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("author")) {
+                                IDisplayDashboard<Author> displayDashboard = setListAuthor();
+                                setWaitingBar(displayDashboard);
+                            } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("book")){
+                                IDisplayDashboard<Book> displayDashboard = null;
+                                setWaitingBar(displayDashboard);
+
+                            }
                             setPaginator();
-                            configurationDefault.setDefault("list_author");
+                            configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE,"list");
                         } catch (Exception e) {
                             showException(e);
                         }
                     }
                 }
             });
+            buttonAuthor.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()){
+
+                    }
+                }
+            });
+            buttonBook.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.isPrimaryButtonDown()){
+
+                    }
+                }
+            });
             //Dashboard par défaut
             IDisplayDashboard displayDashboard = null;
-            if (getConfigurationLayout().get("layout.dashboard_display_default.item_author").getAsBoolean()) {
-                displayDashboard = setItemAuthor();
-            } else if (getConfigurationLayout().get("layout.dashboard_display_default.list_author").getAsBoolean()){
-                displayDashboard = setListAuthor();
+            switch (configurationDefault.getDefault()){
+                case "item_author" : displayDashboard = setItemAuthor();
+                case "list_author" : displayDashboard = setListAuthor();
+                case "item_book" : displayDashboard = setItemBook();
             }
             setWaitingBar(displayDashboard);
             setPaginator();

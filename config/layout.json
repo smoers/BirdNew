@@ -1,1 +1,40 @@
-{"layout":{"logo":"/images/logo011.png","item_by_page":{"value":20,"large":[5,10,15,20,25,30],"list":[20,25,30,35,40,45]},"iftext":{"button":false},"dashboard_display_default":{"item_author":true,"list_author":false,"item_book":false,"list_book":false},"list_dashboard":{"image_view_height":100.0}}}
+{
+  "layout": {
+    "logo": "/images/logo011.png" ,
+    "item_by_page": {
+      "value": 20 ,
+      "large": [
+        5 ,
+        10 ,
+        15 ,
+        20 ,
+        25 ,
+        30
+      ] ,
+      "list": [
+        20 ,
+        25 ,
+        30 ,
+        35 ,
+        40 ,
+        45
+      ]
+    } ,
+    "iftext": {
+      "button": false
+    } ,
+    "dashboard_display_default": {
+      "type": {
+        "author": true,
+        "book": false
+      } ,
+      "mode": {
+        "list": false,
+        "item": true
+      }
+    } ,
+    "list_dashboard": {
+      "image_view_height": 100.0
+    }
+  }
+}

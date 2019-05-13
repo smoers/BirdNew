@@ -17,6 +17,20 @@ import java.util.Iterator;
  */
 public class Configuration {
 
+    public enum Paths {
+        DASHBOARD_DISPLAY_DEFAULT_TYPE("layout.dashboard_display_default.type"),
+        DASHBOARD_DISPLAY_DEFAULT_MODE("layout.dashboard_display_default.mode");
+
+        private String path = "";
+
+        Paths(String path) {
+            this.path = path;
+        }
+        public String getPath(){
+            return path;
+        }
+    }
+
     private JsonElement jsonElement;
     private Path pathFileName;
     private JsonElement parentJsonElement;

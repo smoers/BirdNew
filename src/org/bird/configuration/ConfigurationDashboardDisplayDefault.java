@@ -1,5 +1,6 @@
 package org.bird.configuration;
 
+import com.google.common.base.Joiner;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bird.configuration.exceptions.ConfigurationException;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * Cette classe étend la classe Configuration
@@ -16,8 +18,6 @@ import java.util.Map;
  * Ici permet de placer par défaut le type de container charger dans le dashboard
  */
 public class ConfigurationDashboardDisplayDefault extends Configuration {
-
-    public final String PATH_DASHBOARD_DISPLAY_DEFAULT = "layout.dashboard_display_default";
 
     /**
      * Contructeur
@@ -35,19 +35,63 @@ public class ConfigurationDashboardDisplayDefault extends Configuration {
      * @throws ConfigurationException
      * @throws IOException
      */
-    public void setDefault(String key) throws ConfigurationException, IOException {
-        JsonObject parent = getParent(PATH_DASHBOARD_DISPLAY_DEFAULT+"."+key);
+    public void setDefault(Paths path, String key) throws ConfigurationException, IOException {
+        JsonObject parent = getParent(path.getPath()+"."+key);
         if (parent.isJsonObject()){
             Iterator<Map.Entry<String, JsonElement>> iterator = parent.entrySet().iterator();
             while (iterator.hasNext()){
                 Map.Entry<String, JsonElement> entry = iterator.next();
                 if (Utils.findString(entry.getKey(), key)){
-                    edit(PATH_DASHBOARD_DISPLAY_DEFAULT+"."+entry.getKey(), true);
+                    edit(path.getPath()+"."+entry.getKey(), true);
                 } else {
-                    edit(PATH_DASHBOARD_DISPLAY_DEFAULT+"."+entry.getKey(), false);
+                    edit(path.getPath()+"."+entry.getKey(), false);
                 }
             }
             write();
         }
+    }
+
+    /**
+     * Retourne la valeur depuis le path et la key
+     * @param path
+     * @param key
+     * @return
+     * @throws ConfigurationException
+     */
+    public Boolean getDefault(Paths path,String key) throws ConfigurationException {
+        return get(path.getPath()+"."+key).getAsBoolean();
+
+    }
+
+    /**
+     * Retourne une chaine de catractères sous le format item_book, list_book, item_author, list_author
+     * @return
+     * @throws ConfigurationException
+     */
+    public String getDefault() throws ConfigurationException {
+        StringJoiner joiner = new StringJoiner("_");
+        joiner.add(getDefault(Paths.DASHBOARD_DISPLAY_DEFAULT_MODE));
+        joiner.add(getDefault(Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE));
+        return joiner.toString();
+    }
+
+    /**
+     * Retourne la clé qui est true depuis le peth
+     * @param path
+     * @return
+     * @throws ConfigurationException
+     */
+    public String getDefault(Paths path) throws ConfigurationException {
+        JsonElement element = get(Paths.DASHBOARD_DISPLAY_DEFAULT_MODE.getPath());
+        if (element.isJsonObject()){
+            Iterator<Map.Entry<String, JsonElement>> iterator = element.getAsJsonObject().entrySet().iterator();
+            while (iterator.hasNext()){
+                Map.Entry<String, JsonElement> entry = iterator.next();
+                if (entry.getValue().getAsBoolean()){
+                    return entry.getKey();
+                }
+            }
+        }
+        return "";
     }
 }
