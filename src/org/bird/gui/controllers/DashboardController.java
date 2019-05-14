@@ -155,11 +155,16 @@ public class DashboardController extends ProtectedController implements Initiali
         return displayDashboard;
     }
 
+    /**
+     * Charge le panneau centrale avec les livres au format Item
+     * @return
+     * @throws ConfigurationException
+     */
     protected IDisplayDashboard<Book> setItemBook() throws ConfigurationException {
         //Display datasheet
         displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
         //Configuration du controller
-        Paginator<Author> paginator = Paginator.build(Book.class);
+        Paginator<Book> paginator = Paginator.build(Book.class);
         //Display objet
         DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
         IDisplayDashboard<Book> displayDashboard = builder.build(DisplayDashboardItemBook.class);
@@ -214,6 +219,7 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             // Event sur les boutons
+            /**Format grand icon**/
             buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -235,6 +241,7 @@ public class DashboardController extends ProtectedController implements Initiali
                     }
                 }
             });
+            /**Format liste**/
             buttonList.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
@@ -256,18 +263,45 @@ public class DashboardController extends ProtectedController implements Initiali
                     }
                 }
             });
+            /**Affiche les auteurs**/
             buttonAuthor.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.isPrimaryButtonDown()){
-
+                        try {
+                            if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals(("item"))){
+                                IDisplayDashboard<Author> displayDashboard = setItemAuthor();
+                                setWaitingBar(displayDashboard);
+                            } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals("list")){
+                                IDisplayDashboard<Author> displayDashboard = setListAuthor();
+                                setWaitingBar(displayDashboard);
+                            }
+                            setPaginator();
+                            configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE,"author");
+                        } catch (Exception e) {
+                            showException(e);
+                        }
                     }
                 }
             });
+            /**Affiche les livres**/
             buttonBook.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.isPrimaryButtonDown()){
+                        try {
+                            if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals("item")){
+                                IDisplayDashboard<Book> displayDashboard = setItemBook();
+                                setWaitingBar(displayDashboard);
+                            } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals("list")){
+                                IDisplayDashboard<Book> displayDashboard = null;
+                                setWaitingBar(displayDashboard);
+                            }
+                            setPaginator();
+                            configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE,"book");
+                        } catch (Exception e) {
+                            showException(e);
+                        }
 
                     }
                 }
@@ -275,9 +309,15 @@ public class DashboardController extends ProtectedController implements Initiali
             //Dashboard par défaut
             IDisplayDashboard displayDashboard = null;
             switch (configurationDefault.getDefault()){
-                case "item_author" : displayDashboard = setItemAuthor();
-                case "list_author" : displayDashboard = setListAuthor();
-                case "item_book" : displayDashboard = setItemBook();
+                case "item_author" :
+                    displayDashboard = setItemAuthor();
+                    break;
+                case "list_author" :
+                    displayDashboard = setListAuthor();
+                    break;
+                case "item_book" :
+                    displayDashboard = setItemBook();
+                    break;
             }
             setWaitingBar(displayDashboard);
             setPaginator();

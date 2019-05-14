@@ -26,8 +26,10 @@ public class Book extends ModelMetaData {
     private String collection =null;
     private String isbn_10 = null;
     private String isbn_13 = null;
+    @Reference
     private Cycle cycle = null;
     private byte[] picture;
+    @Reference
     private List<Illustrator> illustrators = new ArrayList<>();
 
     private Book(){}

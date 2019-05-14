@@ -107,13 +107,14 @@ public class _Create_Data_Mas {
             cycle.setVolumeNumber(1);
             cycle.setComments(c_comments);
             cycle.setBooks(List.of(book));
+            book.setCycle(cycle);
             cycle.setCreateDate(Calendar.getInstance().getTime());
             cycle.setModificationDate(Calendar.getInstance().getTime());
 
             Author author = new Author(a_lastName+String.valueOf(i));
-            author.setFirstName(a_firstName);
-            author.setBornFirstname(a_bornFirstname);
-            author.setBornLastName(a_bornLastName);
+            author.setFirstName(a_firstName+String.valueOf(i));
+            author.setBornFirstname(a_bornFirstname+String.valueOf(i));
+            author.setBornLastName(a_bornLastName+String.valueOf(i));
             author.setBiography(a_biography);
             author.setComment(a_comment);
             author.setBornDate(a_bornDate);

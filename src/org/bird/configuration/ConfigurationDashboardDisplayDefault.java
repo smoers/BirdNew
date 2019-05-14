@@ -82,7 +82,7 @@ public class ConfigurationDashboardDisplayDefault extends Configuration {
      * @throws ConfigurationException
      */
     public String getDefault(Paths path) throws ConfigurationException {
-        JsonElement element = get(Paths.DASHBOARD_DISPLAY_DEFAULT_MODE.getPath());
+        JsonElement element = get(path.getPath());
         if (element.isJsonObject()){
             Iterator<Map.Entry<String, JsonElement>> iterator = element.getAsJsonObject().entrySet().iterator();
             while (iterator.hasNext()){
