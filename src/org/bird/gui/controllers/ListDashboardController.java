@@ -6,7 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.ConverterTableViewColumnThree;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,7 +16,7 @@ public class ListDashboardController<T> extends ProtectedController implements I
 
     @FXML
     private AnchorPane apListContainer;
-    private TableView<ConverterTableViewColumn<ImageView, Void, Void>> tableView;
+    private TableView<ConverterTableViewColumnThree<ImageView, Void, Void>> tableView;
 
     public ListDashboardController() {
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
@@ -32,15 +32,15 @@ public class ListDashboardController<T> extends ProtectedController implements I
         apListContainer.getChildren().add(tableView);
     }
 
-    public TableView<ConverterTableViewColumn<ImageView, Void, Void>> getTableView() {
+    public TableView<ConverterTableViewColumnThree<ImageView, Void, Void>> getTableView() {
         return tableView;
     }
 
     @Override
     public void setLanguage() {
-        tableView.getColumns().forEach(new Consumer<TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, ?>>() {
+        tableView.getColumns().forEach(new Consumer<TableColumn<ConverterTableViewColumnThree<ImageView, Void, Void>, ?>>() {
             @Override
-            public void accept(TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, ?> tableColumn) {
+            public void accept(TableColumn<ConverterTableViewColumnThree<ImageView, Void, Void>, ?> tableColumn) {
                 tableColumn.setText(getInternationalizationBundle().getString(tableColumn.getText()));
             }
         });

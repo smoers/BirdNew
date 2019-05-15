@@ -311,12 +311,15 @@ public class DashboardController extends ProtectedController implements Initiali
             switch (configurationDefault.getDefault()){
                 case "item_author" :
                     displayDashboard = setItemAuthor();
+                    buttonAuthor.setSelected(true);
                     break;
                 case "list_author" :
                     displayDashboard = setListAuthor();
+                    buttonAuthor.setSelected(true);
                     break;
                 case "item_book" :
                     displayDashboard = setItemBook();
+                    buttonBook.setSelected(true);
                     break;
             }
             setWaitingBar(displayDashboard);

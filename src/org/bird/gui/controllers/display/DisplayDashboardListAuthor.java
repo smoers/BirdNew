@@ -9,14 +9,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import org.bird.configuration.Configuration;
-import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.ConverterTableViewColumnThree;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
 import org.bird.gui.controllers.ListDashboardController;
@@ -30,8 +26,7 @@ import java.io.IOException;
  */
 public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
 
-    private TableView<ConverterTableViewColumn<ImageView, Void, Void>> tableView;
-    private Configuration configuration;
+    private TableView<ConverterTableViewColumnThree<ImageView, Void, Void>> tableView;
 
     /**
      * Constructeur
@@ -39,8 +34,7 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
      */
     public DisplayDashboardListAuthor(ObservableList itemsContainer) throws ConfigurationException {
         super(itemsContainer);
-        ConfigurationBuilder builder = ConfigurationBuilder.getInstance();
-        configuration = builder.get("layout");
+
     }
 
     /**
@@ -63,20 +57,20 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
             //Ajoute la vue dans le container du dashboard
             itemsContainer.add(node);
             //Ajoute les colonnes pour la liste des auteurs
-            TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, ImageView> imageCol = new TableColumn<>("Images");
+            TableColumn<ConverterTableViewColumnThree<ImageView, Void, Void>, ImageView> imageCol = new TableColumn<>("Images");
             imageCol.setCellValueFactory(new PropertyValueFactory<>("objectColumn01"));
-            TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, String> lastNameCol = new TableColumn<>("LastName");
+            TableColumn<ConverterTableViewColumnThree<ImageView, Void, Void>, String> lastNameCol = new TableColumn<>("LastName");
             lastNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn01"));
-            TableColumn<ConverterTableViewColumn<ImageView, Void, Void>, String> firstNameCol = new TableColumn<>("FirstName");
+            TableColumn<ConverterTableViewColumnThree<ImageView, Void, Void>, String> firstNameCol = new TableColumn<>("FirstName");
             firstNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn02"));
             //Récupère le tableau
             tableView = controller.getTableView();
             //On charge les colonnes dans le tableau
             tableView.getColumns().setAll(imageCol, lastNameCol, firstNameCol);
             //On defini l'event
-            tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConverterTableViewColumn<ImageView, Void, Void>>() {
+            tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConverterTableViewColumnThree<ImageView, Void, Void>>() {
                 @Override
-                public void changed(ObservableValue<? extends ConverterTableViewColumn<ImageView, Void, Void>> observableValue, ConverterTableViewColumn<ImageView, Void, Void> oldVal, ConverterTableViewColumn<ImageView, Void, Void> newVal) {
+                public void changed(ObservableValue<? extends ConverterTableViewColumnThree<ImageView, Void, Void>> observableValue, ConverterTableViewColumnThree<ImageView, Void, Void> oldVal, ConverterTableViewColumnThree<ImageView, Void, Void> newVal) {
                     Author author = (Author) newVal.getSource();
                     notifyOnSelectedListener(new OnSelectedEvent<Author>(this, author));
                 }
@@ -93,14 +87,14 @@ public class DisplayDashboardListAuthor extends DisplayDashboardList<Author> {
     }
 
     /**
-     * Cette méthode va convertir un item de type auteur vers un item de type ConverterTableViewColumn
+     * Cette méthode va convertir un item de type auteur vers un item de type ConverterTableViewColumnThree
      * Qui est le type d'objet attendu par le TableView
      * @param item
      * @return
      */
     @Override
-    public ConverterTableViewColumn<ImageView, Void, Void> getConverterTableViewColumn(Author item) throws ConfigurationException {
-        ConverterTableViewColumn<ImageView,Void,Void> column = new ConverterTableViewColumn<>();
+    public ConverterTableViewColumnThree<ImageView, Void, Void> getConverterTableViewColumn(Author item) throws ConfigurationException {
+        ConverterTableViewColumnThree<ImageView,Void,Void> column = new ConverterTableViewColumnThree<>();
         column.setSource(item);
         ImageProvider provider = new ImageProvider(item.getPicture());
         ImageView imageView = provider.getImageView();

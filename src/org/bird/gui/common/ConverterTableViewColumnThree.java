@@ -9,21 +9,21 @@ import javafx.beans.property.*;
  * @param <U>
  * @param <V>
  */
-public class ConverterTableViewColumn<T,U,V> {
+public class ConverterTableViewColumnThree<T,U,V> {
 
-    private SimpleObjectProperty<T> objectColumn01;
-    private SimpleObjectProperty<U> objectColumn02;
-    private SimpleObjectProperty<V> objectColumn03;
-    private StringProperty stringColumn01;
-    private StringProperty stringColumn02;
-    private StringProperty stringColumn03;
-    private IntegerProperty integerColumn01;
-    private IntegerProperty integerColumn02;
-    private IntegerProperty integerColumn03;
-    private BooleanProperty booleanColumn01;
-    private BooleanProperty booleanColumn02;
-    private BooleanProperty booleanColumn03;
-    private Object source = null;
+    protected SimpleObjectProperty<T> objectColumn01;
+    protected SimpleObjectProperty<U> objectColumn02;
+    protected SimpleObjectProperty<V> objectColumn03;
+    protected StringProperty stringColumn01;
+    protected StringProperty stringColumn02;
+    protected StringProperty stringColumn03;
+    protected IntegerProperty integerColumn01;
+    protected IntegerProperty integerColumn02;
+    protected IntegerProperty integerColumn03;
+    protected BooleanProperty booleanColumn01;
+    protected BooleanProperty booleanColumn02;
+    protected BooleanProperty booleanColumn03;
+    protected Object source = null;
 
     public void setSource(Object source){
         this.source = source;
