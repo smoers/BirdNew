@@ -11,7 +11,8 @@
           "Author": "datasheetauthor",
           "Book": "datasheetbook"
         },
-        "DisplayDashboardListAuthor": "listDashboard"
+        "DisplayDashboardListAuthor": "listDashboard",
+        "DisplayDashboardListBook": "listDashboard"
       }
     }
   }

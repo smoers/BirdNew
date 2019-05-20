@@ -5,12 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.TableView;
-import javafx.scene.image.ImageView;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.query.Paginator;
-import org.bird.gui.common.ConverterTableViewColumnThree;
+import org.bird.gui.common.ConverterTableViewColumn;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
@@ -57,7 +56,7 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
      * @param item
      * @return
      */
-    public abstract ConverterTableViewColumnThree<ImageView,Void,Void> getConverterTableViewColumn(T item) throws ConfigurationException;
+    public abstract ConverterTableViewColumn getConverterTableViewColumn(T item) throws ConfigurationException;
 
     /**
      * Ajoute un listener pour la gestion de la Waiting Bar
@@ -125,10 +124,10 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
 
     protected class DisplayService extends Service<Void>{
 
-        private TableView<ConverterTableViewColumnThree<ImageView,Void,Void>> tableView;
+        private TableView<ConverterTableViewColumn> tableView;
         private Paginator<T> paginator;
 
-        public DisplayService(TableView<ConverterTableViewColumnThree<ImageView, Void, Void>> tableView, Paginator<T> paginator) {
+        public DisplayService(TableView<ConverterTableViewColumn> tableView, Paginator<T> paginator) {
             this.tableView = tableView;
             this.paginator = paginator;
         }
@@ -143,7 +142,7 @@ public abstract class DisplayDashboardList<T> implements IDisplayDashboard<T> {
                     notifyOnProcessListener(new OnProcessEvent(this, true));
                     for (T item : paginator.getList()){
                         notifyOnProgressChangeListener(new OnProgressChangeEvent(this,value,size));
-                        ConverterTableViewColumnThree column = getConverterTableViewColumn(item);
+                        ConverterTableViewColumn column = getConverterTableViewColumn(item);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {

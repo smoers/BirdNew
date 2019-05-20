@@ -7,22 +7,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.db.models.Author;
 import org.bird.db.models.Book;
 import org.bird.db.query.Paginator;
-import org.bird.gui.common.ConverterTableViewColumnSix;
+import org.bird.gui.common.ColumnFactoryValue;
+import org.bird.gui.common.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
 import org.bird.gui.controllers.ListDashboardController;
 import org.bird.gui.events.OnSelectedEvent;
+import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
+import java.util.StringJoiner;
+import java.util.function.Consumer;
 
 public class DisplayDashboardListBook extends DisplayDashboardList<Book> {
 
-    private TableView<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>> tableView;
+    private TableView<ConverterTableViewColumn> tableView;
 
     /**
      * Constructeur
@@ -49,31 +53,29 @@ public class DisplayDashboardListBook extends DisplayDashboardList<Book> {
             itemsContainer.add(node);
             //Ajoute les colonnes pour la liste des livres
             /**Pochette**/
-            TableColumn<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>, ImageView> imageCol = new TableColumn<>("Images");
-            imageCol.setCellValueFactory(new PropertyValueFactory<>("objectColumn01"));
+            TableColumn<ConverterTableViewColumn, ImageView> imageCol = new TableColumn<>("Images");
+            imageCol.setCellValueFactory(new ColumnFactoryValue<ImageView>("image"));
             /**Titre du cycle**/
-            TableColumn<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>,String> cycleTitle = new TableColumn<>("Cycle Title");
-            cycleTitle.setCellValueFactory(new PropertyValueFactory<>("StringColumn01"));
+            TableColumn<ConverterTableViewColumn,String> cycleTitle = new TableColumn<>("Cycle Title");
+            cycleTitle.setCellValueFactory(new ColumnFactoryValue<String>("cycletitle"));
             /**Volume**/
-            TableColumn<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>,Integer> volumeNumber = new TableColumn<>("Volume Number");
-            volumeNumber.setCellValueFactory(new PropertyValueFactory<>("integerColumn01"));
+            TableColumn<ConverterTableViewColumn,Integer> volumeNumber = new TableColumn<>("Volume Number");
+            volumeNumber.setCellValueFactory(new ColumnFactoryValue<Integer>("volumenumber"));
             /**Titre du cycle**/
-            TableColumn<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>,String> bookTitle = new TableColumn<>("Book Title");
-            bookTitle.setCellValueFactory(new PropertyValueFactory<>("StringColumn02"));
-            /**Nom de l'auteur**/
-            TableColumn<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>, String> lastNameCol = new TableColumn<>("LastName");
-            lastNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn03"));
-            /**Prénom de l'auteur**/
-            TableColumn<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>, String> firstNameCol = new TableColumn<>("FirstName");
-            firstNameCol.setCellValueFactory(new PropertyValueFactory<>("stringColumn04"));
+            TableColumn<ConverterTableViewColumn,String> bookTitle = new TableColumn<>("Book Title");
+            bookTitle.setCellValueFactory(new ColumnFactoryValue<String>("booktitle"));
+            /**le Nom des auteurs**/
+            TableColumn<ConverterTableViewColumn, String> fullName = new TableColumn<>("Authors");
+            fullName.setCellValueFactory(new ColumnFactoryValue<String>("authors"));
+
             //Récupère le tableau
             tableView = controller.getTableView();
             //On charge les colonnes dans le tableau
-            tableView.getColumns().setAll(imageCol,cycleTitle,volumeNumber,bookTitle,lastNameCol,firstNameCol);
+            tableView.getColumns().setAll(imageCol,cycleTitle,volumeNumber,bookTitle,fullName);
             //on defini l'event
-            tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>>() {
+            tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConverterTableViewColumn>() {
                 @Override
-                public void changed(ObservableValue<? extends ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void>> observableValue, ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void> oldVal, ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void> newVal) {
+                public void changed(ObservableValue<? extends ConverterTableViewColumn> observableValue, ConverterTableViewColumn oldVal, ConverterTableViewColumn newVal) {
                     Book book = (Book) newVal.getSource();
                     notifyOnSelectedListener(new OnSelectedEvent<Book>(this, book));
                 }
@@ -90,7 +92,25 @@ public class DisplayDashboardListBook extends DisplayDashboardList<Book> {
     }
 
     @Override
-    public ConverterTableViewColumnSix<ImageView, Void, Void, Void, Void, Void> getConverterTableViewColumn(Book item) throws ConfigurationException {
-        return null;
+    public ConverterTableViewColumn getConverterTableViewColumn(Book item) throws ConfigurationException {
+        ConverterTableViewColumn column = new ConverterTableViewColumn(item);
+        ImageProvider provider = new ImageProvider(item.getPicture());
+        ImageView imageView = provider.getImageView();
+        imageView.setPreserveRatio(true);
+        Double fitHeight = configuration.get("layout.list_dashboard.image_view_height").getAsDouble();
+        imageView.setFitHeight(fitHeight);
+        column.<ImageView>set("image", imageView);
+        column.<String>set("cycletitle", item.getCycle().getTitle());
+        column.<Integer>set("volumenumber",item.getCycle().getVolumeNumber());
+        column.<String>set("booktitle",item.getTitle());
+        StringJoiner joiner = new StringJoiner(", ");
+        item.getCycle().getAuthors().forEach(new Consumer<Author>() {
+            @Override
+            public void accept(Author author) {
+                joiner.add(author.getFullName());
+            }
+        });
+        column.<String>set("authors",joiner.toString());
+        return column;
     }
 }

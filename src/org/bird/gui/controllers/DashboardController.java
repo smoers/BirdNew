@@ -87,30 +87,15 @@ public class DashboardController extends ProtectedController implements Initiali
     }
 
     /**
-     * Charge le panneau centrale avec les auteurs sous le format d'Item
+     * Affiche les bonnes données
+     * @param displayInstance
      * @return
      * @throws ConfigurationException
      */
-    protected IDisplayDashboard<Author> setItemAuthor() throws ConfigurationException {
-        //Display datasheet
+    protected IDisplayDashboard display(DisplayInstance displayInstance) throws ConfigurationException {
+        displayInstance.create();
         displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
-        //Configuration du controller
-        Paginator<Author> paginator = Paginator.build(Author.class);
-        //Display objet
-        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
-        IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardItemAuthor.class);
-        //On défini un écouteur sur la selection d'un item
-        displayDashboard.addOnSelectedListener(new OnSelectedListener<Author>() {
-            @Override
-            public void OnSelected(OnSelectedEvent<Author> evt) {
-                try {
-                    displayDataSheet.display(evt.getItem());
-                } catch (IOException | ConfigurationException e) {
-                    showException(e);
-                }
-            }
-        });
-        paginatorController = new PaginatorController(paginator, displayDashboard);
+        paginatorController = new PaginatorController(displayInstance.paginator, displayInstance.displayDashboard);
         paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onChangePage(OnPageChangeEvent evt) {
@@ -118,65 +103,8 @@ public class DashboardController extends ProtectedController implements Initiali
             }
         });
         bottonPane.getChildren().clear();
-        return displayDashboard;
-    }
+        return displayInstance.displayDashboard;
 
-    /**
-     * Charge le panneau centrale avec les auteurs sous le format d'une List
-     * @return
-     * @throws ConfigurationException
-     */
-    protected IDisplayDashboard<Author> setListAuthor() throws ConfigurationException {
-        //Display datasheet
-        displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
-        //Configuration du controller
-        Paginator<Author> paginator = Paginator.build(Author.class);
-        //Display objet
-        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
-        IDisplayDashboard<Author> displayDashboard = builder.build(DisplayDashboardListAuthor.class);
-        displayDashboard.addOnSelectedListener(new OnSelectedListener<Author>() {
-            @Override
-            public void OnSelected(OnSelectedEvent<Author> evt) {
-                try {
-                    displayDataSheet.display(evt.getItem());
-                } catch (Exception e) {
-                    showException(e);
-                }
-            }
-        });
-        paginatorController = new PaginatorController(paginator, displayDashboard);
-        paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
-            @Override
-            public void onChangePage(OnPageChangeEvent evt) {
-                displayDataSheet.remove();
-            }
-        });
-        bottonPane.getChildren().clear();
-        return displayDashboard;
-    }
-
-    /**
-     * Charge le panneau centrale avec les livres au format Item
-     * @return
-     * @throws ConfigurationException
-     */
-    protected IDisplayDashboard<Book> setItemBook() throws ConfigurationException {
-        //Display datasheet
-        displayDataSheet = new DisplayDataSheet(dashboardSplitPane.getItems());
-        //Configuration du controller
-        Paginator<Book> paginator = Paginator.build(Book.class);
-        //Display objet
-        DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
-        IDisplayDashboard<Book> displayDashboard = builder.build(DisplayDashboardItemBook.class);
-        paginatorController = new PaginatorController(paginator, displayDashboard);
-        paginatorController.addOnPageChangeListener(new OnPageChangeListener() {
-            @Override
-            public void onChangePage(OnPageChangeEvent evt) {
-                displayDataSheet.remove();
-            }
-        });
-        bottonPane.getChildren().clear();
-        return displayDashboard;
     }
 
     /**
@@ -225,14 +153,13 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if(mouseEvent.isPrimaryButtonDown()){
                         try {
+                            DisplayInstance displayInstance = null;
                             if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("author")) {
-                                IDisplayDashboard<Author> displayDashboard = setItemAuthor();
-                                setWaitingBar(displayDashboard);
+                                displayInstance = new DisplayInstance<Author>(Author.class,DisplayDashboardItemAuthor.class);
                             } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("book")){
-                                IDisplayDashboard<Book> displayDashboard = setItemBook();
-                                setWaitingBar(displayDashboard);
-
+                                displayInstance = new DisplayInstance<Book>(Book.class,DisplayDashboardItemBook.class);
                             }
+                            setWaitingBar(display(displayInstance));
                             setPaginator();
                             configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE,"item");
                         } catch (Exception e) {
@@ -247,14 +174,13 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.isPrimaryButtonDown()){
                         try {
+                            DisplayInstance displayInstance = null;
                             if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("author")) {
-                                IDisplayDashboard<Author> displayDashboard = setListAuthor();
-                                setWaitingBar(displayDashboard);
+                                displayInstance = new DisplayInstance<Author>(Author.class,DisplayDashboardListAuthor.class);
                             } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE).equals("book")){
-                                IDisplayDashboard<Book> displayDashboard = null;
-                                setWaitingBar(displayDashboard);
-
+                                displayInstance = new DisplayInstance<Book>(Book.class,DisplayDashboardListBook.class);
                             }
+                            setWaitingBar(display(displayInstance));
                             setPaginator();
                             configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE,"list");
                         } catch (Exception e) {
@@ -269,13 +195,13 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.isPrimaryButtonDown()){
                         try {
+                            DisplayInstance<Author> displayInstance = null;
                             if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals(("item"))){
-                                IDisplayDashboard<Author> displayDashboard = setItemAuthor();
-                                setWaitingBar(displayDashboard);
+                                displayInstance = new DisplayInstance<Author>(Author.class,DisplayDashboardItemAuthor.class);
                             } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals("list")){
-                                IDisplayDashboard<Author> displayDashboard = setListAuthor();
-                                setWaitingBar(displayDashboard);
+                                displayInstance = new DisplayInstance<Author>(Author.class,DisplayDashboardListAuthor.class);
                             }
+                            setWaitingBar(display(displayInstance));
                             setPaginator();
                             configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE,"author");
                         } catch (Exception e) {
@@ -290,13 +216,13 @@ public class DashboardController extends ProtectedController implements Initiali
                 public void handle(MouseEvent mouseEvent) {
                     if (mouseEvent.isPrimaryButtonDown()){
                         try {
+                            DisplayInstance<Book> displayInstance = null;
                             if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals("item")){
-                                IDisplayDashboard<Book> displayDashboard = setItemBook();
-                                setWaitingBar(displayDashboard);
+                                displayInstance = new DisplayInstance<Book>(Book.class,DisplayDashboardItemBook.class);
                             } else if (configurationDefault.getDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_MODE).equals("list")){
-                                IDisplayDashboard<Book> displayDashboard = null;
-                                setWaitingBar(displayDashboard);
+                                displayInstance = new DisplayInstance<Book>(Book.class,DisplayDashboardListBook.class);
                             }
+                            setWaitingBar(display(displayInstance));
                             setPaginator();
                             configurationDefault.setDefault(Configuration.Paths.DASHBOARD_DISPLAY_DEFAULT_TYPE,"book");
                         } catch (Exception e) {
@@ -310,15 +236,19 @@ public class DashboardController extends ProtectedController implements Initiali
             IDisplayDashboard displayDashboard = null;
             switch (configurationDefault.getDefault()){
                 case "item_author" :
-                    displayDashboard = setItemAuthor();
+                    displayDashboard = display(new DisplayInstance<Author>(Author.class,DisplayDashboardItemAuthor.class));
                     buttonAuthor.setSelected(true);
                     break;
                 case "list_author" :
-                    displayDashboard = setListAuthor();
+                    displayDashboard = display(new DisplayInstance<Author>(Author.class,DisplayDashboardListAuthor.class));
                     buttonAuthor.setSelected(true);
                     break;
                 case "item_book" :
-                    displayDashboard = setItemBook();
+                    displayDashboard = display(new DisplayInstance<Book>(Book.class,DisplayDashboardItemBook.class));
+                    buttonBook.setSelected(true);
+                    break;
+                case "list_book" :
+                    displayDashboard = display(new DisplayInstance<Book>(Book.class,DisplayDashboardListBook.class));
                     buttonBook.setSelected(true);
                     break;
             }
@@ -331,6 +261,38 @@ public class DashboardController extends ProtectedController implements Initiali
         } catch (Exception e) {
             showException(e);
         }
+    }
+
+    protected class DisplayInstance<T>{
+
+        public Class clazzType;
+        private Class classMode;
+        public Paginator<T> paginator;
+        public IDisplayDashboard<T> displayDashboard;
+
+        public DisplayInstance(Class clazzType, Class clazzMode) {
+            this.clazzType = clazzType;
+            this.classMode = clazzMode;
+        }
+
+        public void create() throws ConfigurationException {
+            //Configuration du controller
+            paginator = Paginator.build(clazzType);
+            //Display objet
+            DisplayDashboardBuilder builder = new DisplayDashboardBuilder(dashboardSplitPane.getItems());
+            displayDashboard = builder.build(classMode);
+            displayDashboard.addOnSelectedListener(new OnSelectedListener<T>() {
+                @Override
+                public void OnSelected(OnSelectedEvent<T> evt) {
+                    try {
+                        displayDataSheet.display(evt.getItem());
+                    } catch (Exception e) {
+                        showException(e);
+                    }
+                }
+            });
+        }
+
     }
 
 }

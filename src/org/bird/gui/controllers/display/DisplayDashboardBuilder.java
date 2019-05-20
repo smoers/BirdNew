@@ -1,5 +1,6 @@
 package org.bird.gui.controllers.display;
 
+import com.google.common.reflect.TypeToken;
 import javafx.collections.ObservableList;
 import org.bird.configuration.exceptions.ConfigurationException;
 
@@ -32,6 +33,8 @@ public class DisplayDashboardBuilder {
             displayDashboard = new DisplayDashboardListAuthor(itemsContainer);
         } else if (clazz.getSimpleName().equals(DisplayDashboardItemBook.class.getSimpleName())){
             displayDashboard = new DisplayDashboardItemBook(itemsContainer);
+        } else if (clazz.getSimpleName().equals(DisplayDashboardListBook.class.getSimpleName())){
+            displayDashboard = new DisplayDashboardListBook(itemsContainer);
         }
         return displayDashboard;
     }
