@@ -29,14 +29,16 @@
 }
 
 .item_container:hover{
-    -fx-border-color: red;
+    -fx-background-color : #ff9900;
+    -fx-border-color: #ff9900;
     -fx-border-style: solid outside ;
     -fx-border-width: 5px;
     -fx-border-radius: 5px 5px;
 }
 
 .item_container_active{
-    -fx-border-color: red;
+    -fx-background-color : #ff9900;
+    -fx-border-color: #ff9900;
     -fx-border-style: solid outside ;
     -fx-border-width: 5px;
     -fx-border-radius: 5px 5px;
@@ -47,7 +49,7 @@
     -fx-font-size: 12px;
     -fx-font-style: italic;
     -fx-font-weight: bolder;
-    -fx-text-fill: #ff0000;
+    -fx-text-fill: #074AA3;
 }
 /*Personnalisation du label livre*/
 .item_book{
@@ -55,7 +57,7 @@
     -fx-font-size: 10px;
     -fx-font-style: normal;
     -fx-font-weight: normal;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #804000;
 }
 
 /*Personnalisation des label dans les formulaires*/
@@ -234,5 +236,12 @@
 }
 #buttonCancel:hover{
     -fx-graphic: url("../../../../../images/orange/close-24.png");
+}
+/*id : buttonShowList*/
+#buttonShowList{
+    -fx-graphic: url("../../../../../images/blue/list-view-16.png");
+}
+#buttonShowList:hover{
+    -fx-graphic: url("../../../../../images/orange/list-view-16.png");
 }
 

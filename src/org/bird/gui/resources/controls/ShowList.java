@@ -4,25 +4,25 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.bird.gui.events.OnLeftClickEvent;
 
-public class TextLong extends AbstractButtonShow{
+public class ShowList extends AbstractButtonShow {
 
     protected HBox hbox;
-    protected LabelLimited label;
+    protected Label label;
     protected Button button;
 
     protected void initialize(){
-        //Set label
-        label = new LabelLimited();
-        label.setLimitedSize(20);
+        //Set Label
+        label = new Label("...");
         label.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
         label.getStyleClass().add("form_label_field");
         //Set bouton
         button = new Button();
-        button.setId("buttonShow");
+        button.setId("buttonShowList");
         button.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
         button.getStyleClass().add("smallButton");
         button.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -37,20 +37,8 @@ public class TextLong extends AbstractButtonShow{
         hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         hbox.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
-        HBox.setMargin(label, new Insets(5,5,5,5));
-        HBox.setMargin(button, new Insets(5,5,5,5));
+        HBox.setMargin(label, new Insets(5.0));
+        HBox.setMargin(button, new Insets(5.0));
         hbox.getChildren().addAll(label, button);
-    }
-
-    public HBox getHbox() {
-        return hbox;
-    }
-
-    public LabelLimited getLabel() {
-        return label;
-    }
-
-    public Button getButton() {
-        return button;
     }
 }

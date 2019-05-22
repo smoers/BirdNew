@@ -1,13 +1,18 @@
 package org.bird.gui.controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -15,6 +20,7 @@ import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
+import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
@@ -23,24 +29,27 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class TextLongController implements Initializable {
+public class DataViewController implements Initializable {
 
     @FXML
     private Button buttonSave;
     @FXML
     private Button buttonCancel;
     @FXML
-    private TextArea txText;
+    private BorderPane borderPane;
 
+    private TextArea txText;
+    private ListView<String> lvList;
     private boolean showCancel = true;
     private boolean showSave = true;
     private String title;
-    private String text;
+    private String text = null;
+    private ObservableList<String> list = null;
     private Window owner;
     private Stage stage = new Stage();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
-    public TextLongController(Window owner){
+    public DataViewController(Window owner){
         this.owner = owner;
     }
 
@@ -48,9 +57,17 @@ public class TextLongController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttonCancel.setVisible(isShowCancel());
         buttonSave.setVisible(isShowSave());
-        txText.setEditable(isShowSave());
-        txText.setWrapText(true);
-        txText.setText(getText());
+        /**
+         * Si un texte est disponible il sera affiché en priorité
+         * Dans le cas contraire si une list a été chargée, elle sera affichée.
+        **/
+
+        if (getText() != null){
+            borderPane.setCenter(showText());
+        } else if (getList() != null){
+            borderPane.setCenter(showList());
+        }
+
         /** Events **/
         buttonSave.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -70,6 +87,8 @@ public class TextLongController implements Initializable {
         });
     }
 
+
+
     /**
      * affiche la fenetre
      * @throws ConfigurationException
@@ -77,7 +96,7 @@ public class TextLongController implements Initializable {
      */
     public void show() throws ConfigurationException, IOException {
         FXMLLoaderImpl loaderImpl = new FXMLLoaderImpl();
-        FXMLLoader loader = loaderImpl.getFXMLLoader("textlong");
+        FXMLLoader loader = loaderImpl.getFXMLLoader("dataview");
         loader.setController(this);
         stage.setScene(new Scene(loader.load()));
         stage.getIcons().add(ImageProvider.getLogoImage());
@@ -150,6 +169,14 @@ public class TextLongController implements Initializable {
         this.text = text;
     }
 
+    public ObservableList<String> getList() {
+        return list;
+    }
+
+    public void setList(ObservableList<String> list) {
+        this.list = list;
+    }
+
     /**
      * Ajoute un listener
      * @param listener
@@ -169,5 +196,32 @@ public class TextLongController implements Initializable {
                 listener.onLeftClick(evt);
             }
         });
+    }
+
+    /**
+     * défini une TextArea si il y a un text de chargé
+     * @return
+     */
+    private AnchorPane showText(){
+        txText = new TextArea();
+        txText.setWrapText(true);
+        txText.setEditable(isShowSave());
+        txText.setText(getText());
+        AnchorPane node = new DefaultAnchorPaneZero(txText);
+        node.setPadding(new Insets(5.0));
+        return node;
+    }
+
+    /**
+     * défini un ListView si il a une list de chargée
+     * @return
+     */
+    private AnchorPane showList(){
+        lvList = new ListView<>();
+        lvList.setEditable(isShowSave());
+        lvList.setItems(getList());
+        AnchorPane node = new DefaultAnchorPaneZero(lvList);
+        node.setPadding(new Insets(5.0));
+        return node;
     }
 }

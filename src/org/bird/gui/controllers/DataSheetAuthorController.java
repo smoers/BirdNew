@@ -3,7 +3,6 @@ package org.bird.gui.controllers;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -99,7 +98,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    TextLongController textLongController = new TextLongController(titledPane.getScene().getWindow());
+                    DataViewController textLongController = new DataViewController(titledPane.getScene().getWindow());
                     textLongController.setShowSave(false);
                     textLongController.setTitle(lbBiography.getText());
                     textLongController.setText(fltextLong.getLabel().getOriginalText());
@@ -122,19 +121,19 @@ public class DataSheetAuthorController extends ProtectedController implements In
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    TextLongController textLongController = new TextLongController(titledPane.getScene().getWindow());
-                    textLongController.setShowSave(false);
-                    textLongController.setTitle(lbComment.getText());
-                    textLongController.setText(flComment.getLabel().getOriginalText());
-                    textLongController.addOnLeftClickListener(new OnLeftClickListener() {
+                    DataViewController dataViewController = new DataViewController(titledPane.getScene().getWindow());
+                    dataViewController.setShowSave(false);
+                    dataViewController.setTitle(lbComment.getText());
+                    dataViewController.setText(flComment.getLabel().getOriginalText());
+                    dataViewController.addOnLeftClickListener(new OnLeftClickListener() {
                         @Override
                         public void onLeftClick(OnLeftClickEvent evt) {
                             if (evt.getId().equalsIgnoreCase("buttonCancel")){
-                                textLongController.close();
+                                dataViewController.close();
                             }
                         }
                     });
-                    textLongController.show();
+                    dataViewController.show();
                 } catch (ConfigurationException | IOException e) {
                     showException(e);
                 }
@@ -168,7 +167,7 @@ public class DataSheetAuthorController extends ProtectedController implements In
     }
 
     /**
-     * Notifie les évouteurs qu'un bouton a été pressé
+     * Notifie les écouteurs qu'un bouton a été pressé
      * @param evt
      */
     private void notifyOnLeftClickListener(OnLeftClickEvent evt){
