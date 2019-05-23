@@ -51,7 +51,7 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </GridPane.margin>
                                           </ImageView>
-                                          <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="1">
+                                          <Label fx:id="lbCycleTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </GridPane.margin>
@@ -61,7 +61,7 @@
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
                                            </Label>
-                                           <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Book Title" GridPane.rowIndex="2">
+                                           <Label fx:id="lbBookTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Book Title" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </GridPane.margin>
@@ -71,7 +71,7 @@
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
                                            </Label>
-                                          <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Volume Number" GridPane.rowIndex="3">
+                                          <Label fx:id="lbVolumeNumber" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Volume Number" GridPane.rowIndex="3">
                                              <GridPane.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </GridPane.margin>
@@ -81,12 +81,12 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </GridPane.margin>
                                           </Label>
-                                           <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Presentation" GridPane.rowIndex="4">
+                                           <Label fx:id="lbPresentation" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Presentation" GridPane.rowIndex="4">
                                                <GridPane.margin>
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
                                            </Label>
-                                           <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Editor" GridPane.rowIndex="5">
+                                           <Label fx:id="lbEditor" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Editor" GridPane.rowIndex="5">
                                                <GridPane.margin>
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
@@ -96,7 +96,7 @@
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
                                            </Label>
-                                           <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Collection" GridPane.rowIndex="6">
+                                           <Label fx:id="lbCollection" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Collection" GridPane.rowIndex="6">
                                                <GridPane.margin>
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
@@ -106,17 +106,12 @@
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
                                            </Label>
-                                           <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="ISBN" GridPane.rowIndex="7">
+                                           <Label fx:id="lbISBN" styleClass="form_label" stylesheets="@../css/fxcss.css" text="ISBN" GridPane.rowIndex="7">
                                                <GridPane.margin>
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
                                            </Label>
-                                           <Label fx:id="flISBN" minWidth="-Infinity" styleClass="form_label_field" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                               <GridPane.margin>
-                                                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                               </GridPane.margin>
-                                           </Label>
-                                           <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Illustrator" GridPane.rowIndex="8">
+                                           <Label fx:id="lbIllustrator" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Illustrator" GridPane.rowIndex="8">
                                                <GridPane.margin>
                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                </GridPane.margin>
@@ -133,7 +128,7 @@
             </AnchorPane>
         </content>
          <graphic>
-            <Button id="buttonClose" mnemonicParsing="false" styleClass="smallButton" stylesheets="@../css/fxcss.css" text="Button" />
+            <Button id="buttonClose" fx:id="buttonClose" mnemonicParsing="false" styleClass="smallButton" stylesheets="@../css/fxcss.css" text="Button" />
          </graphic>
       </TitledPane>
    </children>

@@ -1,5 +1,6 @@
 package org.bird.gui.resources.controls;
 
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,15 +10,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.bird.gui.events.OnLeftClickEvent;
 
-public class ShowList extends AbstractButtonShow {
+public class ShowList<T> extends AbstractButtonShow {
 
-    protected HBox hbox;
-    protected Label label;
-    protected Button button;
+    protected LabelObservableList<T> label;
+    protected ObservableList<T> observableList = null;
 
     protected void initialize(){
         //Set Label
-        label = new Label("...");
+        this.label = new LabelObservableList<>(observableList);
         label.getStylesheets().add(getClass().getResource("/org/bird/gui/resources/css/fxcss.css").toExternalForm());
         label.getStyleClass().add("form_label_field");
         //Set bouton
@@ -40,5 +40,13 @@ public class ShowList extends AbstractButtonShow {
         HBox.setMargin(label, new Insets(5.0));
         HBox.setMargin(button, new Insets(5.0));
         hbox.getChildren().addAll(label, button);
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setObservableList(ObservableList<T> observableList) {
+        this.observableList = observableList;
     }
 }

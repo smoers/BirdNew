@@ -10,9 +10,7 @@ import org.bird.gui.events.OnLeftClickEvent;
 
 public class TextLong extends AbstractButtonShow{
 
-    protected HBox hbox;
     protected LabelLimited label;
-    protected Button button;
 
     protected void initialize(){
         //Set label
@@ -42,15 +40,8 @@ public class TextLong extends AbstractButtonShow{
         hbox.getChildren().addAll(label, button);
     }
 
-    public HBox getHbox() {
-        return hbox;
-    }
-
     public LabelLimited getLabel() {
         return label;
     }
 
-    public Button getButton() {
-        return button;
-    }
 }

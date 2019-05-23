@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class DataSheetAuthorController extends ProtectedController implements Initializable,DataSheetController<Author> {
+public class DataSheetAuthorController extends ProtectedController implements Initializable, IDataSheetController<Author> {
 
     /**Labels**/
     @FXML

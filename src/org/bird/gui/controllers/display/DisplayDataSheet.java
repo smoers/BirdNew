@@ -8,7 +8,7 @@ import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.controllers.DataSheetAuthorController;
-import org.bird.gui.controllers.DataSheetController;
+import org.bird.gui.controllers.IDataSheetController;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 
@@ -22,7 +22,7 @@ public class DisplayDataSheet {
 
     private ObservableList<Node> container;
     private FXMLLoaderImpl fxmlLoader;
-    private DataSheetController dataSheetController = null;
+    private IDataSheetController IDataSheetController = null;
 
     /**
      * Constructeur
@@ -41,16 +41,16 @@ public class DisplayDataSheet {
      * @throws IOException
      */
     public <T> void display(T item) throws IOException, ConfigurationException {
-        if (dataSheetController == null) {
-            dataSheetController = new DataSheetAuthorController();
-            dataSheetController.addOnLeftClickListener(new OnLeftClickListener() {
+        if (IDataSheetController == null) {
+            IDataSheetController = new DataSheetAuthorController();
+            IDataSheetController.addOnLeftClickListener(new OnLeftClickListener() {
                 @Override
                 public void onLeftClick(OnLeftClickEvent evt) {
                     remove();
                 }
             });
             FXMLLoader loader = fxmlLoader.getFXMLLoader(DisplayDataSheet.class, Author.class);
-            loader.setController(dataSheetController);
+            loader.setController(IDataSheetController);
             Node node = loader.load();
             Platform.runLater(new Runnable() {
                 @Override
@@ -60,7 +60,7 @@ public class DisplayDataSheet {
                 }
             });
         }
-        dataSheetController.update((T) item);
+        IDataSheetController.update((T) item);
     }
 
     public void remove(){
@@ -69,7 +69,7 @@ public class DisplayDataSheet {
             public void accept(Node node) {
                 if (node.getId() != null && node.getId().equalsIgnoreCase("datasheet")){
                     //détruit l'instance du controller
-                    dataSheetController = null;
+                    IDataSheetController = null;
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {

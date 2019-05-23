@@ -1,5 +1,7 @@
 package org.bird.gui.resources.controls;
 
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 
@@ -8,6 +10,8 @@ import java.util.function.Consumer;
 
 public abstract class AbstractButtonShow {
 
+    protected HBox hbox;
+    protected Button button;
     protected ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
     public AbstractButtonShow(){
@@ -35,5 +39,13 @@ public abstract class AbstractButtonShow {
                 listener.onLeftClick(evt);
             }
         });
+    }
+
+    public HBox getHbox() {
+        return hbox;
+    }
+
+    public Button getButton() {
+        return button;
     }
 }
