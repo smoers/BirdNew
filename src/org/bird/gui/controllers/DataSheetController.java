@@ -10,6 +10,10 @@ public abstract class DataSheetController<T> extends ProtectedController impleme
 
     protected ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
+    public DataSheetController() {
+        setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
+    }
+
     @Override
     public abstract void update(T item);
 

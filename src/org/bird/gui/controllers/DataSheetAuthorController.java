@@ -20,11 +20,9 @@ import org.bird.gui.resources.images.ImageProvider;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
-public class DataSheetAuthorController extends ProtectedController implements Initializable, IDataSheetController<Author> {
+public class DataSheetAuthorController extends DataSheetController<Author> implements Initializable{
 
     /**Labels**/
     @FXML
@@ -61,21 +59,18 @@ public class DataSheetAuthorController extends ProtectedController implements In
     private GridPane gridPane;
     private TextLong fltextLong;
     private TextLong flComment;
-    private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
-
-
-    public DataSheetAuthorController(){
-        setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
-    }
 
     @Override
     public void setLanguage() {
+        /*
         lbName.setText(getInternationalizationBundle().getString(lbName.getText()));
         lbBornName.setText(getInternationalizationBundle().getString(lbBornName.getText()));
         lbBornDate.setText(getInternationalizationBundle().getString(lbBornDate.getText()));
         lbDeathDate.setText(getInternationalizationBundle().getString(lbDeathDate.getText()));
         lbBiography.setText(getInternationalizationBundle().getString(lbBiography.getText()));
         lbComment.setText(getInternationalizationBundle().getString(lbComment.getText()));
+         */
+        getTranslator("lb", getInternationalizationBundle()).translate(gridPane);
         titledPane.setText(getInternationalizationBundle().getString(titledPane.getText()));
     }
 
@@ -155,27 +150,5 @@ public class DataSheetAuthorController extends ProtectedController implements In
         flDeathDate.setText(format.format(item.getDeathDate()));
         fltextLong.getLabel().setLimitedText(item.getBiography());
         flComment.getLabel().setLimitedText(item.getComment());
-    }
-
-    /**
-     * Ajoute un écouteur sur les boutons
-     * @param listener
-     */
-    @Override
-    public void addOnLeftClickListener(OnLeftClickListener listener){
-        onLeftClickListeners.add(listener);
-    }
-
-    /**
-     * Notifie les écouteurs qu'un bouton a été pressé
-     * @param evt
-     */
-    private void notifyOnLeftClickListener(OnLeftClickEvent evt){
-        onLeftClickListeners.forEach(new Consumer<OnLeftClickListener>() {
-            @Override
-            public void accept(OnLeftClickListener listener) {
-                listener.onLeftClick(evt);
-            }
-        });
     }
 }

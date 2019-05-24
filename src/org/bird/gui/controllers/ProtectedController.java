@@ -10,6 +10,8 @@ import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.dialog.DialogAlert;
 import org.bird.gui.common.dialog.DialogExtended;
+import org.bird.gui.common.i18n.Translator;
+import org.bird.i18n.InternationalizationBundle;
 import org.bird.i18n.InternationalizationController;
 
 import java.util.ListIterator;
@@ -20,10 +22,22 @@ import java.util.function.Predicate;
  */
 public abstract class ProtectedController extends InternationalizationController {
 
+    protected Translator translator;
     /**
      * Instance
      */
     protected ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
+
+    /**
+     * Retourne le traducteur
+     * @param prefix
+     * @param internationalizationBundle
+     * @return
+     */
+    protected Translator getTranslator(String prefix, InternationalizationBundle internationalizationBundle){
+        if (translator == null) translator = new Translator(prefix, internationalizationBundle);
+        return translator;
+    }
 
     /**
      * Retourne la configuration liée au layout de l'application

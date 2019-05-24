@@ -64,6 +64,11 @@ public class DataSheetBookController extends DataSheetController<Book> implement
     private ShowList flIllustrator;
 
     @Override
+    public void setLanguage() {
+        getTranslator("fl", getInternationalizationBundle()).translate(gridPane);
+    }
+
+    @Override
     public void update(Book item) {
         ImageProvider imageProvider = new ImageProvider(item.getPicture());
         flImage.setImage(imageProvider.getImage());
@@ -128,8 +133,4 @@ public class DataSheetBookController extends DataSheetController<Book> implement
         gridPane.add(flIllustrator.getHbox(),1,8);
     }
 
-    @Override
-    public void setLanguage() {
-
-    }
 }
