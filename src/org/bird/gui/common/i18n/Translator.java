@@ -2,11 +2,14 @@ package org.bird.gui.common.i18n;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.Pane;
 import org.bird.i18n.InternationalizationBundle;
 import org.bird.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -14,7 +17,7 @@ import java.util.function.Consumer;
  */
 public class Translator {
 
-    private String prefix;
+    private String[] prefix;
     private InternationalizationBundle internationalizationBundle;
 
     /**
@@ -22,7 +25,7 @@ public class Translator {
      * @param prefix
      * @param internationalizationBundle
      */
-    public Translator(String prefix, InternationalizationBundle internationalizationBundle) {
+    public Translator(InternationalizationBundle internationalizationBundle,String ... prefix) {
         this.prefix = prefix;
         this.internationalizationBundle = internationalizationBundle;
     }
@@ -34,14 +37,21 @@ public class Translator {
      */
     public void translate(Pane pane){
         ObservableList<Node> nodes = pane.getChildren();
+        List<String> list = new ArrayList<>(Arrays.asList(prefix));
+
         nodes.forEach(new Consumer<Node>() {
             @Override
             public void accept(Node node) {
-                String pattern = "^"+prefix;
-                if (Utils.findString(pattern,node.getId()) && node instanceof Label){
-                    Label label = (Label) node;
-                    label.setText(internationalizationBundle.getString(label.getText()));
-                }
+                list.forEach(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) {
+                        String pattern = "^"+s;
+                        if (Utils.findString(pattern,node.getId()) && node instanceof Labeled){
+                            Labeled labeled = (Labeled) node;
+                            labeled.setText(internationalizationBundle.getString(labeled.getText()));
+                        }
+                    }
+                });
             }
         });
     }

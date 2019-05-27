@@ -9,6 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
@@ -57,21 +58,14 @@ public class DataSheetAuthorController extends DataSheetController<Author> imple
     private Button buttonClose;
     @FXML
     private GridPane gridPane;
+    @FXML
+    private AnchorPane rootPane;
     private TextLong fltextLong;
     private TextLong flComment;
 
     @Override
     public void setLanguage() {
-        /*
-        lbName.setText(getInternationalizationBundle().getString(lbName.getText()));
-        lbBornName.setText(getInternationalizationBundle().getString(lbBornName.getText()));
-        lbBornDate.setText(getInternationalizationBundle().getString(lbBornDate.getText()));
-        lbDeathDate.setText(getInternationalizationBundle().getString(lbDeathDate.getText()));
-        lbBiography.setText(getInternationalizationBundle().getString(lbBiography.getText()));
-        lbComment.setText(getInternationalizationBundle().getString(lbComment.getText()));
-         */
-        getTranslator("lb", getInternationalizationBundle()).translate(gridPane);
-        titledPane.setText(getInternationalizationBundle().getString(titledPane.getText()));
+        getTranslator(getInternationalizationBundle(),"lb","titled").translate(rootPane);
     }
 
     @Override

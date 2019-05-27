@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import org.bird.db.models.Book;
@@ -29,6 +30,8 @@ public class DataSheetBookController extends DataSheetController<Book> implement
     private Button buttonClose;
     @FXML
     private GridPane gridPane;
+    @FXML
+    private AnchorPane rootPane;
     /** Label **/
     @FXML
     private Label lbCycleTitle;
@@ -65,7 +68,7 @@ public class DataSheetBookController extends DataSheetController<Book> implement
 
     @Override
     public void setLanguage() {
-        getTranslator("fl", getInternationalizationBundle()).translate(gridPane);
+        getTranslator( getInternationalizationBundle(),"lb","titled").translate(rootPane);
     }
 
     @Override

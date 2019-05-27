@@ -34,8 +34,8 @@ public abstract class ProtectedController extends InternationalizationController
      * @param internationalizationBundle
      * @return
      */
-    protected Translator getTranslator(String prefix, InternationalizationBundle internationalizationBundle){
-        if (translator == null) translator = new Translator(prefix, internationalizationBundle);
+    protected Translator getTranslator(InternationalizationBundle internationalizationBundle,String ... prefix){
+        if (translator == null) translator = new Translator(internationalizationBundle,prefix);
         return translator;
     }
 
