@@ -1,6 +1,5 @@
 package org.bird.gui.controllers;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.util.Callback;
 import org.bird.db.models.Book;
 import org.bird.db.models.Illustrator;
 import org.bird.gui.events.OnLeftClickEvent;

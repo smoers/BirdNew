@@ -285,7 +285,7 @@ public class DashboardController extends ProtectedController implements Initiali
                 @Override
                 public void OnSelected(OnSelectedEvent<T> evt) {
                     try {
-                        displayDataSheet.display(evt.getItem());
+                        displayDataSheet.<T>display(evt.getItem());
                     } catch (Exception e) {
                         showException(e);
                     }

@@ -1,8 +1,11 @@
 package org.bird.gui.common.i18n;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 import org.bird.i18n.InternationalizationBundle;
 import org.bird.utils.Utils;
@@ -36,12 +39,13 @@ public class Translator {
      * @param pane
      */
     public void translate(Pane pane){
-        ObservableList<Node> nodes = pane.getChildren();
+        ArrayList<Node> nodes = getChildrenRecursive(pane, new ArrayList<Node>());
         List<String> list = new ArrayList<>(Arrays.asList(prefix));
 
         nodes.forEach(new Consumer<Node>() {
             @Override
             public void accept(Node node) {
+                System.out.println(node.getId());
                 list.forEach(new Consumer<String>() {
                     @Override
                     public void accept(String s) {
@@ -55,4 +59,22 @@ public class Translator {
             }
         });
     }
+
+    private ArrayList<Node> getChildrenRecursive(Node node,ArrayList<Node> list){
+        ObservableList<Node> nodes = null;
+        if (node instanceof Parent) {
+            nodes = ((Parent) node).getChildrenUnmodifiable();
+            nodes.forEach(new Consumer<Node>() {
+                @Override
+                public void accept(Node node) {
+                    System.out.println(node.getId());
+                    list.add(node);
+                    getChildrenRecursive(node,list);
+                }
+            });
+        }
+        return list;
+    }
+
+
 }
