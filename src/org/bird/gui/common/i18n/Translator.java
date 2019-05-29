@@ -1,10 +1,13 @@
 package org.bird.gui.common.i18n;
 
+import com.google.common.reflect.TypeToken;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Control;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 import org.bird.i18n.InternationalizationBundle;
@@ -50,7 +53,7 @@ public class Translator {
                     @Override
                     public void accept(String s) {
                         String pattern = "^"+s;
-                        if (Utils.findString(pattern,node.getId()) && node instanceof Labeled){
+                        if (node.getId() != null && Utils.findString(pattern,node.getId()) && node instanceof Labeled){
                             Labeled labeled = (Labeled) node;
                             labeled.setText(internationalizationBundle.getString(labeled.getText()));
                         }
@@ -61,15 +64,16 @@ public class Translator {
     }
 
     private ArrayList<Node> getChildrenRecursive(Node node,ArrayList<Node> list){
-        ObservableList<Node> nodes = null;
-        if (node instanceof Parent) {
-            nodes = ((Parent) node).getChildrenUnmodifiable();
+
+        TranslatorControlBuilder translatorControlBuilder = TranslatorControlBuilder.getInstance();
+        ITranslatorControl translatorControl = translatorControlBuilder.getTranslatorControl(node);
+        if (translatorControl != null) {
+            ObservableList<Node> nodes = translatorControl.getNodes();
             nodes.forEach(new Consumer<Node>() {
                 @Override
                 public void accept(Node node) {
-                    System.out.println(node.getId());
                     list.add(node);
-                    getChildrenRecursive(node,list);
+                    getChildrenRecursive(node, list);
                 }
             });
         }

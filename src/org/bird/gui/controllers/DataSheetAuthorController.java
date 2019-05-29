@@ -65,7 +65,9 @@ public class DataSheetAuthorController extends DataSheetController<Author> imple
 
     @Override
     public void setLanguage() {
+
         getTranslator(getInternationalizationBundle(),"lb","titled").translate(rootPane);
+
     }
 
     @Override
