@@ -48,7 +48,6 @@ public class Translator {
         nodes.forEach(new Consumer<Node>() {
             @Override
             public void accept(Node node) {
-                System.out.println(node.getId());
                 list.forEach(new Consumer<String>() {
                     @Override
                     public void accept(String s) {
@@ -63,6 +62,12 @@ public class Translator {
         });
     }
 
+    /**
+     *
+     * @param node
+     * @param list
+     * @return
+     */
     private ArrayList<Node> getChildrenRecursive(Node node,ArrayList<Node> list){
 
         TranslatorControlBuilder translatorControlBuilder = TranslatorControlBuilder.getInstance();

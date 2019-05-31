@@ -31,6 +31,7 @@ public abstract class DataSheetController<T> extends ProtectedController impleme
      * @param evt
      */
     protected void notifyOnLeftClickListener(OnLeftClickEvent evt){
+
         onLeftClickListeners.forEach(new Consumer<OnLeftClickListener>() {
             @Override
             public void accept(OnLeftClickListener listener) {

@@ -49,4 +49,8 @@ public class ShowList<T> extends AbstractButtonShow {
     public void setObservableList(ObservableList<T> observableList) {
         this.observableList = observableList;
     }
+
+    public ObservableList<T> getObservableList(){
+        return observableList;
+    }
 }

@@ -2,6 +2,7 @@ module org.bird {
     exports org.bird;
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.web;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires gson;

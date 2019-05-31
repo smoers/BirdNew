@@ -178,6 +178,13 @@
 #buttonBook:hover{
     -fx-graphic: url("../../../../../images/orange/books-32.png");
 }
+/*id : buttonAdd*/
+#buttonAdd{
+    -fx-graphic: url("../../../../../images/blue/add-row-32.png");
+}
+#buttonAdd:hover{
+    -fx-graphic: url("../../../../../images/orange/add-row-32.png");
+}
 
 /*Paginator*/
 /*id : buttonFirst*/

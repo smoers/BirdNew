@@ -13,6 +13,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -40,11 +42,13 @@ public class DataViewController implements Initializable {
 
     private TextArea txText;
     private ListView<String> lvList;
+    private WebView webView;
     private boolean showCancel = true;
     private boolean showSave = true;
     private String title;
     private String text = null;
     private ObservableList<String> list = null;
+    private URL url = null;
     private Window owner;
     private Stage stage = new Stage();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
@@ -66,6 +70,8 @@ public class DataViewController implements Initializable {
             borderPane.setCenter(showText());
         } else if (getList() != null){
             borderPane.setCenter(showList());
+        } else if (getUrl() != null){
+            borderPane.setCenter(showWebView());
         }
 
         /** Events **/
@@ -177,6 +183,14 @@ public class DataViewController implements Initializable {
         this.list = list;
     }
 
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
     /**
      * Ajoute un listener
      * @param listener
@@ -221,6 +235,15 @@ public class DataViewController implements Initializable {
         lvList.setEditable(isShowSave());
         lvList.setItems(getList());
         AnchorPane node = new DefaultAnchorPaneZero(lvList);
+        node.setPadding(new Insets(5.0));
+        return node;
+    }
+
+    private AnchorPane showWebView(){
+        webView = new WebView();
+        WebEngine webEngine = webView.getEngine();
+        webEngine.load(url.toExternalForm());
+        AnchorPane node = new DefaultAnchorPaneZero(webView);
         node.setPadding(new Insets(5.0));
         return node;
     }

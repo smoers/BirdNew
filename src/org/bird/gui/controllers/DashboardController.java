@@ -21,6 +21,7 @@ import org.bird.gui.events.OnPageChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;
 import org.bird.gui.listeners.OnPageChangeListener;
 import org.bird.gui.listeners.OnSelectedListener;
+import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,6 +59,10 @@ public class DashboardController extends ProtectedController implements Initiali
     private FlowPane dataSheetPane;
     @FXML
     private AnchorPane dashboardDivider01;
+    @FXML
+    private MenuItem miAddAuthor;
+    @FXML
+    private MenuItem miAddBook;
 
     private FXMLLoaderImpl fxmlLoaderImpl;
     private DisplayDataSheet displayDataSheet;
@@ -146,6 +151,10 @@ public class DashboardController extends ProtectedController implements Initiali
             dashboard.setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             dashboard.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            ImageProvider providerA = new ImageProvider("/images/blue/administrator-24.png");
+            miAddAuthor.setGraphic(providerA.getImageView());
+            ImageProvider providerB = new ImageProvider("/images/blue/book-24.png");
+            miAddBook.setGraphic(providerB.getImageView());
             // Event sur les boutons
             /**Format grand icon**/
             buttonLarge.setOnMousePressed(new EventHandler<MouseEvent>() {

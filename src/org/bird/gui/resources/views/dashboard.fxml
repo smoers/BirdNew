@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.ToggleButton?>
@@ -36,6 +37,12 @@
                      </toggleGroup>
                   </ToggleButton>
                   <ToggleButton fx:id="buttonBook" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Book" toggleGroup="$toggleGroup" />
+                  <MenuButton fx:id="buttonAdd" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="MenuButton">
+                    <items>
+                      <MenuItem fx:id="miAddAuthor" mnemonicParsing="false" text="Add Author" />
+                      <MenuItem fx:id="miAddBook" mnemonicParsing="false" text="Add Book" />
+                    </items>
+                  </MenuButton>
               </items>
             </ToolBar>
          </top>
