@@ -1,5 +1,7 @@
 package org.bird.gui.controllers;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.web.WebEngine;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationDashboardDisplayDefault;
 import org.bird.configuration.exceptions.ConfigurationException;
@@ -22,8 +25,12 @@ import org.bird.gui.events.OnSelectedEvent;
 import org.bird.gui.listeners.OnPageChangeListener;
 import org.bird.gui.listeners.OnSelectedListener;
 import org.bird.gui.resources.images.ImageProvider;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -238,6 +245,44 @@ public class DashboardController extends ProtectedController implements Initiali
                             showException(e);
                         }
 
+                    }
+                }
+            });
+            /**Ajoute un Auteur**/
+            miAddAuthor.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    try {
+                        URL url = new URL("http://www.elbakin.net/fantasy/roman/cycle/le-livre-des-martyrs-77");
+                        DataViewController dataViewController = new DataViewController(toolbar.getScene().getWindow());
+                        dataViewController.setTitle("Browser");
+                        dataViewController.setShowCancel(true);
+                        dataViewController.setUrl(url);
+                        dataViewController.show();
+                        /*WebEngine webEngine = new WebEngine(url.toExternalForm());
+                        Document document = webEngine.getDocument();
+                        Element element = document.getDocumentElement();
+                        NodeList list = element.getChildNodes();
+                        for  ( int i=0 ; i<list.getLength(); i++) {
+                            System.out.println(list.item(i).getNodeName());
+                        }*/
+                    } catch (IOException | ConfigurationException e) {
+                        showException(e);
+                    }
+                }
+            });
+
+            /** Ajoute un livre **/
+            miAddBook.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    AddEditAuthorController controller = new AddEditAuthorController(toolbar.getScene().getWindow());
+                    try {
+                        controller.show();
+                    } catch (ConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             });

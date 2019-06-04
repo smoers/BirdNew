@@ -13,6 +13,7 @@ module org.bird {
     requires java.desktop;
     requires java.base;
     requires org.apache.commons.lang3;
+    requires org.jsoup;
     exports org.bird.gui to javafx.graphics;
     exports org.bird.gui.controllers to javafx.fxml;
     exports org.bird.sandbox to javafx.graphics;

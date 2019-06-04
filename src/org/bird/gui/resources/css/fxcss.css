@@ -185,6 +185,14 @@
 #buttonAdd:hover{
     -fx-graphic: url("../../../../../images/orange/add-row-32.png");
 }
+/*id : buttonBrowser*/
+#buttonBrowser{
+    -fx-graphic: url("../../../../../images/blue/globe-32.png");
+}
+#buttonBrowser:hover{
+    -fx-graphic: url("../../../../../images/orange/globe-32.png");
+}
+
 
 /*Paginator*/
 /*id : buttonFirst*/

@@ -5,11 +5,13 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="dashboard" prefHeight="447.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bird.gui.controllers.DashboardController">
@@ -26,6 +28,12 @@
    </top>
    <center>
       <BorderPane fx:id="mainItemDashboard" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <SplitPane fx:id="dashboardSplitPane" styleClass="root" stylesheets="@../css/fxcss.css" BorderPane.alignment="CENTER">
+               <items>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
+               </items></SplitPane>
+         </center>
          <top>
             <ToolBar fx:id="toolbar" styleClass="menu_container" stylesheets="@../css/fxcss.css" BorderPane.alignment="CENTER">
               <items>
@@ -37,18 +45,18 @@
                      </toggleGroup>
                   </ToggleButton>
                   <ToggleButton fx:id="buttonBook" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Book" toggleGroup="$toggleGroup" />
-                  <MenuButton fx:id="buttonAdd" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="MenuButton">
+                  <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+                  <MenuButton fx:id="buttonAdd" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Add">
                     <items>
                       <MenuItem fx:id="miAddAuthor" mnemonicParsing="false" text="Add Author" />
                       <MenuItem fx:id="miAddBook" mnemonicParsing="false" text="Add Book" />
                     </items>
                   </MenuButton>
+                  <Separator orientation="VERTICAL" />
+                  <Button id="buttonBrowser" fx:id="buttonBrowser" alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="toolbar_button" stylesheets="@../css/fxcss.css" text="Browser" />
               </items>
             </ToolBar>
          </top>
-         <center>
-            <SplitPane fx:id="dashboardSplitPane" styleClass="root" stylesheets="@../css/fxcss.css" BorderPane.alignment="CENTER" />
-         </center>
       </BorderPane>
    </center>
    <bottom>
