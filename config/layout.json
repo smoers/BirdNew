@@ -1,1 +1,48 @@
-{"layout":{"logo":"/images/logo011.png","item_by_page":{"value":15,"large":[5,10,15,20,25,30],"list":[20,25,30,35,40,45]},"iftext":{"button":false},"dashboard_display_default":{"type":{"author":true,"book":false},"mode":{"list":false,"item":true}},"list_dashboard":{"image_view_height":100.0}}}
+{
+  "layout": {
+    "logo": "/images/logo011.png",
+    "item_by_page": {
+      "value": 15,
+      "large": [
+        5,
+        10,
+        15,
+        20,
+        25,
+        30
+      ],
+      "list": [
+        20,
+        25,
+        30,
+        35,
+        40,
+        45
+      ]
+    },
+    "iftext": {
+      "button": false
+    },
+    "dashboard_display_default": {
+      "type": {
+        "author": true,
+        "book": false
+      },
+      "mode": {
+        "list": false,
+        "item": true
+      }
+    },
+    "list_dashboard": {
+      "image_view_height": 100.0
+    },
+    "browser":{
+      "home": "https://www.google.be/",
+      "search": "https://www.google.be/search?q=%%1%%",
+      "favorites": [
+        "http://www.elbakin.net/",
+        "https://www.amazon.fr/livre-achat-occasion-litterature-roman/b?ie=UTF8&node=301061&ref_=sd_allcat_lv"
+      ]
+    }
+  }
+}

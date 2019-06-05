@@ -55,6 +55,8 @@ public class DashboardController extends ProtectedController implements Initiali
     @FXML
     private Button buttonList;
     @FXML
+    private Button buttonBrowser;
+    @FXML
     private ToggleButton buttonBook;
     @FXML
     private ToggleButton buttonAuthor;
@@ -283,6 +285,17 @@ public class DashboardController extends ProtectedController implements Initiali
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }
+                }
+            });
+            /** Ouvre le browser interne**/
+            buttonBrowser.setOnMousePressed(mouseEvent -> {
+                if (mouseEvent.isPrimaryButtonDown()){
+                    try {
+                        BrowserController controller = new BrowserController(toolbar.getScene().getWindow());
+                        controller.show();
+                    } catch (ConfigurationException | IOException e) {
+                        showException(e);
                     }
                 }
             });

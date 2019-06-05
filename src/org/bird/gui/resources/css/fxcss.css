@@ -149,6 +149,50 @@
     -fx-max-height: 16px;
 }
 
+.mediumWhiteButton{
+    -fx-background-color: #ffffff;
+    -fx-content-display: graphic-only;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+}
+
+.mediumWhiteButton:hover{
+    -fx-background-color: #ffffff;
+    -fx-content-display: graphic-only;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+}
+
+.mediumWhiteMenuButton{
+    -fx-background-color: #ffffff;
+    -fx-content-display: graphic-only;
+    -fx-pref-width: 48px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 48px;
+    -fx-min-height: 32px;
+    -fx-max-width: 18px;
+    -fx-max-height: 32px;
+}
+
+.mediumWhiteMenuButton:hover{
+    -fx-background-color: #ffffff;
+    -fx-content-display: graphic-only;
+    -fx-pref-width: 48px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 48px;
+    -fx-min-height: 32px;
+    -fx-max-width: 48px;
+    -fx-max-height: 32px;
+}
+
 /*Toolbar Dashboard*/
 /*id : buttonLarge*/
 #buttonLarge{
@@ -258,5 +302,19 @@
 }
 #buttonShowList:hover{
     -fx-graphic: url("../../../../../images/orange/list-view-16.png");
+}
+/*id : buttonBrowserHome*/
+#buttonBrowserHome{
+    -fx-graphic: url("../../../../../images/blue/home-16.png");
+}
+#buttonBrowserHome:hover{
+    -fx-graphic: url("../../../../../images/orange/home-16.png");
+}
+/*id : buttonBrowserFavorite*/
+#buttonBrowserFavorite{
+    -fx-graphic: url("../../../../../images/blue/favorite-16.png");
+}
+#buttonBrowserFavorite:hover{
+    -fx-graphic: url("../../../../../images/orange/favorite-16.png");
 }
 
