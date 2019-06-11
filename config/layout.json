@@ -40,8 +40,14 @@
       "home": "https://www.google.be/",
       "search": "https://www.google.be/search?q=%%1%%",
       "favorites": [
-        "http://www.elbakin.net/",
-        "https://www.amazon.fr/livre-achat-occasion-litterature-roman/b?ie=UTF8&node=301061&ref_=sd_allcat_lv"
+        {
+          "name":  "Elbakin",
+          "url": "http://www.elbakin.net/"
+        },
+        {
+          "name": "Amazon",
+          "url": "https://www.amazon.fr/livre-achat-occasion-litterature-roman/b?ie=UTF8&node=301061&ref_=sd_allcat_lv"
+        }
       ]
     }
   }

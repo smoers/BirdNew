@@ -1,12 +1,15 @@
 package org.bird.gui.controllers;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,17 +26,24 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.logging.log4j.Logger;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
+import org.bird.gui.resources.controls.Favorite;
 import org.bird.gui.resources.images.ImageProvider;
+import org.bird.logger.Loggers;
 
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
+/**
+ * Simple browser
+ */
 public class BrowserController extends ProtectedController implements Initializable {
 
     @FXML
@@ -53,6 +63,9 @@ public class BrowserController extends ProtectedController implements Initializa
     private WebEngine webEngine;
     private Stage stage = new Stage();
     private String title = "Browser";
+    private Loggers loggers = Loggers.getInstance();
+    private Logger logger;
+
 
     public BrowserController(Window owner) throws ConfigurationException {
         this.owner = owner;
@@ -60,6 +73,7 @@ public class BrowserController extends ProtectedController implements Initializa
         home = getConfigurationLayout().get("layout.browser.home").getAsString();
         search = getConfigurationLayout().get("layout.browser.search").getAsString();
         webEngine = webView.getEngine();
+        logger = loggers.getLogger("org.bird.gui");
     }
 
     /**
@@ -107,14 +121,38 @@ public class BrowserController extends ProtectedController implements Initializa
                 }
             }
         });
-
+        //Bouton pour revenir à la home page
         buttonBrowserHome.setOnMousePressed(mouveEvent -> {
             if (mouveEvent.isPrimaryButtonDown()){
                 load(home);
             }
         });
+        //Charge les favoris dans le menu
+        favorites.forEach(new Consumer<JsonElement>() {
+            @Override
+            public void accept(JsonElement jsonElement) {
+                if (jsonElement.isJsonObject()) {
+                    //On crée un item favorite pour chaque entrée dans la liste
+                    try {
+                        Favorite favorite = new Favorite(
+                                jsonElement.getAsJsonObject().get("name").getAsString(),
+                                jsonElement.getAsJsonObject().get("url").getAsString()
+                        );
+                        favorite.setOnAction(actionEvent -> {
+                            Favorite item = (Favorite) actionEvent.getSource();
+                            load(item.getUrl().toExternalForm());
+                        });
+                        buttonBrowserFavorite.getItems().add(favorite);
+                    } catch (MalformedURLException e) {
+                        loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
+                    }
 
+                }
+            }
+        });
+        //On affiche l'url home
         flURL.setText(home);
+        //on charge la page home
         load(home);
     }
 
