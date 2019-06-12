@@ -1,14 +1,8 @@
 package org.bird.gui.common.i18n;
 
-import com.google.common.reflect.TypeToken;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.Control;
 import javafx.scene.control.Labeled;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.Pane;
 import org.bird.i18n.InternationalizationBundle;
 import org.bird.utils.Utils;
@@ -63,7 +57,7 @@ public class Translator {
     }
 
     /**
-     *
+     * Permet de parcourir les Nodes de manière récursive
      * @param node
      * @param list
      * @return

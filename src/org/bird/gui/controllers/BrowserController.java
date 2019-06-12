@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
@@ -29,6 +30,7 @@ import javafx.stage.Window;
 import org.apache.logging.log4j.Logger;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
+import org.bird.gui.common.dialog.DialogPrompt;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
 import org.bird.gui.resources.controls.Favorite;
 import org.bird.gui.resources.images.ImageProvider;
@@ -38,6 +40,7 @@ import org.bird.logger.Loggers;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -54,6 +57,8 @@ public class BrowserController extends ProtectedController implements Initializa
     private MenuButton buttonBrowserFavorite;
     @FXML
     private BorderPane borderPaneContainer;
+    @FXML
+    private MenuItem miAddFavorite;
 
     private Window owner;
     private JsonArray favorites;
@@ -63,8 +68,6 @@ public class BrowserController extends ProtectedController implements Initializa
     private WebEngine webEngine;
     private Stage stage = new Stage();
     private String title = "Browser";
-    private Loggers loggers = Loggers.getInstance();
-    private Logger logger;
 
 
     public BrowserController(Window owner) throws ConfigurationException {
@@ -73,7 +76,7 @@ public class BrowserController extends ProtectedController implements Initializa
         home = getConfigurationLayout().get("layout.browser.home").getAsString();
         search = getConfigurationLayout().get("layout.browser.search").getAsString();
         webEngine = webView.getEngine();
-        logger = loggers.getLogger("org.bird.gui");
+        setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
     }
 
     /**
@@ -134,21 +137,22 @@ public class BrowserController extends ProtectedController implements Initializa
                 if (jsonElement.isJsonObject()) {
                     //On crée un item favorite pour chaque entrée dans la liste
                     try {
-                        Favorite favorite = new Favorite(
-                                jsonElement.getAsJsonObject().get("name").getAsString(),
-                                jsonElement.getAsJsonObject().get("url").getAsString()
-                        );
-                        favorite.setOnAction(actionEvent -> {
-                            Favorite item = (Favorite) actionEvent.getSource();
-                            load(item.getUrl().toExternalForm());
-                        });
-                        buttonBrowserFavorite.getItems().add(favorite);
+                        addMenuItemFavorite(jsonElement.getAsJsonObject().get("name").getAsString(),jsonElement.getAsJsonObject().get("url").getAsString());
                     } catch (MalformedURLException e) {
                         loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
                     }
-
                 }
             }
+        });
+        miAddFavorite.setOnAction(actionEvent -> {
+            DialogPrompt dialogPrompt = new DialogPrompt();
+            dialogPrompt.setTitle(getInternationalizationBundle().getString("Add favorite"));
+            dialogPrompt.setHeaderText(getInternationalizationBundle().getString("Enter your favorite name"));
+            dialogPrompt.setContentText(getInternationalizationBundle().getString("Name"));
+            Optional<String> result = dialogPrompt.showAndWait();
+            result.ifPresent(name -> {
+                System.out.println(name);
+            });
         });
         //On affiche l'url home
         flURL.setText(home);
@@ -177,6 +181,24 @@ public class BrowserController extends ProtectedController implements Initializa
                 load(search.replace("%%1%%", strURL));
             }
         }
+    }
+
+    /**
+     * Ajoute une entrée dans le menu des favoris
+     * @param name
+     * @param url
+     * @throws MalformedURLException
+     */
+    private void addMenuItemFavorite(String name, String url) throws MalformedURLException {
+        Favorite favorite = new Favorite(
+                name,
+                url
+        );
+        favorite.setOnAction(actionEvent -> {
+            Favorite item = (Favorite) actionEvent.getSource();
+            load(item.getUrl().toExternalForm());
+        });
+        buttonBrowserFavorite.getItems().add(favorite);
     }
 
     private class LoadWebPage extends Service<WebEngine>{

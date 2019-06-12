@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
+import org.apache.logging.log4j.Logger;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
@@ -13,6 +14,7 @@ import org.bird.gui.common.dialog.DialogExtended;
 import org.bird.gui.common.i18n.Translator;
 import org.bird.i18n.InternationalizationBundle;
 import org.bird.i18n.InternationalizationController;
+import org.bird.logger.Loggers;
 
 import java.util.ListIterator;
 import java.util.function.Predicate;
@@ -22,11 +24,26 @@ import java.util.function.Predicate;
  */
 public abstract class ProtectedController extends InternationalizationController {
 
+    /**
+     * Loggers
+     */
+    protected Loggers loggers = Loggers.getInstance();
+    /**
+     * Logger
+     */
+    protected Logger logger;
+    /**
+     * Translator
+     */
     protected Translator translator;
     /**
      * Instance
      */
     protected ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
+
+    public ProtectedController() {
+        logger = loggers.getLogger("org.bird.gui");
+    }
 
     /**
      * Retourne le traducteur
