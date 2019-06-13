@@ -1,20 +1,17 @@
 package org.bird.gui.common.i18n;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 
-public class TranslatorControlMenuButton extends TranslatorControl {
+public class TranslatorControlMenuButton extends TranslatorControl<MenuItem> {
 
-    public TranslatorControlMenuButton(Node node) {
+    public TranslatorControlMenuButton(Object node) {
         super(node);
     }
 
     @Override
-    public ObservableList<Node> getNodes() {
-        ObservableList<MenuItem> nodes = FXCollections.observableArrayList();
-
-        return null;
+    public ObservableList<MenuItem> getNodes() {
+        return ((MenuButton) node).getItems();
     }
 }

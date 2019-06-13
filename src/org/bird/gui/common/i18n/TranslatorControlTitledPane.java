@@ -8,13 +8,13 @@ import javafx.scene.control.TitledPane;
 /**
  * Retourne le node contenu dans l'objet TitledPane
  */
-public class TranslatorControlTitledPane extends TranslatorControl {
+public class TranslatorControlTitledPane extends TranslatorControl<Node> {
 
     /**
      * Constructeur
      * @param node
      */
-    public TranslatorControlTitledPane(Node node) {
+    public TranslatorControlTitledPane(Object node) {
         super(node);
     }
 

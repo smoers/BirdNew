@@ -2,14 +2,13 @@ package org.bird.gui.controllers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,15 +26,13 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.apache.logging.log4j.Logger;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
+import org.bird.gui.common.ShowException;
 import org.bird.gui.common.dialog.DialogPrompt;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
 import org.bird.gui.resources.controls.Favorite;
 import org.bird.gui.resources.images.ImageProvider;
-import org.bird.logger.Loggers;
-
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -99,70 +96,87 @@ public class BrowserController extends ProtectedController implements Initializa
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //Crée le container pour l'objet WebView
-        AnchorPane node = new DefaultAnchorPaneZero(webView);
-        node.setPadding(new Insets(5.0));
-        borderPaneContainer.setCenter(node);
-        //permet de mettre a jour le champ url après un charge depuis le moteur de recherche
-        webEngine.getLoadWorker().stateProperty().addListener((obs,oldstate,newstate) -> {
-            if (newstate == Worker.State.SUCCEEDED){
-                flURL.setText(webEngine.getLocation());
-            }
-        });
-        //Action la touche Enter
-        flURL.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode().equals(KeyCode.ENTER)){
-                load(flURL.getText());
-            }
-        });
-        //Action suite à la perte du focus
-        flURL.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                if (!newValue){
+        try {
+            setLanguage();
+            //Crée le container pour l'objet WebView
+            AnchorPane node = new DefaultAnchorPaneZero(webView);
+            node.setPadding(new Insets(5.0));
+            borderPaneContainer.setCenter(node);
+            //permet de mettre a jour le champ url après un charge depuis le moteur de recherche
+            webEngine.getLoadWorker().stateProperty().addListener((obs, oldstate, newstate) -> {
+                if (newstate == Worker.State.SUCCEEDED) {
+                    flURL.setText(webEngine.getLocation());
+                }
+            });
+            //Action la touche Enter
+            flURL.setOnKeyPressed(keyEvent -> {
+                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                     load(flURL.getText());
                 }
-            }
-        });
-        //Bouton pour revenir à la home page
-        buttonBrowserHome.setOnMousePressed(mouveEvent -> {
-            if (mouveEvent.isPrimaryButtonDown()){
-                load(home);
-            }
-        });
-        //Charge les favoris dans le menu
-        favorites.forEach(new Consumer<JsonElement>() {
-            @Override
-            public void accept(JsonElement jsonElement) {
-                if (jsonElement.isJsonObject()) {
-                    //On crée un item favorite pour chaque entrée dans la liste
-                    try {
-                        addMenuItemFavorite(jsonElement.getAsJsonObject().get("name").getAsString(),jsonElement.getAsJsonObject().get("url").getAsString());
-                    } catch (MalformedURLException e) {
-                        loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
+            });
+            //Action suite à la perte du focus
+            flURL.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                    if (!newValue) {
+                        load(flURL.getText());
                     }
                 }
-            }
-        });
-        miAddFavorite.setOnAction(actionEvent -> {
-            DialogPrompt dialogPrompt = new DialogPrompt();
-            dialogPrompt.setTitle(getInternationalizationBundle().getString("Add favorite"));
-            dialogPrompt.setHeaderText(getInternationalizationBundle().getString("Enter your favorite name"));
-            dialogPrompt.setContentText(getInternationalizationBundle().getString("Name"));
-            Optional<String> result = dialogPrompt.showAndWait();
-            result.ifPresent(name -> {
-                System.out.println(name);
             });
-        });
-        //On affiche l'url home
-        flURL.setText(home);
-        //on charge la page home
-        load(home);
+            //Bouton pour revenir à la home page
+            buttonBrowserHome.setOnMousePressed(mouveEvent -> {
+                if (mouveEvent.isPrimaryButtonDown()) {
+                    load(home);
+                }
+            });
+            //Charge les favoris dans le menu
+            favorites.forEach(new Consumer<JsonElement>() {
+                @Override
+                public void accept(JsonElement jsonElement) {
+                    if (jsonElement.isJsonObject()) {
+                        //On crée un item favorite pour chaque entrée dans la liste
+                        try {
+                            addMenuItemFavorite(jsonElement.getAsJsonObject().get("name").getAsString(), jsonElement.getAsJsonObject().get("url").getAsString());
+                        } catch (MalformedURLException e) {
+                            loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
+                        }
+                    }
+                }
+            });
+            //Permet d'ajouter un favoris
+            miAddFavorite.setOnAction(actionEvent -> {
+                DialogPrompt dialogPrompt = new DialogPrompt();
+                dialogPrompt.setTitle(getInternationalizationBundle().getString("Add favorite"));
+                dialogPrompt.setHeaderText(getInternationalizationBundle().getString("Enter your favorite name"));
+                dialogPrompt.setContentText(getInternationalizationBundle().getString("Name"));
+                Optional<String> result = dialogPrompt.showAndWait();
+                result.ifPresent(name -> {
+                    //S'il y a un résultat on l'ajoute dans le menu et le sauve
+                    try {
+                        addMenuItemFavorite(result.get(), flURL.getText());
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("name", result.get());
+                        jsonObject.addProperty("url", flURL.getText());
+                        getConfigurationLayout().edit("layout.browser.favorites",jsonObject);
+                        getConfigurationLayout().write();
+                    } catch (ConfigurationException | IOException e) {
+                        ShowException showException = new ShowException(e);
+                        showException.show(getInternationalizationBundle());
+                    }
+                });
+            });
+            //On affiche l'url home
+            flURL.setText(home);
+            //on charge la page home
+            load(home);
+        } catch (Exception e){
+            showException(e);
+        }
     }
 
     @Override
     public void setLanguage() {
-        getTranslator(getInternationalizationBundle(),"button").translate(borderPaneContainer);
+        getTranslator(getInternationalizationBundle(),"button","mi").translate(borderPaneContainer);
     }
 
     /**

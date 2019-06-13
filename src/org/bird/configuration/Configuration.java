@@ -84,6 +84,20 @@ public class Configuration {
     }
 
     /**
+     * Edite ou Ajoute un JsonElement
+     * @param path
+     * @param jsonElement
+     * @throws ConfigurationException
+     */
+    public void edit(String path, JsonElement jsonElement) throws ConfigurationException {
+        JsonObject jsonObject = getParent(path);
+        if (jsonObject != null){
+            String property = Utils.groupOneString(property_regex, path);
+            jsonObject.add(property, jsonElement);
+        }
+    }
+
+    /**
      * Edite une propriété String
      * @param path
      * @param value

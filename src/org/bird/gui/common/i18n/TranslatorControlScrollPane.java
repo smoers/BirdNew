@@ -8,13 +8,13 @@ import javafx.scene.control.ScrollPane;
 /**
  * Retourne le node contenu dans l'objet TitledPane
  */
-public class TranslatorControlScrollPane extends TranslatorControl {
+public class TranslatorControlScrollPane extends TranslatorControl<Node> {
 
     /**
      *
      * @param node
      */
-    public TranslatorControlScrollPane(Node node) {
+    public TranslatorControlScrollPane(Object node) {
         super(node);
     }
 

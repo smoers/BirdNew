@@ -1,16 +1,16 @@
 package org.bird.gui.common.i18n;
 
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 
-public abstract class TranslatorControl implements ITranslatorControl{
 
-    protected Node node;
+public abstract class TranslatorControl<T> implements ITranslatorControl<T>{
 
-    public TranslatorControl(Node node) {
+    protected Object node;
+
+    public TranslatorControl(Object node) {
         this.node = node;
     }
 
     @Override
-    public abstract ObservableList<Node> getNodes();
+    public abstract ObservableList<T> getNodes();
 }

@@ -1,6 +1,7 @@
 package org.bird.gui.common.i18n;
 
 import javafx.scene.Node;
+import javafx.scene.control.MenuButton;
 import javafx.scene.layout.Pane;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,15 +27,15 @@ public class TranslatorControlBuilder {
      * @param node
      * @return
      */
-    public ITranslatorControl getTranslatorControl(Node node){
+    public ITranslatorControl getTranslatorControl(Object node){
         ITranslatorControl translatorControl = null;
-        if (node instanceof Pane){
+        if (node instanceof Pane) {
             translatorControl = new TranslatorControlPane(node);
         } else {
             String simpleName = node.getClass().getSimpleName();
             try {
                 Class<TranslatorControl> aClass = (Class<TranslatorControl>) Class.forName("org.bird.gui.common.i18n.TranslatorControl" + simpleName);
-                translatorControl = aClass.getDeclaredConstructor(Node.class).newInstance(node);
+                translatorControl = aClass.getDeclaredConstructor(Object.class).newInstance(node);
             } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 return null;
             }

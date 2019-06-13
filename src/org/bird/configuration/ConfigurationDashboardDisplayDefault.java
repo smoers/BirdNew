@@ -76,7 +76,7 @@ public class ConfigurationDashboardDisplayDefault extends Configuration {
     }
 
     /**
-     * Retourne la clé qui est true depuis le peth
+     * Retourne la clé qui est true depuis le path
      * @param path
      * @return
      * @throws ConfigurationException

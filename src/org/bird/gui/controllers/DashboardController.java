@@ -254,23 +254,6 @@ public class DashboardController extends ProtectedController implements Initiali
             miAddAuthor.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    try {
-                        URL url = new URL("http://www.elbakin.net/fantasy/roman/cycle/le-livre-des-martyrs-77");
-                        DataViewController dataViewController = new DataViewController(toolbar.getScene().getWindow());
-                        dataViewController.setTitle("Browser");
-                        dataViewController.setShowCancel(true);
-                        dataViewController.setUrl(url);
-                        dataViewController.show();
-                        /*WebEngine webEngine = new WebEngine(url.toExternalForm());
-                        Document document = webEngine.getDocument();
-                        Element element = document.getDocumentElement();
-                        NodeList list = element.getChildNodes();
-                        for  ( int i=0 ; i<list.getLength(); i++) {
-                            System.out.println(list.item(i).getNodeName());
-                        }*/
-                    } catch (IOException | ConfigurationException e) {
-                        showException(e);
-                    }
                 }
             });
 

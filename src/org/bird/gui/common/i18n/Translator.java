@@ -3,6 +3,7 @@ package org.bird.gui.common.i18n;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import org.bird.i18n.InternationalizationBundle;
 import org.bird.utils.Utils;
@@ -36,19 +37,28 @@ public class Translator {
      * @param pane
      */
     public void translate(Pane pane){
-        ArrayList<Node> nodes = getChildrenRecursive(pane, new ArrayList<Node>());
+        ArrayList<Object> nodes = getChildrenRecursive(pane, new ArrayList<Object>());
         List<String> list = new ArrayList<>(Arrays.asList(prefix));
 
-        nodes.forEach(new Consumer<Node>() {
+        nodes.forEach(new Consumer<Object>() {
             @Override
-            public void accept(Node node) {
+            public void accept(Object node) {
                 list.forEach(new Consumer<String>() {
                     @Override
                     public void accept(String s) {
                         String pattern = "^"+s;
-                        if (node.getId() != null && Utils.findString(pattern,node.getId()) && node instanceof Labeled){
+                        if (node instanceof Labeled){
+                            //Si le node est une instance de Labeled on le cast et lui applique la condition
                             Labeled labeled = (Labeled) node;
-                            labeled.setText(internationalizationBundle.getString(labeled.getText()));
+                            if (labeled.getId() != null && Utils.findString(pattern,labeled.getId())) {
+                                labeled.setText(internationalizationBundle.getString(labeled.getText()));
+                            }
+                        } else if(node instanceof MenuItem){
+                            //Si le node est une instance de MenuItem on le cast et lui applique la condition
+                            MenuItem menuItem = (MenuItem) node;
+                            if (menuItem.getId() != null && Utils.findString(pattern,menuItem.getId())) {
+                                menuItem.setText(internationalizationBundle.getString(menuItem.getText()));
+                            }
                         }
                     }
                 });
@@ -62,17 +72,19 @@ public class Translator {
      * @param list
      * @return
      */
-    private ArrayList<Node> getChildrenRecursive(Node node,ArrayList<Node> list){
+    private ArrayList<Object> getChildrenRecursive(Object node,ArrayList<Object> list){
 
         TranslatorControlBuilder translatorControlBuilder = TranslatorControlBuilder.getInstance();
         ITranslatorControl translatorControl = translatorControlBuilder.getTranslatorControl(node);
         if (translatorControl != null) {
-            ObservableList<Node> nodes = translatorControl.getNodes();
-            nodes.forEach(new Consumer<Node>() {
+            ObservableList<Object> nodes = translatorControl.getNodes();
+            nodes.forEach(new Consumer<Object>() {
                 @Override
-                public void accept(Node node) {
+                public void accept(Object node) {
                     list.add(node);
-                    getChildrenRecursive(node, list);
+                    if (node instanceof Node) {
+                        getChildrenRecursive(node, list);
+                    }
                 }
             });
         }
