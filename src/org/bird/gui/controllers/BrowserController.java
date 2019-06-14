@@ -9,6 +9,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +22,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
@@ -26,6 +30,8 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.bird.configuration.ConfigurationBuilder;
+import org.bird.configuration.ConfigurationFavoritesBrowser;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
@@ -35,10 +41,12 @@ import org.bird.gui.resources.controls.Favorite;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -65,11 +73,13 @@ public class BrowserController extends ProtectedController implements Initializa
     private WebEngine webEngine;
     private Stage stage = new Stage();
     private String title = "Browser";
+    private ConfigurationFavoritesBrowser configurationBrowser;
 
 
-    public BrowserController(Window owner) throws ConfigurationException {
+    public BrowserController(Window owner) throws ConfigurationException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.owner = owner;
-        favorites = getConfigurationLayout().get("layout.browser.favorites").getAsJsonArray();
+        configurationBrowser = configurationBuilder.<ConfigurationFavoritesBrowser>get("layout",ConfigurationFavoritesBrowser.class);
+        favorites = configurationBrowser.getFavorites();
         home = getConfigurationLayout().get("layout.browser.home").getAsString();
         search = getConfigurationLayout().get("layout.browser.search").getAsString();
         webEngine = webView.getEngine();
@@ -136,15 +146,17 @@ public class BrowserController extends ProtectedController implements Initializa
                     if (jsonElement.isJsonObject()) {
                         //On crée un item favorite pour chaque entrée dans la liste
                         try {
-                            addMenuItemFavorite(jsonElement.getAsJsonObject().get("name").getAsString(), jsonElement.getAsJsonObject().get("url").getAsString());
+                            addMenuItemFavorite(jsonElement.getAsJsonObject());
                         } catch (MalformedURLException e) {
                             loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
                         }
                     }
                 }
             });
+
             //Permet d'ajouter un favoris
             miAddFavorite.setOnAction(actionEvent -> {
+                System.out.println(actionEvent.getEventType().getName());
                 DialogPrompt dialogPrompt = new DialogPrompt();
                 dialogPrompt.setTitle(getInternationalizationBundle().getString("Add favorite"));
                 dialogPrompt.setHeaderText(getInternationalizationBundle().getString("Enter your favorite name"));
@@ -153,12 +165,12 @@ public class BrowserController extends ProtectedController implements Initializa
                 result.ifPresent(name -> {
                     //S'il y a un résultat on l'ajoute dans le menu et le sauve
                     try {
-                        addMenuItemFavorite(result.get(), flURL.getText());
                         JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("id", UUID.randomUUID().toString());
                         jsonObject.addProperty("name", result.get());
                         jsonObject.addProperty("url", flURL.getText());
-                        getConfigurationLayout().edit("layout.browser.favorites",jsonObject);
-                        getConfigurationLayout().write();
+                        addMenuItemFavorite(jsonObject);
+                        configurationBrowser.addFavorites(jsonObject);
                     } catch (ConfigurationException | IOException e) {
                         ShowException showException = new ShowException(e);
                         showException.show(getInternationalizationBundle());
@@ -199,14 +211,14 @@ public class BrowserController extends ProtectedController implements Initializa
 
     /**
      * Ajoute une entrée dans le menu des favoris
-     * @param name
-     * @param url
+     * @param jsonObject
      * @throws MalformedURLException
      */
-    private void addMenuItemFavorite(String name, String url) throws MalformedURLException {
+    private void addMenuItemFavorite(JsonObject jsonObject) throws MalformedURLException {
         Favorite favorite = new Favorite(
-                name,
-                url
+                jsonObject.get("id").getAsString(),
+                jsonObject.get("name").getAsString(),
+                jsonObject.get("url").getAsString()
         );
         favorite.setOnAction(actionEvent -> {
             Favorite item = (Favorite) actionEvent.getSource();

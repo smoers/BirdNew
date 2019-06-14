@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -277,7 +278,7 @@ public class DashboardController extends ProtectedController implements Initiali
                     try {
                         BrowserController controller = new BrowserController(toolbar.getScene().getWindow());
                         controller.show();
-                    } catch (ConfigurationException | IOException e) {
+                    } catch (ConfigurationException | IOException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                         showException(e);
                     }
                 }

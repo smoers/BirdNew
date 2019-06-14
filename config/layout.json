@@ -36,17 +36,24 @@
     "list_dashboard": {
       "image_view_height": 100.0
     },
-    "browser":{
+    "browser": {
       "home": "https://www.google.be/",
-      "search": "https://www.google.be/search?q=%%1%%",
+      "search": "https://www.google.be/search?q\u003d%%1%%",
       "favorites": [
         {
-          "name":  "Elbakin",
+          "id": "d69c477b-212f-4eed-92ff-ad1db5e9cef9",
+          "name": "Elbakin",
           "url": "http://www.elbakin.net/"
         },
         {
+          "id": "4a9cec3f-8d6d-44ca-bfc3-6dacb2ad9355",
           "name": "Amazon",
-          "url": "https://www.amazon.fr/livre-achat-occasion-litterature-roman/b?ie=UTF8&node=301061&ref_=sd_allcat_lv"
+          "url": "https://www.amazon.fr/livre-achat-occasion-litterature-roman/b?ie\u003dUTF8\u0026node\u003d301061\u0026ref_\u003dsd_allcat_lv"
+        },
+        {
+          "id": "5e585749-f315-4423-8e27-427c2f39e736",
+          "name": "TDH",
+          "url": "http://www.tdh.be/"
         }
       ]
     }

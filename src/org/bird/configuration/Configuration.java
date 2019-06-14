@@ -19,7 +19,8 @@ public class Configuration {
 
     public enum Paths {
         DASHBOARD_DISPLAY_DEFAULT_TYPE("layout.dashboard_display_default.type"),
-        DASHBOARD_DISPLAY_DEFAULT_MODE("layout.dashboard_display_default.mode");
+        DASHBOARD_DISPLAY_DEFAULT_MODE("layout.dashboard_display_default.mode"),
+        FAVORITES_BROWSER("layout.browser.favorites");
 
         private String path = "";
 
@@ -51,6 +52,16 @@ public class Configuration {
      */
     public JsonElement get(){
         return jsonElement;
+    }
+
+    /**
+     * Retourne une objet JsonElement représentant une partie du fichier de condiguration et ce au départ d'un enum
+     * @param paths
+     * @return
+     * @throws ConfigurationException
+     */
+    public JsonElement get(Configuration.Paths paths) throws ConfigurationException {
+        return get(paths.getPath());
     }
 
     /**
@@ -98,6 +109,14 @@ public class Configuration {
     }
 
     /**
+     * Edite ou Ajoute un JsonElement
+     * @param paths
+     * @param jsonElement
+     * @throws ConfigurationException
+     */
+    public void edit(Configuration.Paths paths, JsonElement jsonElement) throws ConfigurationException { edit(paths.getPath(),jsonElement);}
+
+    /**
      * Edite une propriété String
      * @param path
      * @param value
@@ -112,6 +131,14 @@ public class Configuration {
     }
 
     /**
+     * Edite une propriété String
+     * @param paths
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(Configuration.Paths paths, String value) throws ConfigurationException { edit(paths.getPath(),value);}
+
+    /**
      * Edite une propriété Number
      * @param path
      * @param value
@@ -124,6 +151,14 @@ public class Configuration {
             jsonObject.addProperty(property, value);
         }
     }
+
+    /**
+     * Edite une propriété Number
+     * @param paths
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(Configuration.Paths paths, Number value) throws ConfigurationException { edit(paths.getPath(),value);}
 
     /**
      * Edite une propriété Character
@@ -141,6 +176,14 @@ public class Configuration {
 
     /**
      * Edite une propriété Character
+     * @param paths
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(Configuration.Paths paths, Character value) throws ConfigurationException { edit(paths.getPath(),value);}
+
+    /**
+     * Edite une propriété Character
      * @param path
      * @param value
      * @throws ConfigurationException
@@ -152,6 +195,14 @@ public class Configuration {
             jsonObject.addProperty(property, value);
         }
     }
+
+    /**
+     * Edite une propriété Boolean
+     * @param paths
+     * @param value
+     * @throws ConfigurationException
+     */
+    public void edit(Configuration.Paths paths, Boolean value) throws ConfigurationException { edit(paths.getPath(),value);}
 
     /**
      * Retourne l'objet parent de la clé passé en paramètre
