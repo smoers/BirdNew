@@ -9,18 +9,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -30,7 +24,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.ConfigurationFavoritesBrowser;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
@@ -64,6 +57,8 @@ public class BrowserController extends ProtectedController implements Initializa
     private BorderPane borderPaneContainer;
     @FXML
     private MenuItem miAddFavorite;
+    @FXML
+    private MenuItem miEditDeleteFavorites;
 
     private Window owner;
     private JsonArray favorites;
@@ -177,6 +172,8 @@ public class BrowserController extends ProtectedController implements Initializa
                     }
                 });
             });
+
+
             //On affiche l'url home
             flURL.setText(home);
             //on charge la page home

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class DataViewController implements Initializable {
+public abstract class DataViewController<T> implements Initializable {
 
     @FXML
     private Button buttonSave;
@@ -40,15 +40,11 @@ public class DataViewController implements Initializable {
     @FXML
     private BorderPane borderPane;
 
-    private TextArea txText;
-    private ListView<String> lvList;
-    private WebView webView;
+    protected T content;
+
     private boolean showCancel = true;
     private boolean showSave = true;
     private String title;
-    private String text = null;
-    private ObservableList<String> list = null;
-    private URL url = null;
     private Window owner;
     private Stage stage = new Stage();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
@@ -61,18 +57,7 @@ public class DataViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttonCancel.setVisible(isShowCancel());
         buttonSave.setVisible(isShowSave());
-        /**
-         * Si un texte est disponible il sera affiché en priorité
-         * Dans le cas contraire si une list a été chargée, elle sera affichée.
-        **/
-
-        if (getText() != null){
-            borderPane.setCenter(showText());
-        } else if (getList() != null){
-            borderPane.setCenter(showList());
-        } else if (getUrl() != null){
-            borderPane.setCenter(showWebView());
-        }
+        borderPane.setCenter(displayContent());
 
         /** Events **/
         buttonSave.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -160,36 +145,18 @@ public class DataViewController implements Initializable {
     }
 
     /**
-     *
-     * @return
+     * Charge le contenu à afficher
+     * @param content
      */
-    public String getText() {
-        return text;
+    public void setContent(T content){
+        this.content = content;
     }
 
     /**
-     *
-     * @param text
+     * retourne le contenu afficher
+     * @return
      */
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public ObservableList<String> getList() {
-        return list;
-    }
-
-    public void setList(ObservableList<String> list) {
-        this.list = list;
-    }
-
-    public URL getUrl() {
-        return url;
-    }
-
-    public void setUrl(URL url) {
-        this.url = url;
-    }
+    public T getContent(){ return content; }
 
     /**
      * Ajoute un listener
@@ -213,38 +180,11 @@ public class DataViewController implements Initializable {
     }
 
     /**
-     * défini une TextArea si il y a un text de chargé
+     * Construction de l'objet permettant l'affichage des données
+     * passées au travers de setContent()
      * @return
      */
-    private AnchorPane showText(){
-        txText = new TextArea();
-        txText.setWrapText(true);
-        txText.setEditable(isShowSave());
-        txText.setText(getText());
-        AnchorPane node = new DefaultAnchorPaneZero(txText);
-        node.setPadding(new Insets(5.0));
-        return node;
-    }
+    protected abstract AnchorPane displayContent();
 
-    /**
-     * défini un ListView si il a une list de chargée
-     * @return
-     */
-    private AnchorPane showList(){
-        lvList = new ListView<>();
-        lvList.setEditable(isShowSave());
-        lvList.setItems(getList());
-        AnchorPane node = new DefaultAnchorPaneZero(lvList);
-        node.setPadding(new Insets(5.0));
-        return node;
-    }
 
-    private AnchorPane showWebView(){
-        webView = new WebView();
-        WebEngine webEngine = webView.getEngine();
-        webEngine.load(url.toExternalForm());
-        AnchorPane node = new DefaultAnchorPaneZero(webView);
-        node.setPadding(new Insets(5.0));
-        return node;
-    }
 }

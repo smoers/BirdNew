@@ -6,7 +6,7 @@ import javafx.beans.value.ObservableValue;
 import java.util.HashMap;
 
 /**
- * Cette classe est chargée avec la object SimpleObjectProperty
+ * Cette classe est chargée avec la liste des objects SimpleObjectProperty
  * Cet objet contient la données à afficher dans la cellule
  */
 public class ConverterTableViewColumn {
@@ -23,7 +23,7 @@ public class ConverterTableViewColumn {
     }
 
     /**
-     * Le nom de la colonne et l'objectà afficher
+     * Le nom de la colonne et l'object à afficher
      * @param columnName
      * @param initialValue
      * @param <T>

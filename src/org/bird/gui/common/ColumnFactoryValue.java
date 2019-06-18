@@ -1,6 +1,5 @@
 package org.bird.gui.common;
 
-
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;

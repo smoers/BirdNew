@@ -112,10 +112,10 @@ public class DataSheetBookController extends DataSheetController<Book> implement
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    DataViewController textLongController = new DataViewController(lbPresentation.getScene().getWindow());
+                    DataViewController textLongController = new DataViewTextController(lbPresentation.getScene().getWindow());
                     textLongController.setShowSave(false);
                     textLongController.setTitle(lbPresentation.getText());
-                    textLongController.setText(flPresentation.getLabel().getOriginalText());
+                    textLongController.setContent(flPresentation.getLabel().getOriginalText());
                     textLongController.addOnLeftClickListener(new OnLeftClickListener() {
                         @Override
                         public void onLeftClick(OnLeftClickEvent evt) {
@@ -134,10 +134,10 @@ public class DataSheetBookController extends DataSheetController<Book> implement
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    DataViewController textLongController = new DataViewController(lbISBN.getScene().getWindow());
+                    DataViewController textLongController = new DataViewObservableListController(lbISBN.getScene().getWindow());
                     textLongController.setShowSave(false);
                     textLongController.setTitle(lbISBN.getText());
-                    textLongController.setList(flISBN.getObservableList());
+                    textLongController.setContent(flISBN.getObservableList());
                     textLongController.addOnLeftClickListener(new OnLeftClickListener() {
                         @Override
                         public void onLeftClick(OnLeftClickEvent evt) {
@@ -156,10 +156,10 @@ public class DataSheetBookController extends DataSheetController<Book> implement
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    DataViewController textLongController = new DataViewController(lbIllustrator.getScene().getWindow());
+                    DataViewController textLongController = new DataViewObservableListController(lbIllustrator.getScene().getWindow());
                     textLongController.setShowSave(false);
                     textLongController.setTitle(lbIllustrator.getText());
-                    textLongController.setList(flIllustrator.getObservableList());
+                    textLongController.setContent(flIllustrator.getObservableList());
                     textLongController.addOnLeftClickListener(new OnLeftClickListener() {
                         @Override
                         public void onLeftClick(OnLeftClickEvent evt) {

@@ -89,10 +89,10 @@ public class DataSheetAuthorController extends DataSheetController<Author> imple
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    DataViewController textLongController = new DataViewController(titledPane.getScene().getWindow());
+                    DataViewController textLongController = new DataViewTextController(titledPane.getScene().getWindow());
                     textLongController.setShowSave(false);
                     textLongController.setTitle(lbBiography.getText());
-                    textLongController.setText(fltextLong.getLabel().getOriginalText());
+                    textLongController.setContent(fltextLong.getLabel().getOriginalText());
                     textLongController.addOnLeftClickListener(new OnLeftClickListener() {
                         @Override
                         public void onLeftClick(OnLeftClickEvent evt) {
@@ -112,10 +112,10 @@ public class DataSheetAuthorController extends DataSheetController<Author> imple
             @Override
             public void onLeftClick(OnLeftClickEvent evt) {
                 try {
-                    DataViewController dataViewController = new DataViewController(titledPane.getScene().getWindow());
+                    DataViewController dataViewController = new DataViewTextController(titledPane.getScene().getWindow());
                     dataViewController.setShowSave(false);
                     dataViewController.setTitle(lbComment.getText());
-                    dataViewController.setText(flComment.getLabel().getOriginalText());
+                    dataViewController.setContent(flComment.getLabel().getOriginalText());
                     dataViewController.addOnLeftClickListener(new OnLeftClickListener() {
                         @Override
                         public void onLeftClick(OnLeftClickEvent evt) {
