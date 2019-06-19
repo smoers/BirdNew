@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -15,8 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
@@ -26,12 +28,18 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.bird.configuration.ConfigurationFavoritesBrowser;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.gui.common.ColumnFactoryValue;
+import org.bird.gui.common.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
 import org.bird.gui.common.dialog.DialogPrompt;
+import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
 import org.bird.gui.resources.controls.Favorite;
 import org.bird.gui.resources.images.ImageProvider;
+import org.bird.logger.ELoggers;
+import org.bird.logger.Loggers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -69,6 +77,7 @@ public class BrowserController extends ProtectedController implements Initializa
     private Stage stage = new Stage();
     private String title = "Browser";
     private ConfigurationFavoritesBrowser configurationBrowser;
+    private Loggers loggers = Loggers.getInstance();
 
 
     public BrowserController(Window owner) throws ConfigurationException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -79,6 +88,7 @@ public class BrowserController extends ProtectedController implements Initializa
         search = getConfigurationLayout().get("layout.browser.search").getAsString();
         webEngine = webView.getEngine();
         setInternationalizationBundle(internationalizationBuilder.getInternationalizationBundle(getClass()));
+        loggers.setDefaultLogger(ELoggers.GUI);
     }
 
     /**
@@ -173,7 +183,68 @@ public class BrowserController extends ProtectedController implements Initializa
                 });
             });
 
+            miEditDeleteFavorites.setOnAction(actionEvent -> {
+                //Objet DataView
+                DataViewTableController dataView = new DataViewTableController(borderPaneContainer.getScene().getWindow());
+                dataView.setShowCancel(true);
+                dataView.setShowSave(true);
+                dataView.setEditable(true);
+                dataView.addOnLeftClickListener(new OnLeftClickListener() {
+                    @Override
+                    public void onLeftClick(OnLeftClickEvent evt) {
+                        if (evt.getId().equalsIgnoreCase("buttonSave")){
+                            dataView.getData().forEach(new Consumer<ConverterTableViewColumn>() {
+                                @Override
+                                public void accept(ConverterTableViewColumn converterTableViewColumn) {
+                                    JsonObject jsonObject = (JsonObject) converterTableViewColumn.getSource();
+                                    jsonObject.addProperty("name",converterTableViewColumn.<String>get("name").getValue());
+                                    jsonObject.addProperty("url",converterTableViewColumn.<String>get("url").getValue());
+                                    try {
+                                        configurationBrowser.editFavorites(jsonObject);
+                                    } catch (ConfigurationException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                        dataView.close();
+                    }
+                });
+                //Crée les colonnes
+                TableColumn<ConverterTableViewColumn,String> nameCol = new TableColumn<>("Name");
+                nameCol.setCellValueFactory(new ColumnFactoryValue<String>("name"));
+                nameCol.setCellFactory(TextFieldTableCell.<ConverterTableViewColumn>forTableColumn());
+                TableColumn<ConverterTableViewColumn,String> urlCol = new TableColumn<>("Url");
+                urlCol.setCellValueFactory(new ColumnFactoryValue<String>("url"));
+                urlCol.setCellFactory(TextFieldTableCell.<ConverterTableViewColumn>forTableColumn());
+                //Ajoute les colonnes
+                dataView.setContent(FXCollections.observableArrayList(nameCol, urlCol));
+                JsonArray items = null;
+                ObservableList<ConverterTableViewColumn> data = FXCollections.observableArrayList();
+                try {
+                    items = configurationBrowser.getFavorites();
+                    items.forEach(new Consumer<JsonElement>() {
+                        @Override
+                        public void accept(JsonElement jsonElement) {
+                            if (jsonElement.isJsonObject()) {
+                                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                                ConverterTableViewColumn column = new ConverterTableViewColumn(jsonElement);
+                                column.<String>set("name",jsonObject.get("name").getAsString());
+                                column.<String>set("url",jsonObject.get("url").getAsString());
+                                data.add(column);
+                            }
 
+                        }
+                    });
+                    dataView.setData(data);
+                    dataView.show();
+                } catch (ConfigurationException | IOException e) {
+                    loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
+                }
+
+            });
             //On affiche l'url home
             flURL.setText(home);
             //on charge la page home

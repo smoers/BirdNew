@@ -70,6 +70,13 @@ public class Loggers {
     }
 
     /**
+     * Retourne le logger demandé
+     * @param eLoggers
+     * @return
+     */
+    public Logger getLogger(ELoggers eLoggers){ return getLogger(eLoggers.getPath());}
+
+    /**
      * Retourne le current default logger
      * @return
      */
@@ -84,6 +91,12 @@ public class Loggers {
     public void setDefaultLogger(String defaultLoggerName) {
         this.defaultLogger = getLogger(defaultLoggerName);
     }
+
+    /**
+     * Defini le default logger
+     * @param eLoggers
+     */
+    public void setDefaultLogger(ELoggers eLoggers) { setDefaultLogger(eLoggers.getPath());}
 
     /**
      * log un message
