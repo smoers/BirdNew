@@ -9,5 +9,5 @@ public abstract class Transposer<T,S> implements ITransposer<T> {
     }
 
     @Override
-    public abstract T getValue();
+    public abstract T getValue(String propertyName);
 }

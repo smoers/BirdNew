@@ -7,10 +7,12 @@ public abstract class TableColumnExtended<T> implements ITableColumnExtended<T> 
 
     protected String title;
     protected String propertyName;
+    protected Class<ITransposer> transposer;
 
-    public TableColumnExtended(String title, String propertyName) {
+    public TableColumnExtended(String title, String propertyName, Class<ITransposer> transposer) {
         this.title = title;
         this.propertyName = propertyName;
+        this.transposer = transposer;
     }
 
     @Override
@@ -25,4 +27,9 @@ public abstract class TableColumnExtended<T> implements ITableColumnExtended<T> 
 
     @Override
     public abstract TableColumn<ConverterTableViewColumn, T> get();
+
+    @Override
+    public Class<ITransposer> getTransposer() {
+        return transposer;
+    }
 }

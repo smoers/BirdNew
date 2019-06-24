@@ -10,4 +10,6 @@ public interface ITableColumnExtended<T> {
     public String getPropertyName();
 
     public TableColumn<ConverterTableViewColumn,T> get();
+
+    public Class<ITransposer> getTransposer();
 }

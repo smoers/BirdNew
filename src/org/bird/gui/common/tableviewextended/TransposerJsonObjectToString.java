@@ -9,7 +9,7 @@ public class TransposerJsonObjectToString extends Transposer<String, JsonObject>
     }
 
     @Override
-    public String getValue() {
-        return null;
+    public String getValue(String propertyName) {
+        return object.get(propertyName).getAsString();
     }
 }
