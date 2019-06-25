@@ -11,5 +11,5 @@ public interface ITableColumnExtended<T> {
 
     public TableColumn<ConverterTableViewColumn,T> get();
 
-    public Class<ITransposer> getTransposer();
+    public Class getTransposer();
 }

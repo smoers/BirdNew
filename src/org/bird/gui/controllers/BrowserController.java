@@ -33,6 +33,7 @@ import org.bird.gui.common.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
 import org.bird.gui.common.dialog.DialogPrompt;
+import org.bird.gui.common.tableviewextended.*;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
@@ -40,14 +41,13 @@ import org.bird.gui.resources.controls.Favorite;
 import org.bird.gui.resources.images.ImageProvider;
 import org.bird.logger.ELoggers;
 import org.bird.logger.Loggers;
+import org.bird.utils.GsonUtils;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -145,19 +145,7 @@ public class BrowserController extends ProtectedController implements Initializa
                 }
             });
             //Charge les favoris dans le menu
-            favorites.forEach(new Consumer<JsonElement>() {
-                @Override
-                public void accept(JsonElement jsonElement) {
-                    if (jsonElement.isJsonObject()) {
-                        //On crée un item favorite pour chaque entrée dans la liste
-                        try {
-                            addMenuItemFavorite(jsonElement.getAsJsonObject());
-                        } catch (MalformedURLException e) {
-                            loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
-                        }
-                    }
-                }
-            });
+            createMenuItemFavorite();
 
             //Permet d'ajouter un favoris
             miAddFavorite.setOnAction(actionEvent -> {
@@ -213,32 +201,14 @@ public class BrowserController extends ProtectedController implements Initializa
                     }
                 });
                 //Crée les colonnes
-                TableColumn<ConverterTableViewColumn,String> nameCol = new TableColumn<>("Name");
-                nameCol.setCellValueFactory(new ColumnFactoryValue<String>("name"));
-                nameCol.setCellFactory(TextFieldTableCell.<ConverterTableViewColumn>forTableColumn());
-                TableColumn<ConverterTableViewColumn,String> urlCol = new TableColumn<>("Url");
-                urlCol.setCellValueFactory(new ColumnFactoryValue<String>("url"));
-                urlCol.setCellFactory(TextFieldTableCell.<ConverterTableViewColumn>forTableColumn());
-                //Ajoute les colonnes
-                dataView.setContent(FXCollections.observableArrayList(nameCol, urlCol));
-                JsonArray items = null;
-                ObservableList<ConverterTableViewColumn> data = FXCollections.observableArrayList();
+                List<ITableColumnExtended> listColumn = new ArrayList<>();
+                listColumn.add(new TableColumnStringExtended("Name","name", TransposerJsonObjectToString.class));
+                listColumn.add(new TableColumnStringExtended("Url","url",TransposerJsonObjectToString.class));
                 try {
-                    items = configurationBrowser.getFavorites();
-                    items.forEach(new Consumer<JsonElement>() {
-                        @Override
-                        public void accept(JsonElement jsonElement) {
-                            if (jsonElement.isJsonObject()) {
-                                JsonObject jsonObject = jsonElement.getAsJsonObject();
-                                ConverterTableViewColumn column = new ConverterTableViewColumn(jsonElement);
-                                column.<String>set("name",jsonObject.get("name").getAsString());
-                                column.<String>set("url",jsonObject.get("url").getAsString());
-                                data.add(column);
-                            }
-
-                        }
-                    });
-                    dataView.setData(data);
+                    List<JsonElement> listData = GsonUtils.ConvertJsonArrayToList(configurationBrowser.getFavorites());
+                    TableViewColumDataFactory factory = new TableViewColumDataFactory(listColumn, listData);
+                    dataView.setContent(factory.getTableColumn());
+                    dataView.setData(factory.getTableData());
                     dataView.show();
                 } catch (ConfigurationException | IOException e) {
                     loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
@@ -275,6 +245,41 @@ public class BrowserController extends ProtectedController implements Initializa
                 load(search.replace("%%1%%", strURL));
             }
         }
+    }
+
+    /**
+     * Supprime les favoris
+     */
+    private void cleanupMenuItemFavorite(){
+        buttonBrowserFavorite.getItems().forEach(new Consumer<MenuItem>() {
+            @Override
+            public void accept(MenuItem menuItem) {
+                if (menuItem instanceof Favorite){
+                    buttonBrowserFavorite.getItems().remove(menuItem);
+                }
+            }
+        });
+    }
+
+    /**
+     * Création du Menu avec les favoris
+     * @throws ConfigurationException
+     */
+    private void createMenuItemFavorite() throws ConfigurationException {
+        favorites = configurationBrowser.getFavorites();
+        favorites.forEach(new Consumer<JsonElement>() {
+            @Override
+            public void accept(JsonElement jsonElement) {
+                if (jsonElement.isJsonObject()) {
+                    //On crée un item favorite pour chaque entrée dans la liste
+                    try {
+                        addMenuItemFavorite(jsonElement.getAsJsonObject());
+                    } catch (MalformedURLException e) {
+                        loggers.error(logger, loggers.messageFactory.newMessage("Malformed URL", this));
+                    }
+                }
+            }
+        });
     }
 
     /**

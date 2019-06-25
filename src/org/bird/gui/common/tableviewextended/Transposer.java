@@ -1,10 +1,10 @@
 package org.bird.gui.common.tableviewextended;
 
-public abstract class Transposer<T,S> implements ITransposer<T> {
+public abstract class Transposer<T> implements ITransposer<T> {
 
-    protected S object;
+    protected Object object;
 
-    public Transposer(S object) {
+    public Transposer(Object object) {
         this.object = object;
     }
 

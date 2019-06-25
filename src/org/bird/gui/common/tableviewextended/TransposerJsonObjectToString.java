@@ -2,14 +2,15 @@ package org.bird.gui.common.tableviewextended;
 
 import com.google.gson.JsonObject;
 
-public class TransposerJsonObjectToString extends Transposer<String, JsonObject> {
+public class TransposerJsonObjectToString extends Transposer<String> {
 
-    public TransposerJsonObjectToString(JsonObject object) {
+    public TransposerJsonObjectToString(Object object) {
         super(object);
     }
 
     @Override
     public String getValue(String propertyName) {
-        return object.get(propertyName).getAsString();
+        JsonObject jsonObject = (JsonObject) object;
+        return jsonObject.get(propertyName).getAsString();
     }
 }

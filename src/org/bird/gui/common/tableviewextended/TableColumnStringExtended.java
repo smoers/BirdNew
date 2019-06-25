@@ -7,7 +7,7 @@ import org.bird.gui.common.ConverterTableViewColumn;
 
 public class TableColumnStringExtended extends TableColumnExtended<String> {
 
-    public TableColumnStringExtended(String title, String propertyName, Class<ITransposer> transposer) {
+    public TableColumnStringExtended(String title, String propertyName, Class<?> transposer) {
         super(title, propertyName, transposer);
     }
 

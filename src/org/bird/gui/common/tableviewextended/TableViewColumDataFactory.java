@@ -15,8 +15,9 @@ public class TableViewColumDataFactory {
     private ObservableList<TableColumn<ConverterTableViewColumn,?>> observableListColumn = FXCollections.observableArrayList();
     private ObservableList<ConverterTableViewColumn> observableListData = FXCollections.observableArrayList();
 
-    public TableViewColumDataFactory(List<ITableColumnExtended> listColumn) {
+    public TableViewColumDataFactory(List<ITableColumnExtended> listColumn, List listData) {
         this.listColumn = listColumn;
+        this.listData = listData;
         initialize();
     }
 
@@ -43,9 +44,12 @@ public class TableViewColumDataFactory {
                         Class<ITransposer> clazz = iTableColumnExtended.getTransposer();
                         String propertyName = iTableColumnExtended.getPropertyName();
                         ITransposer transposer = transposerFactory.getTransposerInstance(clazz,o);
-                        column.set(iTableColumnExtended.getPropertyName(),transposer.getValue(iTableColumnExtended.getPropertyName()));
+                        if (null != transposer) {
+                            column.set(iTableColumnExtended.getPropertyName(), transposer.getValue(iTableColumnExtended.getPropertyName()));
+                        }
                     }
                 });
+                observableListData.add(column);
             }
         });
 

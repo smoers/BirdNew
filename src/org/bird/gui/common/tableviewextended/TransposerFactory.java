@@ -25,7 +25,7 @@ public class TransposerFactory {
         String name = clazz.getCanonicalName();
         try {
             Class<ITransposer> aClass = (Class<ITransposer>) Class.forName(name);
-            transposer = aClass.getDeclaredConstructor(Object.class).newInstance(object);
+            transposer = aClass.getDeclaredConstructor(Object.class).newInstance(((Object) object));
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             loggers.error(loggers.messageFactory.newMessage(e.getMessage(), this));
             return null;
