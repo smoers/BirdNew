@@ -170,7 +170,9 @@ public class BrowserController extends ProtectedController implements Initializa
                     }
                 });
             });
-
+            /**
+             * Gestion de la suppresion et de la modification d'un favori
+             */
             miEditDeleteFavorites.setOnAction(actionEvent -> {
                 //Objet DataView
                 DataViewTableController dataView = new DataViewTableController(borderPaneContainer.getScene().getWindow());
@@ -189,10 +191,10 @@ public class BrowserController extends ProtectedController implements Initializa
                                     jsonObject.addProperty("url",converterTableViewColumn.<String>get("url").getValue());
                                     try {
                                         configurationBrowser.editFavorites(jsonObject);
-                                    } catch (ConfigurationException e) {
-                                        e.printStackTrace();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                        cleanupMenuItemFavorite();
+                                        createMenuItemFavorite();
+                                    } catch (ConfigurationException | IOException e) {
+                                        loggers.error(logger.getMessageFactory().newMessage(e.getMessage(),this));
                                     }
                                 }
                             });
@@ -204,6 +206,7 @@ public class BrowserController extends ProtectedController implements Initializa
                 List<ITableColumnExtended> listColumn = new ArrayList<>();
                 listColumn.add(new TableColumnStringExtended("Name","name", TransposerJsonObjectToString.class));
                 listColumn.add(new TableColumnStringExtended("Url","url",TransposerJsonObjectToString.class));
+
                 try {
                     List<JsonElement> listData = GsonUtils.ConvertJsonArrayToList(configurationBrowser.getFavorites());
                     TableViewColumDataFactory factory = new TableViewColumDataFactory(listColumn, listData);
@@ -255,7 +258,12 @@ public class BrowserController extends ProtectedController implements Initializa
             @Override
             public void accept(MenuItem menuItem) {
                 if (menuItem instanceof Favorite){
-                    buttonBrowserFavorite.getItems().remove(menuItem);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            buttonBrowserFavorite.getItems().remove(menuItem);
+                        }
+                    });
                 }
             }
         });
