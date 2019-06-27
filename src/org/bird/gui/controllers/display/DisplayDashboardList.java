@@ -9,7 +9,7 @@ import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.query.Paginator;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.tableview.ConverterTableViewColumn;
 import org.bird.gui.events.OnProcessEvent;
 import org.bird.gui.events.OnProgressChangeEvent;
 import org.bird.gui.events.OnSelectedEvent;

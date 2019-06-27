@@ -1,4 +1,4 @@
-package org.bird.gui.common.tableviewextended;
+package org.bird.gui.common.tableview.extended;
 
 import org.apache.logging.log4j.Logger;
 import org.bird.logger.ELoggers;

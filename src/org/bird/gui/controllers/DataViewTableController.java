@@ -6,7 +6,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.tableview.ConverterTableViewColumn;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
 
 /**

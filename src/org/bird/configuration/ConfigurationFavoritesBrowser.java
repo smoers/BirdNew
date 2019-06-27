@@ -8,6 +8,9 @@ import org.bird.configuration.exceptions.ConfigurationException;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * Etend la classe Configuration pour y ajouter les méthodes de gestion des Favoris
+ */
 public class ConfigurationFavoritesBrowser extends Configuration {
     /**
      * Contructeur
@@ -19,10 +22,21 @@ public class ConfigurationFavoritesBrowser extends Configuration {
         super(jsonElement, pathFileName);
     }
 
+    /**
+     * Liste des favoris
+     * @return
+     * @throws ConfigurationException
+     */
     public JsonArray getFavorites() throws ConfigurationException {
         return get(Paths.FAVORITES_BROWSER).getAsJsonArray();
     }
 
+    /**
+     * Ajoute un favori
+     * @param jsonObject
+     * @throws ConfigurationException
+     * @throws IOException
+     */
     public void addFavorites(JsonObject jsonObject) throws ConfigurationException, IOException {
         JsonArray jsonArray = getFavorites();
         jsonArray.add(jsonObject);
@@ -30,6 +44,12 @@ public class ConfigurationFavoritesBrowser extends Configuration {
         write();
     }
 
+    /**
+     * Edite un favori
+     * @param jsonObject
+     * @throws ConfigurationException
+     * @throws IOException
+     */
     public void editFavorites(JsonObject jsonObject) throws ConfigurationException, IOException {
         JsonArray jsonArray = getFavorites();
         jsonArray.forEach(action -> {
@@ -45,6 +65,12 @@ public class ConfigurationFavoritesBrowser extends Configuration {
         write();
     }
 
+    /**
+     * Supprime un favori
+     * @param jsonObject
+     * @throws ConfigurationException
+     * @throws IOException
+     */
     public void removeFavorites(JsonObject jsonObject) throws ConfigurationException, IOException {
         JsonArray jsonArray = getFavorites();
         jsonArray.remove(jsonObject);

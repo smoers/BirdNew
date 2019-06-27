@@ -1,4 +1,4 @@
-package org.bird.gui.common;
+package org.bird.gui.common.tableview;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;

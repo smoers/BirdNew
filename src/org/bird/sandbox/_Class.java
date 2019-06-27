@@ -1,6 +1,6 @@
 package org.bird.sandbox;
 
-import org.bird.gui.common.tableviewextended.TransposerJsonObjectToString;
+import org.bird.gui.common.tableview.extended.TransposerJsonObjectToString;
 
 public class _Class {
 

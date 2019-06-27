@@ -1,3 +1,19 @@
+/*
+ * Copyright [2019] Moers Serge
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.bird.gui.controllers;
 
 import com.google.gson.JsonArray;
@@ -6,8 +22,6 @@ import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -17,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -28,12 +41,11 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.bird.configuration.ConfigurationFavoritesBrowser;
 import org.bird.configuration.exceptions.ConfigurationException;
-import org.bird.gui.common.ColumnFactoryValue;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.tableview.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
 import org.bird.gui.common.dialog.DialogPrompt;
-import org.bird.gui.common.tableviewextended.*;
+import org.bird.gui.common.tableview.extended.*;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
@@ -80,6 +92,15 @@ public class BrowserController extends ProtectedController implements Initializa
     private Loggers loggers = Loggers.getInstance();
 
 
+    /**
+     * Constructeur
+     * @param owner
+     * @throws ConfigurationException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public BrowserController(Window owner) throws ConfigurationException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         this.owner = owner;
         configurationBrowser = configurationBuilder.<ConfigurationFavoritesBrowser>get("layout",ConfigurationFavoritesBrowser.class);
@@ -105,7 +126,14 @@ public class BrowserController extends ProtectedController implements Initializa
         stage.setTitle(title);
         stage.initModality(Modality.NONE);
         stage.initOwner(owner);
+        stage.widthProperty().addListener((observableValue, number, t1) ->{
+            System.out.println("Stage: " + number +" : "+ t1);
+        });
+        stage.getScene().widthProperty().addListener(((observableValue, number, t1) -> {
+            System.out.println("Scene: " + number +" : "+t1);
+        }));
         stage.show();
+
     }
 
     @Override
@@ -186,18 +214,30 @@ public class BrowserController extends ProtectedController implements Initializa
                             dataView.getData().forEach(new Consumer<ConverterTableViewColumn>() {
                                 @Override
                                 public void accept(ConverterTableViewColumn converterTableViewColumn) {
+                                    //récurère la valeur du checkbox afin de savoir si le favori doit être supprimé
+                                    CheckBox checkBox = converterTableViewColumn.<CheckBox>get("delete").getValue();
+                                    //si pas selecté le favori est sauvegardé
                                     JsonObject jsonObject = (JsonObject) converterTableViewColumn.getSource();
-                                    jsonObject.addProperty("name",converterTableViewColumn.<String>get("name").getValue());
-                                    jsonObject.addProperty("url",converterTableViewColumn.<String>get("url").getValue());
+                                    jsonObject.addProperty("name", converterTableViewColumn.<String>get("name").getValue());
+                                    jsonObject.addProperty("url", converterTableViewColumn.<String>get("url").getValue());
                                     try {
-                                        configurationBrowser.editFavorites(jsonObject);
-                                        cleanupMenuItemFavorite();
-                                        createMenuItemFavorite();
+                                        if (checkBox.isSelected()) {
+                                            configurationBrowser.removeFavorites(jsonObject);
+                                        } else {
+                                            configurationBrowser.editFavorites(jsonObject);
+                                        }
                                     } catch (ConfigurationException | IOException e) {
                                         loggers.error(logger.getMessageFactory().newMessage(e.getMessage(),this));
                                     }
+
                                 }
                             });
+                            try {
+                                cleanupMenuItemFavorite();
+                                createMenuItemFavorite();
+                            } catch (ConfigurationException e) {
+                                loggers.error(logger.getMessageFactory().newMessage(e.getMessage(),this));
+                            }
                         }
                         dataView.close();
                     }
@@ -206,6 +246,7 @@ public class BrowserController extends ProtectedController implements Initializa
                 List<ITableColumnExtended> listColumn = new ArrayList<>();
                 listColumn.add(new TableColumnStringExtended("Name","name", TransposerJsonObjectToString.class));
                 listColumn.add(new TableColumnStringExtended("Url","url",TransposerJsonObjectToString.class));
+                listColumn.add(new TableColumnCheckBoxExtended("Delete", "delete", TransposerCheckBoxToDefault.class, false));
 
                 try {
                     List<JsonElement> listData = GsonUtils.ConvertJsonArrayToList(configurationBrowser.getFavorites());
@@ -308,6 +349,9 @@ public class BrowserController extends ProtectedController implements Initializa
         buttonBrowserFavorite.getItems().add(favorite);
     }
 
+    /**
+     * Thread
+     */
     private class LoadWebPage extends Service<WebEngine>{
 
         private WebEngine webEngine;

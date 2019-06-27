@@ -1,4 +1,4 @@
-package org.bird.gui.common.tableviewextended;
+package org.bird.gui.common.tableview.extended;
 
 public interface ITransposer<T> {
 

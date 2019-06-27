@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.tableview.ConverterTableViewColumn;
 
 import java.net.URL;
 import java.util.ResourceBundle;

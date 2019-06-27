@@ -1,14 +1,18 @@
-package org.bird.gui.common.tableviewextended;
+package org.bird.gui.common.tableview.extended;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.TextFieldTableCell;
-import org.bird.gui.common.ColumnFactoryValue;
-import org.bird.gui.common.ConverterTableViewColumn;
+import org.bird.gui.common.tableview.ColumnFactoryValue;
+import org.bird.gui.common.tableview.ConverterTableViewColumn;
 
 public class TableColumnStringExtended extends TableColumnExtended<String> {
 
     public TableColumnStringExtended(String title, String propertyName, Class<?> transposer) {
         super(title, propertyName, transposer);
+    }
+
+    public TableColumnStringExtended(String title, String propertyName, Class<?> transposer, Object defaultValue) {
+        super(title, propertyName, transposer, defaultValue);
     }
 
     @Override

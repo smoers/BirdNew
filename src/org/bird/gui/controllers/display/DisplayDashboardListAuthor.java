@@ -1,6 +1,5 @@
 package org.bird.gui.controllers.display;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -8,12 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.db.models.Author;
 import org.bird.db.query.Paginator;
 import org.bird.gui.common.*;
+import org.bird.gui.common.tableview.ColumnFactoryValue;
+import org.bird.gui.common.tableview.ConverterTableViewColumn;
 import org.bird.gui.controllers.ListDashboardController;
 import org.bird.gui.events.OnSelectedEvent;
 import org.bird.gui.resources.images.ImageProvider;
