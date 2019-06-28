@@ -16,30 +16,54 @@
 
 package org.bird.gui.common;
 
-import javafx.scene.Scene;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import javafx.stage.Stage;
+import org.bird.configuration.Configuration;
+import org.bird.configuration.ConfigurationBuilder;
+import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.logger.ELoggers;
+import org.bird.logger.Loggers;
 
 public class SaveWindowsParameters {
 
     private Stage stage = null;
-    private Scene scene = null;
+    private String key;
+    private Number height;
+    private Number width;
+    private Loggers loggers = Loggers.getInstance();
+    private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
+    private Configuration configuration;
 
     public SaveWindowsParameters(Stage stage) {
         this.stage = stage;
-    }
-
-    public SaveWindowsParameters(Scene scene) {
-        this.scene = scene;
+        loggers.setDefaultLogger(ELoggers.GUI);
+        initializeStage();
     }
 
     private void initializeStage(){
         stage.widthProperty().addListener(((observableValue, number, t1) -> {
-            System.out.println("Stage Width: " + number +" : "+ t1);
+            width = t1;
         }));
         stage.heightProperty().addListener(((observableValue, number, t1) -> {
-            System.out.println("Stage Height: " + number +" : "+ t1);
+            height = t1;
         }));
-    }
+        stage.setOnCloseRequest(windowEvent -> {
+            try {
+                configuration = configurationBuilder.get("global");
+                if (configuration.get("global.stage_size_memorize").isJsonArray()){
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty();
+                    JsonArray jsonArray = configuration.get("global.stage_size_memorize").getAsJsonArray();
+                    if (jsonArray.contains())
+                }
 
+            } catch (ConfigurationException e) {
+                loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
+            }
+
+            System.out.println("close");
+        });
+    }
 
 }

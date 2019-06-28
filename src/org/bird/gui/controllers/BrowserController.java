@@ -41,6 +41,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.bird.configuration.ConfigurationFavoritesBrowser;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.gui.common.SaveWindowsParameters;
 import org.bird.gui.common.tableview.ConverterTableViewColumn;
 import org.bird.gui.common.FXMLLoaderImpl;
 import org.bird.gui.common.ShowException;
@@ -126,12 +127,7 @@ public class BrowserController extends ProtectedController implements Initializa
         stage.setTitle(title);
         stage.initModality(Modality.NONE);
         stage.initOwner(owner);
-        stage.widthProperty().addListener((observableValue, number, t1) ->{
-            System.out.println("Stage: " + number +" : "+ t1);
-        });
-        stage.getScene().widthProperty().addListener(((observableValue, number, t1) -> {
-            System.out.println("Scene: " + number +" : "+t1);
-        }));
+        SaveWindowsParameters saveWindowsParameters = new SaveWindowsParameters(stage);
         stage.show();
 
     }

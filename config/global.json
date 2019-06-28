@@ -14,6 +14,7 @@
         "DisplayDashboardListAuthor": "listDashboard",
         "DisplayDashboardListBook": "listDashboard"
       }
-    }
+    },
+    "stage_size_memorize": []
   }
 }
