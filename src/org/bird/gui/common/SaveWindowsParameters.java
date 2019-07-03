@@ -16,14 +16,16 @@
 
 package org.bird.gui.common;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import javafx.stage.Stage;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationBuilder;
+import org.bird.configuration.ConfigurationProperty;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.logger.ELoggers;
 import org.bird.logger.Loggers;
+
+import java.io.IOException;
 
 public class SaveWindowsParameters {
 
@@ -34,35 +36,47 @@ public class SaveWindowsParameters {
     private Loggers loggers = Loggers.getInstance();
     private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
     private Configuration configuration;
+    private String globalKey = "global.stage_size_memorize.";
 
-    public SaveWindowsParameters(Stage stage) {
+    public SaveWindowsParameters(Stage stage,String key) {
         this.stage = stage;
+        this.key = key;
+        globalKey = globalKey+key;
         loggers.setDefaultLogger(ELoggers.GUI);
         initializeStage();
     }
 
     private void initializeStage(){
+        try {
+            JsonElement jsonElement = configuration.get(globalKey);
+            if (jsonElement.isJsonObject()){
+                stage.setWidth(jsonElement.getAsJsonObject().get("width").getAsDouble());
+                stage.setHeight(jsonElement.getAsJsonObject().get("height").getAsDouble());
+            }
+        } catch (ConfigurationException e) {
+            loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
+        }
         stage.widthProperty().addListener(((observableValue, number, t1) -> {
             width = t1;
         }));
         stage.heightProperty().addListener(((observableValue, number, t1) -> {
             height = t1;
         }));
+        /**
+         * Sauvegarde les valeurs dans le fichier de configuration "global"
+         */
         stage.setOnCloseRequest(windowEvent -> {
             try {
                 configuration = configurationBuilder.get("global");
-                if (configuration.get("global.stage_size_memorize").isJsonArray()){
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty();
-                    JsonArray jsonArray = configuration.get("global.stage_size_memorize").getAsJsonArray();
-                    if (jsonArray.contains())
-                }
-
-            } catch (ConfigurationException e) {
+                configuration.edit("global.stage_size_memorize",
+                        new ConfigurationProperty(key, "id"),
+                        new ConfigurationProperty(height,"height"),
+                        new ConfigurationProperty(width,"width")
+                        );
+                configuration.write();
+            } catch (ConfigurationException | IOException e) {
                 loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
             }
-
-            System.out.println("close");
         });
     }
 

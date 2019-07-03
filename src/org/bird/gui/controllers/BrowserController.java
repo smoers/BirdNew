@@ -91,6 +91,7 @@ public class BrowserController extends ProtectedController implements Initializa
     private String title = "Browser";
     private ConfigurationFavoritesBrowser configurationBrowser;
     private Loggers loggers = Loggers.getInstance();
+    private SaveWindowsParameters saveWindowsParameters;
 
 
     /**
@@ -127,7 +128,7 @@ public class BrowserController extends ProtectedController implements Initializa
         stage.setTitle(title);
         stage.initModality(Modality.NONE);
         stage.initOwner(owner);
-        SaveWindowsParameters saveWindowsParameters = new SaveWindowsParameters(stage);
+        saveWindowsParameters = new SaveWindowsParameters(stage, getClass().getSimpleName());
         stage.show();
 
     }
@@ -137,6 +138,7 @@ public class BrowserController extends ProtectedController implements Initializa
 
         try {
             setLanguage();
+
             //Crée le container pour l'objet WebView
             AnchorPane node = new DefaultAnchorPaneZero(webView);
             node.setPadding(new Insets(5.0));

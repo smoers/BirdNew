@@ -1,5 +1,6 @@
 package org.bird.configuration;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bird.configuration.exceptions.ConfigurationException;
@@ -7,9 +8,8 @@ import org.bird.utils.Utils;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Cette classe représente un fichier de configuration json
@@ -83,6 +83,14 @@ public class Configuration {
                     parentJsonElement = jsonElement;
                     jsonElement = jsonElement.getAsJsonObject().get(key);
                     response = jsonElement;
+                } else if (!jsonElement.isJsonNull() && jsonElement.isJsonArray()){
+                    Iterator<JsonElement> it = jsonElement.getAsJsonArray().iterator();
+                    while (it.hasNext()){
+                        response = it.next();
+                        if (response.isJsonObject() && response.getAsJsonObject().get("id").getAsString().equalsIgnoreCase(key)){
+                            break;
+                        }
+                    }
                 }
             }
         } catch (Exception e){
@@ -93,6 +101,8 @@ public class Configuration {
         }
         return response;
     }
+
+
 
     /**
      * Edite ou Ajoute un JsonElement
@@ -205,6 +215,48 @@ public class Configuration {
     public void edit(Configuration.Paths paths, Boolean value) throws ConfigurationException { edit(paths.getPath(),value);}
 
     /**
+     * Edite un tableau d'objet de type JsonObject
+     * ATTENTION : Les objets Json doivent avoir un propriété nommée "id" dont la valeur est un String
+     * @param path
+     * @param properties
+     * @throws ConfigurationException
+     */
+    public void edit(String path, ConfigurationProperty ... properties) throws ConfigurationException {
+        JsonObject jsonObject = converterPropertiesToJsonObject(properties);
+        if (null != jsonObject){
+            String id = jsonObject.get("id").getAsString();
+            JsonElement element = get(path);
+            if (element.isJsonArray()){
+                JsonElement removeElement = null;
+                JsonArray jsonArray = element.getAsJsonArray();
+                Iterator<JsonElement> it = jsonArray.iterator();
+                while (it.hasNext()){
+                    removeElement = it.next();
+                    if (removeElement.isJsonObject() && (removeElement.getAsJsonObject().get("id").getAsString().equalsIgnoreCase(id))){
+                        break;
+                    }
+                    removeElement = null;
+                }
+                if (null != removeElement){
+                    jsonArray.remove(removeElement);
+                }
+                jsonArray.add(jsonObject);
+            }
+        }
+    }
+
+    /**
+     * Edite un tableau d'objet de type JsonObject
+     * ATTENTION : Les objets Json doivent avoir un propriété nommée "id" dont la valeur est un String
+     * @param paths
+     * @param properties
+     * @throws ConfigurationException
+     */
+    public void edit(Paths paths, ConfigurationProperty ... properties) throws ConfigurationException {
+        edit(paths.getPath(),properties);
+    }
+
+    /**
      * Retourne l'objet parent de la clé passé en paramètre
      * @param path
      * @return
@@ -237,6 +289,25 @@ public class Configuration {
      */
     public Path getPathFileName() {
         return pathFileName;
+    }
+
+    public JsonObject converterPropertiesToJsonObject(ConfigurationProperty ... properties){
+        JsonObject jsonObject = null;
+        if (properties.length > 0){
+            jsonObject = new JsonObject();
+            for (ConfigurationProperty property : properties ) {
+                if (property.getJsonPrimitive().isString()) {
+                    jsonObject.addProperty(property.getName(),property.getJsonPrimitive().getAsString());
+                } else if (property.getJsonPrimitive().isBoolean()){
+                    jsonObject.addProperty(property.getName(),property.getJsonPrimitive().getAsBoolean());
+                } else if (property.getJsonPrimitive().isNumber()){
+                    jsonObject.addProperty(property.getName(),property.getJsonPrimitive().getAsNumber());
+                } else {
+                    jsonObject.addProperty(property.getName(),property.getJsonPrimitive().getAsCharacter());
+                }
+            }
+        }
+        return jsonObject;
     }
 
 
