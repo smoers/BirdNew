@@ -27,12 +27,20 @@ import org.bird.logger.Loggers;
 
 import java.io.IOException;
 
+/**
+ * Cette classe se charge de sauvegarder et de restaurer
+ * les paramétres des fenetres
+ */
 public class SaveWindowsParameters {
 
     private Stage stage = null;
     private String key;
-    private Number height;
-    private Number width;
+    private Number height = null;
+    private Number width = null;
+    private Boolean maximized = null;
+    private Number defaultWidth = 0;
+    private Number defaultHeight = 0;
+    private Boolean defaultMaximized = false;
     private Loggers loggers = Loggers.getInstance();
     private ConfigurationBuilder configurationBuilder = ConfigurationBuilder.getInstance();
     private Configuration configuration;
@@ -48,34 +56,53 @@ public class SaveWindowsParameters {
 
     private void initializeStage(){
         try {
+            configuration = configurationBuilder.get("global");
             JsonElement jsonElement = configuration.get(globalKey);
-            if (jsonElement.isJsonObject()){
+            if (!jsonElement.isJsonNull() && jsonElement.isJsonObject()){
+                stage.setMaximized(jsonElement.getAsJsonObject().get("maximized").getAsBoolean());
+                defaultMaximized = jsonElement.getAsJsonObject().get("maximized").getAsBoolean();
                 stage.setWidth(jsonElement.getAsJsonObject().get("width").getAsDouble());
+                defaultWidth = jsonElement.getAsJsonObject().get("width").getAsDouble();
                 stage.setHeight(jsonElement.getAsJsonObject().get("height").getAsDouble());
+                defaultHeight = jsonElement.getAsJsonObject().get("height").getAsDouble();
+            } else {
+                width = stage.getWidth();
+                height = stage.getHeight();
+                maximized = stage.isMaximized();
             }
         } catch (ConfigurationException e) {
             loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
         }
         stage.widthProperty().addListener(((observableValue, number, t1) -> {
-            width = t1;
+            if (!stage.isMaximized())
+                width = t1;
         }));
         stage.heightProperty().addListener(((observableValue, number, t1) -> {
-            height = t1;
+            if (!stage.isMaximized())
+                height = t1;
+        }));
+        stage.maximizedProperty().addListener(((observable, bool, t1) -> {
+            maximized = t1;
         }));
         /**
          * Sauvegarde les valeurs dans le fichier de configuration "global"
          */
         stage.setOnCloseRequest(windowEvent -> {
-            try {
-                configuration = configurationBuilder.get("global");
-                configuration.edit("global.stage_size_memorize",
-                        new ConfigurationProperty(key, "id"),
-                        new ConfigurationProperty(height,"height"),
-                        new ConfigurationProperty(width,"width")
-                        );
-                configuration.write();
-            } catch (ConfigurationException | IOException e) {
-                loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
+            //Si pas de changement dans les valeurs
+            //les deux variables restent null
+            if (null != width || null != height) {
+                try {
+                    configuration = configurationBuilder.get("global");
+                    configuration.edit("global.stage_size_memorize",
+                            new ConfigurationProperty(key, "id"),
+                            new ConfigurationProperty(height, defaultHeight, "height"),
+                            new ConfigurationProperty(width, defaultWidth, "width"),
+                            new ConfigurationProperty(maximized, defaultMaximized, "maximized")
+                    );
+                    configuration.write();
+                } catch (ConfigurationException | IOException e) {
+                    loggers.error(loggers.messageFactory.newMessage(e.getMessage(), this));
+                }
             }
         });
     }
