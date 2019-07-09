@@ -1,28 +1,22 @@
 package org.bird.gui.controllers;
 
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.bird.configuration.exceptions.ConfigurationException;
 import org.bird.gui.common.FXMLLoaderImpl;
+import org.bird.gui.common.SaveWindowsParameters;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
-import org.bird.gui.resources.controls.DefaultAnchorPaneZero;
 import org.bird.gui.resources.images.ImageProvider;
 
 import java.io.IOException;
@@ -48,6 +42,7 @@ public abstract class DataViewController<T> implements Initializable {
     private Window owner;
     private Stage stage = new Stage();
     private ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
+    private SaveWindowsParameters saveWindowsParameters;
 
     public DataViewController(Window owner){
         this.owner = owner;
@@ -94,6 +89,7 @@ public abstract class DataViewController<T> implements Initializable {
         stage.setTitle(title);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(owner);
+        saveWindowsParameters = new SaveWindowsParameters(stage, getClass().getSimpleName());
         stage.show();
     }
 

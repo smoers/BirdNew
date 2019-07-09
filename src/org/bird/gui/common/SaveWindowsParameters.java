@@ -46,6 +46,11 @@ public class SaveWindowsParameters {
     private Configuration configuration;
     private String globalKey = "global.stage_size_memorize.";
 
+    /**
+     * COnstructeur
+     * @param stage
+     * @param key
+     */
     public SaveWindowsParameters(Stage stage,String key) {
         this.stage = stage;
         this.key = key;
@@ -54,7 +59,11 @@ public class SaveWindowsParameters {
         initializeStage();
     }
 
+    /**
+     * Initalise l'objet
+     */
     private void initializeStage(){
+        //Récupère les données depuis le fichier de configuration
         try {
             configuration = configurationBuilder.get("global");
             JsonElement jsonElement = configuration.get(globalKey);
@@ -73,14 +82,17 @@ public class SaveWindowsParameters {
         } catch (ConfigurationException e) {
             loggers.error(loggers.messageFactory.newMessage(e.getMessage(),this));
         }
+        //Event sur la largeur
         stage.widthProperty().addListener(((observableValue, number, t1) -> {
             if (!stage.isMaximized())
                 width = t1;
         }));
+        //Event sur la hauteur
         stage.heightProperty().addListener(((observableValue, number, t1) -> {
             if (!stage.isMaximized())
                 height = t1;
         }));
+        //Event sur le fenêtre maximisée
         stage.maximizedProperty().addListener(((observable, bool, t1) -> {
             maximized = t1;
         }));
