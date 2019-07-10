@@ -317,4 +317,17 @@
 #buttonBrowserFavorite:hover{
     -fx-graphic: url("../../../../../images/orange/favorite-16.png");
 }
-
+/*id : buttonFilter*/
+#buttonFilter{
+    -fx-graphic: url("../../../../../images/blue/filled-filter-16.png");
+}
+#buttonFilter:hover{
+    -fx-graphic: url("../../../../../images/orange/filled-filter-16.png");
+}
+/*id : buttonAdd*/
+#buttonAdd{
+    -fx-graphic: url("../../../../../images/blue/plus-16.png");
+}
+#buttonAdd:hover{
+    -fx-graphic: url("../../../../../images/orange/plus-16.png");
+}

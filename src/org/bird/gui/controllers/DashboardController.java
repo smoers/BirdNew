@@ -262,9 +262,9 @@ public class DashboardController extends ProtectedController implements Initiali
             miAddBook.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    AddEditAuthorController controller = new AddEditAuthorController(toolbar.getScene().getWindow());
+                    AddEditBookController controller = new AddEditBookController();
                     try {
-                        controller.show();
+                        controller.show(toolbar.getScene().getWindow());
                     } catch (ConfigurationException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
