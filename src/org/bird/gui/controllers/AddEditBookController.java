@@ -16,18 +16,40 @@
 
 package org.bird.gui.controllers;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+import org.bird.db.exceptions.DBException;
+import org.bird.db.mapper.Mapper;
+import org.bird.db.mapper.MapperFactory;
+import org.bird.db.models.Author;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class AddEditBookController extends DisplayWindowController {
+
+    @FXML
+    private ComboBox<Author> fldAuthor;
 
     private Class[] pathFXML;
     private Modality modality;
     private String title;
+    private MapperFactory mapperFactory = MapperFactory.getInstance();
+    private Mapper mapper;
 
-    public AddEditBookController() {
+    public AddEditBookController() throws DBException {
         setting();
     }
 
@@ -63,15 +85,49 @@ public class AddEditBookController extends DisplayWindowController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        List<Author> authors = mapper.getDatastore().createQuery(Author.class).asList();
+        ObservableList<Author> observableList = FXCollections.observableArrayList(authors);
+        FilteredList<Author> filteredList = new FilteredList<>(observableList, p -> true);
+        fldAuthor.setItems(filteredList);
+        fldAuthor.selectionModelProperty().addListener((obs,oldValue,newValue)->{
+            System.out.println("select");
+        });
+        fldAuthor.setEditable(true);
+        fldAuthor.setConverter(new StringConverter<Author>() {
+            @Override
+            public String toString(Author author) {
+                return author == null ? null : author.getFullName();
+            }
 
+            @Override
+            public Author fromString(String s) {
+                return null;
+            }
+        });
+        /*fldAuthor.getEditor().textProperty().addListener((obs, oldValue, NewValue) -> {
+            final TextField editor = fldAuthor.getEditor();
+            final Author selected = fldAuthor.getSelectionModel().getSelectedItem();
+            Platform.runLater(() ->{
+                if (selected == null || (!selected.getLastName().equalsIgnoreCase(editor.getText()) && !selected.getFirstName().equalsIgnoreCase(editor.getText()))){
+                    filteredList.setPredicate(item -> {
+                        if (item.getLastName().contains(editor.getCharacters()) || item.getFirstName().contains(editor.getCharacters())){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                }
+            });
+        });*/
 
     }
 
-    public void setting(){
+    public void setting() throws DBException {
 
         setPathFXML(getClass());
         setModality(Modality.NONE);
         setTitle("Add Book");
+        mapper = mapperFactory.<Mapper>getMapper(new Mapper());
     }
 
     @Override

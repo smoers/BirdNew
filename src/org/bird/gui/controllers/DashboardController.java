@@ -14,6 +14,7 @@ import javafx.scene.web.WebEngine;
 import org.bird.configuration.Configuration;
 import org.bird.configuration.ConfigurationDashboardDisplayDefault;
 import org.bird.configuration.exceptions.ConfigurationException;
+import org.bird.db.exceptions.DBException;
 import org.bird.db.models.Author;
 import org.bird.db.models.Book;
 import org.bird.db.query.Paginator;
@@ -262,10 +263,11 @@ public class DashboardController extends ProtectedController implements Initiali
             miAddBook.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    AddEditBookController controller = new AddEditBookController();
+
                     try {
+                        AddEditBookController controller = new AddEditBookController();
                         controller.show(toolbar.getScene().getWindow());
-                    } catch (ConfigurationException e) {
+                    } catch (ConfigurationException | DBException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();

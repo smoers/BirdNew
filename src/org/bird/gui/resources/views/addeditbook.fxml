@@ -87,7 +87,7 @@
                   </TextField>
                   <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <ComboBox styleClass="form_label_field" />
+                        <ComboBox fx:id="fldAuthor" styleClass="form_label_field" />
                         <Button fx:id="buttonFilter" mnemonicParsing="false" styleClass="mediumWhiteButton" text="Button" />
                         <Button fx:id="buttonAdd" mnemonicParsing="false" styleClass="mediumWhiteButton" text="Button" />
                      </children>
