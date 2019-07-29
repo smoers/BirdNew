@@ -16,24 +16,19 @@
 
 package org.bird.gui.controllers;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Author;
+import org.bird.gui.resources.controls.ComboBoxFiltered;
 
 import java.net.URL;
 import java.util.List;
@@ -89,13 +84,22 @@ public class AddEditBookController extends DisplayWindowController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<Author> authors = mapper.getDatastore().createQuery(Author.class).asList();
         ObservableList<Author> observableList = FXCollections.observableArrayList(authors);
-        FilteredList<Author> filteredList = new FilteredList<>(observableList, p -> true);
-        fldAuthor.setItems(filteredList);
-        fldAuthor.focusedProperty().addListener((observable,oldValue,newValue) -> {
-            fldAuthor.setEditable(newValue);
-        });
-        fldAuthor.setEditable(true);
-        fldAuthor.getEditor().setText("moers");
+        fldAuthor.setItems(observableList);
+        ComboBoxFiltered<Author> comboBoxFiltered = new ComboBoxFiltered<>(fldAuthor) {
+            @Override
+            public Predicate<Author> getPredicate(String text) {
+                return new Predicate<Author>() {
+                    @Override
+                    public boolean test(Author author) {
+                        if (author.getFullName().contains(text)){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                };
+            }
+        };
         fldAuthor.setConverter(new StringConverter<Author>() {
             @Override
             public String toString(Author author) {
@@ -107,32 +111,6 @@ public class AddEditBookController extends DisplayWindowController {
                 return null;
             }
         });
-        fldAuthor.getEditor().textProperty().addListener((obs, oldValue, NewValue) -> {
-            final TextField editor = fldAuthor.getEditor();
-            final Author selected = fldAuthor.getSelectionModel().getSelectedItem();
-            Platform.runLater(() ->{
-                if ((selected == null || !selected.getFullName().equalsIgnoreCase(editor.getText())) && editor.getText() =="" ){
-                    filteredList.setPredicate(item -> {
-                        if (item.getLastName().contains(editor.getCharacters()) || item.getFirstName().contains(editor.getCharacters())){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
-                } else {
-                    fldAuthor.setValue(selected);
-                    fldAuthor.getEditor().setText(selected.getFullName());
-                }
-            });
-        });
-        /*fldAuthor.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-                System.out.println(fldAuthor.getValue().getFullName());
-            }
-        });*/
-
     }
 
     public void setting() throws DBException {
