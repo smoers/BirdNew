@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package org.bird.gui.common;
+package org.bird.gui.resources.controls;
 
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.ComboBox;
 
+public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> {
 
-public class RootPane {
-
-    public Pane getRootPane(Node node){
-        Node result = node;
-        if (node.getParent() instanceof Pane)
-            result = getRootPane(node.getParent());
-
-        return (Pane) result;
+    public ComboBoxFilteredWithButton(ComboBox<T> comboBox) {
+        super(comboBox);
     }
+
 
 }

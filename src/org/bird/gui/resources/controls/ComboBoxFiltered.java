@@ -17,28 +17,32 @@
 package org.bird.gui.resources.controls;
 
 import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Bounds;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import org.bird.gui.common.RootPane;
 
 import java.util.function.Predicate;
 
-public abstract class ComboBoxFiltered<T> extends RootPane {
+/**
+ * Cette classe permet de créer un champ filter sur un objet ComboBox
+ * @param <T>
+ */
+public abstract class ComboBoxFiltered<T> {
 
-    private ComboBox<T> comboBox;
-    private ContextMenu contextMenu;
-    private TextField textField = new TextField();
-    private MenuItem menuItem = new MenuItem();
-    private FilteredList<T> filteredList;
+    protected ComboBox<T> comboBox;
+    protected ContextMenu contextMenu;
+    protected TextField textField = new TextField();
+    protected MenuItem menuItem = new MenuItem();
+    protected FilteredList<T> filteredList;
 
     public ComboBoxFiltered(ComboBox<T> comboBox) {
         this.comboBox = comboBox;
         setup();
     }
 
-    private void setup(){
+    protected void setup(){
         /**
          * Filter
          */
@@ -47,7 +51,7 @@ public abstract class ComboBoxFiltered<T> extends RootPane {
         /**
          * TextField
          */
-        textField.setPrefWidth(200.0);
+        textField.setPrefWidth(comboBox.getPrefWidth());
         textField.textProperty().addListener((observableValue, s, t1) -> {
             filteredList.setPredicate(getPredicate(t1));
         });
@@ -57,13 +61,23 @@ public abstract class ComboBoxFiltered<T> extends RootPane {
         contextMenu = new ContextMenu();
         contextMenu.setHideOnEscape(true);
         comboBox.setOnContextMenuRequested(contextMenuEvent -> {
-            comboBox.show();
-            contextMenu.show(comboBox,contextMenuEvent.getScreenX(),contextMenuEvent.getScreenY() - comboBox.getHeight());
-            textField.requestFocus();
+            showContextField();
         });
         menuItem.setGraphic(textField);
         contextMenu.getItems().add(menuItem);
     }
+
+    /**
+     * Permet de forcer l'affichage du ContextMenu
+     */
+    public void showContextField(){
+        Bounds bounds = comboBox.localToScreen(comboBox.getBoundsInLocal());
+        comboBox.show();
+        contextMenu.show(comboBox,bounds.getMinX(),bounds.getMinY() - comboBox.getHeight());
+        textField.requestFocus();
+    }
+
+
 
     /**
      * Cette méthode doit retourner le Predicate avec les critères d'applications du filtre

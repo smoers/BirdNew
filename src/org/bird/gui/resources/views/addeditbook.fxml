@@ -44,21 +44,23 @@
               <rowConstraints>
                 <RowConstraints minHeight="150.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="form_label" stylesheets="@../css/fxcss.css" text="Author Name" GridPane.rowIndex="1">
+                  <Label fx:id="lblAuthorName" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Author Name" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label layoutX="254.0" layoutY="178.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Title" GridPane.rowIndex="2">
+                  <Label fx:id="lblTitle" layoutX="254.0" layoutY="178.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Title" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label layoutX="298.0" layoutY="224.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Volume Number" GridPane.rowIndex="3">
+                  <Label fx:id="lblVolumeNumber" layoutX="298.0" layoutY="224.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Volume Number" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
@@ -75,12 +77,12 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <TextField promptText="Title" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="fldTitle" promptText="Title" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField layoutX="345.0" layoutY="290.0" promptText="Volume Number" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="fldVolumeNumber" layoutX="345.0" layoutY="290.0" promptText="Volume Number" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
@@ -92,8 +94,11 @@
                         <Button fx:id="buttonAdd" mnemonicParsing="false" styleClass="mediumWhiteButton" text="Button" />
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
                      </padding>
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
                   </HBox>
                   <AnchorPane GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
@@ -111,6 +116,16 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </AnchorPane>
+                  <Label fx:id="lblVolumeNumber1" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Presentation" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="lblTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </Label>
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
