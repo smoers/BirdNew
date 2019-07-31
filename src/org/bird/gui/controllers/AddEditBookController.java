@@ -27,6 +27,7 @@ import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Author;
 import org.bird.gui.resources.controls.ComboBoxFiltered;
+import org.bird.gui.resources.controls.ComboBoxFilteredWithButton;
 
 import java.net.URL;
 import java.util.List;
@@ -83,7 +84,7 @@ public class AddEditBookController extends DisplayWindowController {
         List<Author> authors = mapper.getDatastore().createQuery(Author.class).asList();
         ObservableList<Author> observableList = FXCollections.observableArrayList(authors);
         fldAuthor.setItems(observableList);
-        ComboBoxFiltered<Author> comboBoxFiltered = new ComboBoxFiltered<>(fldAuthor) {
+        ComboBoxFilteredWithButton<Author> comboBoxFiltered = new ComboBoxFilteredWithButton<Author>(fldAuthor) {
             @Override
             public Predicate<Author> getPredicate(String text) {
                 return new Predicate<Author>() {

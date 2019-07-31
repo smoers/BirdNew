@@ -19,23 +19,41 @@ package org.bird.gui.common;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-
+/**
+ * Permet d'obtenir le Pane parent
+ */
 public class ParentPane {
 
     private Pane pane;
 
+    /**
+     * Constructeur
+     * @param node
+     */
     public ParentPane(Node node) {
         pane = getParentPane(node);
     }
 
+    /**
+     * Retourne le Pane parent
+     * @return
+     */
     public Pane getPane() {
         return pane;
     }
 
+    /**
+     * Cherche le pane parent
+     * @param node
+     * @return
+     */
     private Pane getParentPane(Node node){
         Node result = node;
         if (node.getParent() instanceof Pane)
+            result = node.getParent();
+        else
             result = getParentPane(node.getParent());
+
         return (Pane) result;
     }
 
