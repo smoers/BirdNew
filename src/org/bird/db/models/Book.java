@@ -22,8 +22,10 @@ public class Book extends ModelMetaData {
     private int volume = 0;
     private String presentation = null;
     private String cover = null;
-    private String editor = null;
-    private String collection =null;
+    @Reference
+    private Editor editor = null;
+    @Reference
+    private Collection collection =null;
     private String isbn_10 = null;
     private String isbn_13 = null;
     @Reference
@@ -74,19 +76,19 @@ public class Book extends ModelMetaData {
         this.cover = cover;
     }
 
-    public String getEditor() {
+    public Editor getEditor() {
         return editor;
     }
 
-    public void setEditor(String editor) {
+    public void setEditor(Editor editor) {
         this.editor = editor;
     }
 
-    public String getCollection() {
+    public Collection getCollection() {
         return collection;
     }
 
-    public void setCollection(String collection) {
+    public void setCollection(Collection collection) {
         this.collection = collection;
     }
 

@@ -107,7 +107,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="lblTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="2">
+                  <Label fx:id="lblCycleTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>

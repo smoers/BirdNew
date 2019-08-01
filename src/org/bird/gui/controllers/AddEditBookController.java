@@ -26,6 +26,8 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Author;
+import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.controls.ComboBoxFiltered;
 import org.bird.gui.resources.controls.ComboBoxFilteredWithButton;
 
@@ -81,8 +83,14 @@ public class AddEditBookController extends DisplayWindowController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /**
+         * Récupération des données
+         */
         List<Author> authors = mapper.getDatastore().createQuery(Author.class).asList();
         ObservableList<Author> observableList = FXCollections.observableArrayList(authors);
+        /**
+         * Setup du ComboBox
+         */
         fldAuthor.setItems(observableList);
         ComboBoxFilteredWithButton<Author> comboBoxFiltered = new ComboBoxFilteredWithButton<Author>(fldAuthor) {
             @Override
@@ -99,6 +107,15 @@ public class AddEditBookController extends DisplayWindowController {
                 };
             }
         };
+        comboBoxFiltered.addFilterButtonListener(new OnLeftClickListener() {
+            @Override
+            public void onLeftClick(OnLeftClickEvent evt) {
+                comboBoxFiltered.showContextField();
+            }
+        });
+        /**
+         * Converter pour l'affichage de l'objet
+         */
         fldAuthor.setConverter(new StringConverter<Author>() {
             @Override
             public String toString(Author author) {

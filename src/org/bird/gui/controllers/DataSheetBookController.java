@@ -79,8 +79,8 @@ public class DataSheetBookController extends DataSheetController<Book> implement
         flBookTitle.setText(item.getTitle());
         flVolumeNumber.setText(String.valueOf(item.getVolume()));
         flPresentation.getLabel().setLimitedText(item.getPresentation());
-        flEditor.setText(item.getEditor());
-        flCollection.setText(item.getCollection());
+        flEditor.setText(item.getEditor().getName());
+        flCollection.setText(item.getCollection().getName());
         flISBN.setObservableList(FXCollections.<String>observableArrayList(item.getIsbn_10(), item.getIsbn_13()));
         List<String> illustratorList = new ArrayList();
         item.getIllustrators().forEach(new Consumer<Illustrator>() {
