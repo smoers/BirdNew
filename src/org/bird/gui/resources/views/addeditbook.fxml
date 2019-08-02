@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,98 +33,223 @@
   ~ limitations under the License.
   -->
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="400.0" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane prefHeight="568.0" prefWidth="559.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="150.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label fx:id="lblAuthorName" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Author Name" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="lblTitle" layoutX="254.0" layoutY="178.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Title" GridPane.rowIndex="3">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="lblVolumeNumber" layoutX="298.0" layoutY="224.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Volume Number" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+      <Accordion BorderPane.alignment="CENTER">
+        <panes>
+          <TitledPane fx:id="lblData" animated="false" text="Data">
+            <content>
+              <AnchorPane>
                      <children>
-                        <HBox alignment="CENTER">
+                        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="150.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="33.0" minHeight="33.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+                          </rowConstraints>
                            <children>
-                              <CheckBox mnemonicParsing="false" styleClass="form_label_field" text="Is Cycle" />
+                              <Label fx:id="lblAuthorName" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Author Name" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblTitle" layoutX="254.0" layoutY="178.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Title" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblVolumeNumber" layoutX="298.0" layoutY="224.0" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Volume Number" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                                 <children>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <CheckBox mnemonicParsing="false" styleClass="form_label_field" text="Is Cycle" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <TextField fx:id="fldTitle" promptText="Title" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="fldVolumeNumber" layoutX="345.0" layoutY="290.0" promptText="Volume Number" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <AnchorPane GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <children>
+                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../../images/blue/book-256.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </AnchorPane>
+                              <Label fx:id="lblVolumeNumber1" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Presentation" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblCycleTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <ComboBox fx:id="fldAuthor" promptText="Authors" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
+                              <Label fx:id="lblCover" text="Cover" GridPane.rowIndex="6">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label text="Editor" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Collection" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblISBN10" text="ISBN 10" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblISBN13" layoutX="587.0" layoutY="305.0" text="ISBN 13" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblIllustrators" text="Illustrators" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <ComboBox fx:id="fldCycle" promptText="Cycle Title" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
+                              <TextField fx:id="fldISBN10" promptText="ISBN 10" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="fldCover" promptText="Cover" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <ComboBox fx:id="fldCycle" promptText="Editor" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
+                              <ComboBox fx:id="fldCycle" promptText="Collection" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
+                              <ComboBox fx:id="fldCycle" promptText="Illustrators" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </ComboBox>
+                              <TextField fx:id="fldISBN13" promptText="ISBN 13" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
                            </children>
                            <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
-                        </HBox>
+                        </GridPane>
                      </children>
-                  </VBox>
-                  <TextField fx:id="fldTitle" promptText="Title" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField fx:id="fldVolumeNumber" layoutX="345.0" layoutY="290.0" promptText="Volume Number" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <AnchorPane GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <children>
-                        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../../images/blue/book-256.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
                   </AnchorPane>
-                  <Label fx:id="lblVolumeNumber1" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Presentation" GridPane.rowIndex="5">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="lblCycleTitle" styleClass="form_label" stylesheets="@../css/fxcss.css" text="Cycle Title" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <ComboBox fx:id="fldAuthor" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </ComboBox>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </GridPane>
-         </children>
-      </AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane fx:id="lblInfo" animated="false" text="Info">
+            <content>
+              <AnchorPane>
+                     <children>
+                        <GridPane AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label fx:id="lblCreateDate" text="Create Date">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="lblModificationDate" text="Modification Date" GridPane.rowIndex="1" />
+                              <Label fx:id="lblUser" text="User" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="fldCreateDate" editable="false" styleClass="form_label_field" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="fldModificationDate" editable="false" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="fldUser" editable="false" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
    </center>
 </BorderPane>

@@ -26,13 +26,17 @@ public class _Create_Data_Mas {
     //Set default data Illustrator
     private static String i_firstName = "Illustrateur_";
     private static String i_lastName = "Nom Illustrator_";
+    //Set Default Collection
+    private static String o_name = "Collection Name ";
+    private static Boolean o_active = true;
+    //set Default Editor
+    private static String e_name = "Editor Name ";
+    private static Boolean e_active = true;
     //Set default data Book
     private static String b_title = "Livre titre ";
     private int b_volume = 0;
     private static String b_presentation = "presentation";
     private static String b_cover = "cover";
-    private static String b_editor = "editor";
-    private static String b_collection = "collection";
     private static String b_isbn_10 = "isbn_10";
     private static String b_isbn_13 = "isbn_13";
     //Set default Cycle
@@ -89,14 +93,24 @@ public class _Create_Data_Mas {
         datastore.save(illustrator01);
         datastore.save(illustrator02);
 
+        //COLLECTION
+        Collection collection01 = new Collection(o_name+01, o_active);
+        Collection collection02 = new Collection(o_name+02,o_active);
+        datastore.save(collection01);
+        datastore.save(collection02);
+
+        //EDITOR
+        Editor editor01 = new Editor(e_name+01, e_active);
+        Editor editor02 = new Editor(e_name+02, e_active);
+        datastore.save(editor01);
+        datastore.save(editor02);
+
         int count = 200;
         for(int i=1;i<=count;i++){
             Book book = new Book(b_title+String.valueOf(i));
             book.setVolume(1);
             book.setPresentation(b_presentation);
             book.setCover(b_cover);
-            book.setEditor(b_editor);
-            book.setCollection(b_collection);
             book.setIsbn_10(b_isbn_10);
             book.setIsbn_13(b_isbn_13);
             book.setCreateDate(Calendar.getInstance().getTime());
@@ -135,6 +149,8 @@ public class _Create_Data_Mas {
                 book.setUser(user01);
                 book.setPicture(new FileInputStream(fileb).readAllBytes());
                 book.setIllustrators(List.of(illustrator01));
+                book.setEditor(editor01);
+                book.setCollection(collection01);
                 cycle.setUser(user01);
                 author.setPicture(new FileInputStream(filea).readAllBytes());
                 author.setUser(user01);
@@ -145,6 +161,8 @@ public class _Create_Data_Mas {
                 book.setUser(user02);
                 book.setPicture(new FileInputStream(fileb).readAllBytes());
                 book.setIllustrators(List.of(illustrator01, illustrator02));
+                book.setEditor(editor02);
+                book.setCollection(collection02);
                 cycle.setUser(user02);
                 author.setPicture(new FileInputStream(filea).readAllBytes());
                 author.setUser(user02);

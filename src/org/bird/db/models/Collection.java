@@ -16,6 +16,7 @@
 
 package org.bird.db.models;
 
+import org.bird.db.models.metadata.ModelMetaData;
 import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
 
@@ -23,7 +24,7 @@ import xyz.morphia.annotations.*;
 @Indexes({
         @Index(fields = @Field("name"), options = @IndexOptions(name = "name")),
 })
-public class Collection {
+public class Collection extends ModelMetaData {
 
 
     @Id
@@ -32,6 +33,15 @@ public class Collection {
     private Boolean active;
 
     public Collection() { }
+
+    public Collection(String name) {
+        this.name = name;
+    }
+
+    public Collection(String name, Boolean active) {
+        this.name = name;
+        this.active = active;
+    }
 
     public ObjectId getId() {
         return id;

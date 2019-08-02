@@ -17,15 +17,16 @@
 package org.bird.db.models;
 
 
+import org.bird.db.models.metadata.ModelMetaData;
 import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
 
-@Entity("collection")
+@Entity("editor")
 @Indexes({
         @Index(fields = @Field("name"), options = @IndexOptions(name = "name")),
 })
 
-public class Editor {
+public class Editor extends ModelMetaData {
 
     @Id
     private ObjectId id = new ObjectId();
@@ -33,6 +34,15 @@ public class Editor {
     private Boolean active;
 
     public Editor() {}
+
+    public Editor(String name) {
+        this.name = name;
+    }
+
+    public Editor(String name, Boolean active) {
+        this.name = name;
+        this.active = active;
+    }
 
     public ObjectId getId() {
         return id;

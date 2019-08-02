@@ -26,7 +26,7 @@ public class _Morphia_Test_01 {
         datastore.save(illustrator);
         Book book = new Book("Le sang des 7 Rois");
         book.setVolume(1);
-        book.setEditor("L'Atalante");
+       // book.setEditor("L'Atalante");
         book.setIsbn_10("2841726258");
         book.setPresentation("Deuxième jour de traque. Depuis le départ du château, la pluie n'a pas cessé de tomber. Je profite d'une roche en surplomb pour abriter le journal et écrire ce premier compte-rendu. Arrivés sur les alpages, nous avons suivi la crête pour trouver des indices. Rien ne nous avait préparés à ce que nous avons trouvé là. Un autre campement avait été édifié à cinquante pas à vol d'oiseau du premier et tout indique qu'alors que nous pensions notre retard considérable, ses occupants s'en étaient allés quelques heures auparavant.\n" +
                 "\n" +
