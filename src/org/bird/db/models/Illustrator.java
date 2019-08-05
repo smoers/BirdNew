@@ -4,6 +4,8 @@ import org.bird.db.models.metadata.ModelMetaData;
 import org.bson.types.ObjectId;
 import xyz.morphia.annotations.*;
 
+import java.util.StringJoiner;
+
 @Entity("illustrators")
 @Indexes({
         @Index(value = "firstname", fields = @Field("firstName")),
@@ -41,5 +43,12 @@ public class Illustrator extends ModelMetaData {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName(){
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add(getLastName());
+        joiner.add(getFirstName());
+        return joiner.toString();
     }
 }

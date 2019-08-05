@@ -66,7 +66,7 @@ public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> 
             Integer row = GridPane.getRowIndex(comboBox);
             Integer column = GridPane.getColumnIndex(comboBox);
             gridPane.getChildren().remove(comboBox);
-            GridPane.setConstraints(hBox,row,column);
+            GridPane.setConstraints(hBox,column,row);
             GridPane.setMargin(hBox,GridPane.getMargin(comboBox));
             gridPane.getChildren().add(hBox);
         } else {
@@ -90,6 +90,15 @@ public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> 
          * Config HBox
          */
         hBox.getChildren().setAll(comboBox,btFilter,btAdd);
+        /**
+         * Event pour afficher le champ pour la recherche
+         */
+        addFilterButtonListener(new OnLeftClickListener() {
+            @Override
+            public void onLeftClick(OnLeftClickEvent evt) {
+                showContextField();
+            }
+        });
 
     }
 

@@ -173,17 +173,17 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <ComboBox fx:id="fldCycle" promptText="Editor" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <ComboBox fx:id="fldEditor" promptText="Editor" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
                               </ComboBox>
-                              <ComboBox fx:id="fldCycle" promptText="Collection" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                              <ComboBox fx:id="fldCollection" promptText="Collection" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
                               </ComboBox>
-                              <ComboBox fx:id="fldCycle" promptText="Illustrators" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                              <ComboBox fx:id="fldIllustrators" promptText="Illustrators" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>

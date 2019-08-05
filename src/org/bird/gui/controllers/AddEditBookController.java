@@ -16,36 +16,39 @@
 
 package org.bird.gui.controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
-import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
-import org.bird.db.models.Author;
-import org.bird.gui.events.OnLeftClickEvent;
-import org.bird.gui.listeners.OnLeftClickListener;
-import org.bird.gui.resources.controls.ComboBoxFiltered;
-import org.bird.gui.resources.controls.ComboBoxFilteredWithButton;
+import org.bird.db.models.*;
+import org.bird.gui.resources.controls.*;
+import org.bird.logger.ELoggers;
+import org.bird.logger.Loggers;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 public class AddEditBookController extends DisplayWindowController {
 
     @FXML
     private ComboBox<Author> fldAuthor;
+    @FXML
+    private ComboBox<Cycle> fldCycle;
+    @FXML
+    private ComboBox<Editor> fldEditor;
+    @FXML
+    private ComboBox<Collection> fldCollection;
+    @FXML
+    private ComboBox<Illustrator> fldIllustrators;
 
     private Class[] pathFXML;
     private Modality modality;
     private String title;
     private MapperFactory mapperFactory = MapperFactory.getInstance();
     private Mapper mapper;
+    private Loggers loggers = Loggers.getInstance();
 
     public AddEditBookController() throws DBException {
         setting();
@@ -83,50 +86,18 @@ public class AddEditBookController extends DisplayWindowController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /**
-         * Récupération des données
-         */
-        List<Author> authors = mapper.getDatastore().createQuery(Author.class).asList();
-        ObservableList<Author> observableList = FXCollections.observableArrayList(authors);
-        /**
-         * Setup du ComboBox
-         */
-        fldAuthor.setItems(observableList);
-        ComboBoxFilteredWithButton<Author> comboBoxFiltered = new ComboBoxFilteredWithButton<Author>(fldAuthor) {
-            @Override
-            public Predicate<Author> getPredicate(String text) {
-                return new Predicate<Author>() {
-                    @Override
-                    public boolean test(Author author) {
-                        if (author.getFullName().contains(text)){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                };
-            }
-        };
-        comboBoxFiltered.addFilterButtonListener(new OnLeftClickListener() {
-            @Override
-            public void onLeftClick(OnLeftClickEvent evt) {
-                comboBoxFiltered.showContextField();
-            }
-        });
-        /**
-         * Converter pour l'affichage de l'objet
-         */
-        fldAuthor.setConverter(new StringConverter<Author>() {
-            @Override
-            public String toString(Author author) {
-                return author == null ? null : author.getFullName();
-            }
+        try {
+            ComboBoxAuthors comboBoxAuthors = new ComboBoxAuthors(fldAuthor);
+            fldAuthor.getSelectionModel().s
+            ComboBoxCycles comboBoxCycles = new ComboBoxCycles(fldCycle);
+            ComboBoxEditor comboBoxEditor = new ComboBoxEditor(fldEditor);
+            ComboBoxCollection comboBoxCollection = new ComboBoxCollection(fldCollection);
+            ComboBoxIllustrators comboBoxIllustrators = new ComboBoxIllustrators(fldIllustrators);
+        } catch (DBException e) {
+            loggers.setDefaultLogger(ELoggers.GUI);
+            loggers.error(loggers.messageFactory.newMessage(e.getMessage()));
+        }
 
-            @Override
-            public Author fromString(String s) {
-                return null;
-            }
-        });
     }
 
     public void setting() throws DBException {
