@@ -18,10 +18,7 @@ package org.bird.gui.resources.controls;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.util.function.Predicate;
 
@@ -37,12 +34,20 @@ public abstract class ComboBoxFiltered<T> {
     protected MenuItem menuItem = new MenuItem();
     protected FilteredList<T> filteredList;
 
+    public static enum Selection {
+        SINGLE(0),
+        MULTIPLE(1);
+        public int selection;
+        Selection(int selection){ this.selection = selection; }
+    }
+
     public ComboBoxFiltered(ComboBox<T> comboBox) {
         this.comboBox = comboBox;
         setup();
     }
 
     protected void setup(){
+
         /**
          * Filter
          */
@@ -85,4 +90,5 @@ public abstract class ComboBoxFiltered<T> {
      * @return
      */
     public abstract Predicate<T> getPredicate(String text);
+
 }

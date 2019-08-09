@@ -6,6 +6,7 @@ import xyz.morphia.Datastore;
  * Interaction avec la base de données
  */
 public class Mapper implements IMapper {
+
     private Datastore datastore;
 
     public Mapper() {}

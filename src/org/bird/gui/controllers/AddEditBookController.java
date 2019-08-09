@@ -16,6 +16,9 @@
 
 package org.bird.gui.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
@@ -33,7 +36,7 @@ import java.util.ResourceBundle;
 public class AddEditBookController extends DisplayWindowController {
 
     @FXML
-    private ComboBox<Author> fldAuthor;
+    private ComboBox<ComboBoxCheckItem<Author>> fldAuthor;
     @FXML
     private ComboBox<Cycle> fldCycle;
     @FXML
@@ -87,8 +90,7 @@ public class AddEditBookController extends DisplayWindowController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            ComboBoxAuthors comboBoxAuthors = new ComboBoxAuthors(fldAuthor);
-            fldAuthor.getSelectionModel().s
+            ComboBoxAuthorsMultiple comboBoxAuthors = new ComboBoxAuthorsMultiple(fldAuthor);
             ComboBoxCycles comboBoxCycles = new ComboBoxCycles(fldCycle);
             ComboBoxEditor comboBoxEditor = new ComboBoxEditor(fldEditor);
             ComboBoxCollection comboBoxCollection = new ComboBoxCollection(fldCollection);

@@ -24,6 +24,7 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Author;
+import org.bird.gui.common.mapper.CollectionAuthor;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,7 +32,7 @@ import java.util.function.Predicate;
 /**
  * Fourni un ComboBox correctement configuré & avec les données Authors
  */
-public class ComboBoxAuthors {
+public class ComboBoxAuthors extends CollectionAuthor {
 
     private MapperFactory mapperFactory = MapperFactory.getInstance();
     private Mapper mapper;
@@ -45,20 +46,16 @@ public class ComboBoxAuthors {
      */
     public ComboBoxAuthors(ComboBox<Author> comboBox) throws DBException {
         this.comboBox = comboBox;
-        init();
+        initSingle();
     }
 
     /**
-     * Init
+     * initSingle
      * @throws DBException
      */
-    private void init() throws DBException {
-        /**
-         * Récupération des données
-         */
-        mapper = mapperFactory.<Mapper>getMapper(new Mapper());
-        List<Author> authors = mapper.getDatastore().createQuery(Author.class).asList();
-        ObservableList<Author> observableList = FXCollections.observableArrayList(authors);
+    private void initSingle() throws DBException {
+
+        ObservableList<Author> observableList = getObservableList();
         /**
          * Setup du ComboBox
          */
@@ -95,8 +92,6 @@ public class ComboBoxAuthors {
                 };
             }
         };
-
-
     }
 
     /**
