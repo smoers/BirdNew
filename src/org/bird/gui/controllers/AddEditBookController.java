@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
 public class AddEditBookController extends DisplayWindowController {
 
     @FXML
-    private ComboBox<ComboBoxCheckItem<Author>> fldAuthor;
+    private ComboBox<Author> fldAuthor;
     @FXML
     private ComboBox<Cycle> fldCycle;
     @FXML

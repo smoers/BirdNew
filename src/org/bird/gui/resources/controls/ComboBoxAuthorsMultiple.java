@@ -21,25 +21,30 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.skin.ComboBoxBaseSkin;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.models.Author;
 import org.bird.gui.common.mapper.CollectionAuthor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
 import java.util.function.Predicate;
 
 public class ComboBoxAuthorsMultiple extends CollectionAuthor {
 
-    private ComboBox<ComboBoxCheckItem<Author>> comboBox;
-    private ComboBoxFilteredWithButton<ComboBoxCheckItem<Author>> comboBoxFilteredWithButton;
+    private ComboBox<Author> comboBox;
+    private ComboBoxFilteredWithButton<Author> comboBoxFilteredWithButton;
+    private List<Author> selection = new ArrayList<>();
 
     /**
      * Contructeur
      *
      * @throws DBException
      */
-    public ComboBoxAuthorsMultiple(ComboBox<ComboBoxCheckItem<Author>> comboBox) throws DBException {
+    public ComboBoxAuthorsMultiple(ComboBox<Author> comboBox) throws DBException {
         super();
         this.comboBox = comboBox;
         initMultiple();
@@ -51,45 +56,66 @@ public class ComboBoxAuthorsMultiple extends CollectionAuthor {
           */
         ObservableList<Author> authors = getObservableList();
         /**
-         * Convertion vers ComboBoxCheckItem
-         */
-        ObservableList<ComboBoxCheckItem<Author>> comboBoxCheckItems = FXCollections.observableArrayList();
-        authors.forEach(author -> {
-            comboBoxCheckItems.add(new ComboBoxCheckItem<Author>(author) {
-                @Override
-                public String getLabelText() {
-                    return getValue().getFullName();
-                }
-            });
-        });
-        /**
          * Charge le Combo
          */
-        comboBox.setItems(comboBoxCheckItems);
+        comboBox.setItems(authors);
         /**
          * Defini le converteur pour l'affichage
          */
-        comboBox.setConverter(new StringConverter<ComboBoxCheckItem<Author>>() {
+        comboBox.setCellFactory(new Callback<ListView<Author>, ListCell<Author>>() {
             @Override
-            public String toString(ComboBoxCheckItem<Author> authorComboBoxCheckItem) {
-                return authorComboBoxCheckItem.getValue().getFullName();
+            public ListCell<Author> call(ListView<Author> authorListView) {
+                return new ListCell<>(){
+                    @Override
+                    protected void updateItem(Author author, boolean b) {
+                        super.updateItem(author, b);
+                        if(author == null || b){
+                            setGraphic(null);
+                        } else {
+                            setGraphic(new ComboBoxCheckItem<Author>(author) {
+                                @Override
+                                public String getLabelText() {
+                                    return getValue().getFullName();
+                                }
+                            });
+                        }
+                    }
+                };
+            }
+        });
+        comboBox.setConverter(new StringConverter<Author>() {
+            @Override
+            public String toString(Author author) {
+                StringJoiner joiner = new StringJoiner(",");
+                selection.forEach(selected -> {
+                    joiner.add(selected.getFullName());
+                });
+                return joiner.toString();
             }
 
             @Override
-            public ComboBoxCheckItem<Author> fromString(String s) {
+            public Author fromString(String s) {
                 return null;
             }
+        });
+        comboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (selection.contains(newValue)){
+                selection.remove(newValue);
+            } else {
+                selection.add(newValue);
+            }
+
         });
         /**
          * Ajouter au ComboBox avec bouton
          */
-        comboBoxFilteredWithButton = new ComboBoxFilteredWithButton<ComboBoxCheckItem<Author>>(comboBox) {
+        comboBoxFilteredWithButton = new ComboBoxFilteredWithButton<Author>(comboBox) {
             @Override
-            public Predicate<ComboBoxCheckItem<Author>> getPredicate(String text) {
-                return new Predicate<ComboBoxCheckItem<Author>>() {
+            public Predicate<Author> getPredicate(String text) {
+                return new Predicate<Author>() {
                     @Override
-                    public boolean test(ComboBoxCheckItem<Author> authorComboBoxCheckItem) {
-                        if (authorComboBoxCheckItem.getValue().getFullName().contains(text)){
+                    public boolean test(Author author) {
+                        if (author.getFullName().contains(text)){
                             return true;
                         } else {
                             return false;
@@ -100,11 +126,11 @@ public class ComboBoxAuthorsMultiple extends CollectionAuthor {
         };
     }
 
-    public ComboBox<ComboBoxCheckItem<Author>> getComboBox() {
+    public ComboBox<Author> getComboBox() {
         return comboBox;
     }
 
-    public ComboBoxFilteredWithButton<ComboBoxCheckItem<Author>> getComboBoxFilteredWithButton() {
+    public ComboBoxFilteredWithButton<Author> getComboBoxFilteredWithButton() {
         return comboBoxFilteredWithButton;
     }
 }
