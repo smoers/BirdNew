@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Fourni un ComboBox correctement configuré & avec les données Authors
+ * Fourni un ComboBox correctement configuré & avec les données Collection
  */
 public class ComboBoxCollection {
 

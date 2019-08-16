@@ -90,7 +90,6 @@ public class AddEditBookController extends DisplayWindowController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            ComboBoxAuthorsMultiple comboBoxAuthors = new ComboBoxAuthorsMultiple(fldAuthor);
             ComboBoxCycles comboBoxCycles = new ComboBoxCycles(fldCycle);
             ComboBoxEditor comboBoxEditor = new ComboBoxEditor(fldEditor);
             ComboBoxCollection comboBoxCollection = new ComboBoxCollection(fldCollection);
