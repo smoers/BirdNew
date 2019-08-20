@@ -16,20 +16,31 @@
 
 package org.bird.gui.common.mapper;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.bird.db.exceptions.DBException;
-import org.bird.db.models.Author;
 
-/**
- * Accès aux données author
- */
-public class CollectionAuthor extends DefaultMapper<Author> {
+import java.util.List;
 
-    /**
-     * Contructeur
-     * @throws DBException
-     */
-    public CollectionAuthor() throws DBException {
-        super(Author.class);
+public class DefaultMapper<T> extends org.bird.db.mapper.DefaultMapper<T> {
+
+    public DefaultMapper(Class<T> clazz) throws DBException {
+        super(clazz);
     }
 
+    /**
+     * Retourne une liste des objets
+     * @return
+     */
+    public List<T> getList(){
+        return getDatastore().createQuery(clazz).asList();
+    }
+
+    /**
+     * Retourne une observable liste des objets
+     * @return
+     */
+    public ObservableList<T> getObservableList(){
+        return FXCollections.observableArrayList(getList());
+    }
 }

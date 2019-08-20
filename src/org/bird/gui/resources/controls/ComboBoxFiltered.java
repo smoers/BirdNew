@@ -34,13 +34,6 @@ public abstract class ComboBoxFiltered<T> {
     protected MenuItem menuItem = new MenuItem();
     protected FilteredList<T> filteredList;
 
-    public static enum Selection {
-        SINGLE(0),
-        MULTIPLE(1);
-        public int selection;
-        Selection(int selection){ this.selection = selection; }
-    }
-
     public ComboBoxFiltered(ComboBox<T> comboBox) {
         this.comboBox = comboBox;
         setup();

@@ -16,12 +16,10 @@
 
 package org.bird.gui.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
+import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
@@ -36,7 +34,7 @@ import java.util.ResourceBundle;
 public class AddEditBookController extends DisplayWindowController {
 
     @FXML
-    private ComboBox<Author> fldAuthor;
+    private ListView<Author> fldAuthors;
     @FXML
     private ComboBox<Cycle> fldCycle;
     @FXML
@@ -90,6 +88,22 @@ public class AddEditBookController extends DisplayWindowController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,Author.class) {
+                @Override
+                protected StringConverter<Author> getStringConverter() {
+                    return new StringConverter<Author>() {
+                        @Override
+                        public String toString(Author author) {
+                            return author != null ? author.getFullName() : null;
+                        }
+
+                        @Override
+                        public Author fromString(String s) {
+                            return null;
+                        }
+                    };
+                }
+            };
             ComboBoxCycles comboBoxCycles = new ComboBoxCycles(fldCycle);
             ComboBoxEditor comboBoxEditor = new ComboBoxEditor(fldEditor);
             ComboBoxCollection comboBoxCollection = new ComboBoxCollection(fldCollection);

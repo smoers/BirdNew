@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.bird.gui.events.OnLeftClickEvent;
 
-public class ShowList<T> extends AbstractButtonShow {
+public class ShowList<T> extends AbstractButtonHBox {
 
     protected LabelObservableList<T> label;
     protected ObservableList<T> observableList = null;

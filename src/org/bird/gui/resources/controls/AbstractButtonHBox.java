@@ -8,13 +8,13 @@ import org.bird.gui.listeners.OnLeftClickListener;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
-public abstract class AbstractButtonShow {
+public abstract class AbstractButtonHBox {
 
     protected HBox hbox;
     protected Button button;
     protected ArrayList<OnLeftClickListener> onLeftClickListeners = new ArrayList<>();
 
-    public AbstractButtonShow(){
+    public AbstractButtonHBox(){
         initialize();
     }
 

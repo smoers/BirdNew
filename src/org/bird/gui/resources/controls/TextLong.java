@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import org.bird.gui.events.OnLeftClickEvent;
 
-public class TextLong extends AbstractButtonShow{
+public class TextLong extends AbstractButtonHBox {
 
     protected LabelLimited label;
 

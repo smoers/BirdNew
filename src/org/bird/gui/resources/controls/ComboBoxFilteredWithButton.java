@@ -34,8 +34,8 @@ import java.util.ArrayList;
 public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> {
 
     protected HBox hBox = new HBox();
-    protected Button btFilter = new Button();
-    protected Button btAdd = new Button();
+    protected ButtonFilter btFilter = new ButtonFilter();
+    protected ButtonAdd btAdd = new ButtonAdd();
     protected ArrayList<OnLeftClickListener> filterListeners = new ArrayList<>();
     protected ArrayList<OnLeftClickListener> addListeners = new ArrayList<>();
 
@@ -76,13 +76,9 @@ public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> 
         /**
          * Config button
          */
-        btFilter.setId("buttonFilter");
-        btFilter.getStyleClass().add("mediumWhiteButton");
         btFilter.setOnMousePressed(mouseEvent -> {
             notifyFilterButtonListener(new OnLeftClickEvent(btFilter, mouseEvent.getClickCount()));
         });
-        btAdd.setId("buttonAdd");
-        btAdd.getStyleClass().add("mediumWhiteButton");
         btAdd.setOnMousePressed(mouseEvent -> {
             notifyAddButtonListner(new OnLeftClickEvent(btAdd, mouseEvent.getClickCount()));
         });

@@ -16,7 +16,6 @@
 
 package org.bird.gui.resources.controls;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;

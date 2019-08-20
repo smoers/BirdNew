@@ -21,9 +21,13 @@ import org.bird.db.exceptions.DBException;
 /**
  * Implementaion d'un Mapper par defaut
  */
-public class DefaultMapper extends Mapper {
+public class DefaultMapper<T> extends Mapper {
 
-    public DefaultMapper() throws DBException {
+    protected Class<T> clazz;
+
+    public DefaultMapper(Class<T> clazz) throws DBException {
+        this.clazz = clazz;
         MapperFactory.getInstance().<Mapper>getMapper(this);
     }
+
 }
