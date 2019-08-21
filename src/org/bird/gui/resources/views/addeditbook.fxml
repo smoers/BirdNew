@@ -36,7 +36,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <Accordion BorderPane.alignment="CENTER">
+      <Accordion fx:id="accData" BorderPane.alignment="CENTER">
         <panes>
           <TitledPane fx:id="lblData" animated="false" text="Data">
             <content>

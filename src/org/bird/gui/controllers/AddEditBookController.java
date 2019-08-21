@@ -43,6 +43,8 @@ public class AddEditBookController extends DisplayWindowController {
     private ComboBox<Collection> fldCollection;
     @FXML
     private ComboBox<Illustrator> fldIllustrators;
+    @FXML
+    private Accordion accData;
 
     private Class[] pathFXML;
     private Modality modality;
@@ -87,6 +89,10 @@ public class AddEditBookController extends DisplayWindowController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /**
+         * Expand le panneau par défaut
+         */
+        accData.setExpandedPane(accData.getPanes().get(0));
         try {
             ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,Author.class) {
                 @Override

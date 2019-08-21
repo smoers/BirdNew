@@ -17,22 +17,26 @@
 package org.bird.gui.resources.controls;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Bounds;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.gui.common.ParentPaneOverrideControl;
 import org.bird.gui.common.mapper.DefaultMapper;
+import org.bird.gui.events.OnLeftClickEvent;
+import org.bird.gui.listeners.OnLeftClickListener;
 
 public abstract class ListViewExtended<T> extends DefaultMapper<T> {
 
     private ListView<T> listView;
     private TextFieldMultiSelection txtSelection;
+    private ButtonFilter btFilter = new ButtonFilter();
     private ButtonAdd btAdd = new ButtonAdd();
     private HBox hBox = new HBox();
+    private ContextMenu contextMenu;
+    private MenuItem menuItem = new MenuItem();
 
     public ListViewExtended(ListView<T> listView, Class<T> clazz) throws DBException {
         super(clazz);
@@ -65,19 +69,66 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
             }
         });
         /**
+         * Config listview
+         */
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listView.setPrefHeight(100);
+        /**
+         * Button Filter
+         */
+        btFilter.addOnLeftClickListener(new OnLeftClickListener() {
+            @Override
+            public void onLeftClick(OnLeftClickEvent evt) {
+                showContextField();
+            }
+        });
+        /**
          * Text multiselection
          */
         txtSelection = new TextFieldMultiSelection(getStringConverter());
         txtSelection.setEditable(false);
+        txtSelection.setPrefHeight(29.0);
         txtSelection.update(listView.getSelectionModel());
-
+        txtSelection.setOnContextMenuRequested(contextMenuEvent -> {
+            showContextField();
+        });
+        txtSelection.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1){
+                showContextField();
+            }
+        });
         /**
          * Modifie l'apparence
          */
-                ParentPaneOverrideControl parentPane = new ParentPaneOverrideControl(listView);
+        ParentPaneOverrideControl parentPane = new ParentPaneOverrideControl(listView);
         hBox = parentPane.<HBox>getPane(hBox);
-        hBox.getChildren().setAll(txtSelection, btAdd);
+        hBox.getChildren().setAll(txtSelection, btFilter, btAdd);
+        /**
+         * Context Menu
+         */
+        contextMenu = new ContextMenu();
+        contextMenu.setHideOnEscape(true);
+        menuItem.setGraphic(listView);
+        contextMenu.getItems().add(menuItem);
 
+    }
+
+
+    /**
+     * Permet de forcer l'affichage du ContextMenu
+     */
+    public void showContextField(){
+        Bounds bounds = txtSelection.localToScreen(txtSelection.getBoundsInLocal());
+        contextMenu.show(txtSelection,bounds.getMinX()+txtSelection.getWidth(),bounds.getMinY() - txtSelection.getHeight());
+        listView.requestFocus();
+    }
+
+    /**
+     * Retourne
+     * @return
+     */
+    public TextFieldMultiSelection getTextFieldMultiSelection() {
+        return txtSelection;
     }
 
     protected abstract StringConverter<T> getStringConverter();
