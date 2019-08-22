@@ -18,6 +18,7 @@ package org.bird.gui.resources.controls;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
 
@@ -56,6 +57,9 @@ public class ButtonFilter extends Button {
     private void initialize(){
         setId("buttonFilter");
         getStyleClass().add("mediumWhiteButton");
+        setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+        setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+        setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         setOnMousePressed(mouseEvent -> {
             notifyOnLeftClickListener(new OnLeftClickEvent(this, mouseEvent.getClickCount()));
         });

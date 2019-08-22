@@ -16,6 +16,7 @@
 
 package org.bird.gui.resources.controls;
 
+import javafx.scene.control.Control;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
@@ -66,10 +67,14 @@ public class TextFieldMultiSelection<T> extends TextField {
                 joiner.add(converter.toString(t));
             }
         });
+        setText(joiner.toString());
     }
 
     private void initialize(){
         getStyleClass().add("form_label_field");
+        setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+        setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+        setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
     }
 
 }

@@ -19,7 +19,6 @@ package org.bird.gui.resources.controls;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
@@ -30,13 +29,28 @@ import org.bird.gui.listeners.OnLeftClickListener;
 
 public abstract class ListViewExtended<T> extends DefaultMapper<T> {
 
+    /**
+     * Détermine la hauteur de la zone texte
+     */
+    public double txtSelectionHeight = 29.0;
+    /**
+     * Détermine la longueur de la zone texte
+     */
+    public double txtSelectionWidth = 200;
+    /**
+     * Détermine la hauteur de la zone texte
+     */
+    public double listViewHeight = 100;
+
     private ListView<T> listView;
     private TextFieldMultiSelection txtSelection;
     private ButtonFilter btFilter = new ButtonFilter();
     private ButtonAdd btAdd = new ButtonAdd();
-    private HBox hBox = new HBox();
+    private DefaultHBox hBox = new DefaultHBox();
     private ContextMenu contextMenu;
-    private MenuItem menuItem = new MenuItem();
+    private MenuItem menuItemList = new MenuItem();
+    private MenuItem menuItemFilter = new MenuItem();
+    private TextField txtFilter = new TextField();
 
     public ListViewExtended(ListView<T> listView, Class<T> clazz) throws DBException {
         super(clazz);
@@ -72,7 +86,11 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
          * Config listview
          */
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listView.setPrefHeight(100);
+        listView.setPrefHeight(listViewHeight);
+        listView.setOnMousePressed(mouseEvent -> {
+            if (mouseEvent.isPrimaryButtonDown() && mouseEvent.getClickCount() == 1)
+                txtSelection.update(listView.getSelectionModel());
+        });
         /**
          * Button Filter
          */
@@ -87,7 +105,8 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
          */
         txtSelection = new TextFieldMultiSelection(getStringConverter());
         txtSelection.setEditable(false);
-        txtSelection.setPrefHeight(29.0);
+        txtSelection.setPrefHeight(txtSelectionHeight);
+        txtSelection.setPrefWidth(txtSelectionWidth);
         txtSelection.update(listView.getSelectionModel());
         txtSelection.setOnContextMenuRequested(contextMenuEvent -> {
             showContextField();
@@ -101,15 +120,16 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
          * Modifie l'apparence
          */
         ParentPaneOverrideControl parentPane = new ParentPaneOverrideControl(listView);
-        hBox = parentPane.<HBox>getPane(hBox);
+        hBox = parentPane.<DefaultHBox>getPane(hBox);
         hBox.getChildren().setAll(txtSelection, btFilter, btAdd);
         /**
          * Context Menu
          */
         contextMenu = new ContextMenu();
         contextMenu.setHideOnEscape(true);
-        menuItem.setGraphic(listView);
-        contextMenu.getItems().add(menuItem);
+        menuItemFilter.setGraphic(txtFilter);
+        menuItemList.setGraphic(listView);
+        contextMenu.getItems().addAll(menuItemFilter, menuItemList);
 
     }
 
