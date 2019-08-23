@@ -30,7 +30,7 @@ public abstract class ComboBoxFiltered<T> {
 
     protected ComboBox<T> comboBox;
     protected ContextMenu contextMenu;
-    protected TextField textField = new TextField();
+    protected TextFieldPredicate<T> textField;
     protected MenuItem menuItem = new MenuItem();
     protected FilteredList<T> filteredList;
 
@@ -49,10 +49,13 @@ public abstract class ComboBoxFiltered<T> {
         /**
          * TextField
          */
+        textField = new TextFieldPredicate<T>(filteredList) {
+            @Override
+            protected Predicate<T> getPredicate(String text) {
+                return getPredicate(text);
+            }
+        };
         textField.setPrefWidth(comboBox.getPrefWidth());
-        textField.textProperty().addListener((observableValue, s, t1) -> {
-            filteredList.setPredicate(getPredicate(t1));
-        });
         /**
          * MenuContext
          */
@@ -78,7 +81,7 @@ public abstract class ComboBoxFiltered<T> {
 
 
     /**
-     * Cette méthode doit retourner le Predicate avec les critères d'applications du filtre
+     * Cette méthode doit retourner le PredicateString avec les critères d'applications du filtre
      * @param text
      * @return
      */

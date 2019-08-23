@@ -17,6 +17,7 @@
 package org.bird.gui.resources.controls;
 
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.util.Callback;
@@ -26,6 +27,8 @@ import org.bird.gui.common.ParentPaneOverrideControl;
 import org.bird.gui.common.mapper.DefaultMapper;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
+
+import java.util.function.Predicate;
 
 public abstract class ListViewExtended<T> extends DefaultMapper<T> {
 
@@ -50,23 +53,37 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     private ContextMenu contextMenu;
     private MenuItem menuItemList = new MenuItem();
     private MenuItem menuItemFilter = new MenuItem();
-    private TextField txtFilter = new TextField();
+    private TextFieldPredicate<T> txtFilter;
 
+    /**
+     * Constructeur
+     * @param listView
+     * @param clazz
+     * @throws DBException
+     */
     public ListViewExtended(ListView<T> listView, Class<T> clazz) throws DBException {
         super(clazz);
         this.listView = listView;
         init();
     }
 
+    /**
+     * Initialise l'objet
+     */
     private void init(){
         /**
-         * Recupère les données
+         * Recupère les données & instance de l'objet TextFieldPredicate
          */
-        ObservableList<T> observableList = getObservableList();
+        txtFilter = new TextFieldPredicate<T>(new FilteredList<>(getObservableList())) {
+            @Override
+            protected Predicate<T> getPredicate(String text) {
+                return getTextFieldPredicate(text);
+            }
+        };
         /**
          * Charge les données dans la liste
          */
-        listView.setItems(observableList);
+        listView.setItems(txtFilter.getFilteredList());
         /**
          * Défini le convertor
          */
@@ -152,5 +169,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     }
 
     protected abstract StringConverter<T> getStringConverter();
+
+    protected abstract Predicate<T> getTextFieldPredicate(String text);
 
 }

@@ -30,6 +30,7 @@ import org.bird.logger.Loggers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class AddEditBookController extends DisplayWindowController {
 
@@ -106,6 +107,20 @@ public class AddEditBookController extends DisplayWindowController {
                         @Override
                         public Author fromString(String s) {
                             return null;
+                        }
+                    };
+                }
+
+                @Override
+                protected Predicate<Author> getTextFieldPredicate(String text) {
+                    return new Predicate<Author>() {
+                        @Override
+                        public boolean test(Author author) {
+                            if (author.getFullName().contains(text)){
+                                return true;
+                            } else {
+                                return false;
+                            }
                         }
                     };
                 }
