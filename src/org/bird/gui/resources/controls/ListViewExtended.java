@@ -61,9 +61,10 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
      * @param clazz
      * @throws DBException
      */
-    public ListViewExtended(ListView<T> listView, Class<T> clazz) throws DBException {
+    public ListViewExtended(ListView<T> listView,TextFieldPredicate<T> textFieldPredicate, Class<T> clazz) throws DBException {
         super(clazz);
         this.listView = listView;
+        this.txtFilter = textFieldPredicate;
         init();
     }
 
@@ -72,14 +73,16 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
      */
     private void init(){
         /**
+         * Panneau filtre list
+         */
+        ButtonAdd btAddFilter = new ButtonAdd();
+        ButtonErase btEraseFilter = new ButtonErase();
+        ButtonDelete btDeleteFilter = new ButtonDelete();
+        DefaultHBox hBoxFilter = new DefaultHBox(txtFilter,btEraseFilter, btAddFilter,btDeleteFilter);
+        /**
          * Recupère les données & instance de l'objet TextFieldPredicate
          */
-        txtFilter = new TextFieldPredicate<T>(new FilteredList<>(getObservableList())) {
-            @Override
-            protected Predicate<T> getPredicate(String text) {
-                return getTextFieldPredicate(text);
-            }
-        };
+        txtFilter.setFilteredList(new FilteredList<T>(getObservableList()));
         /**
          * Charge les données dans la liste
          */
@@ -144,7 +147,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
          */
         contextMenu = new ContextMenu();
         contextMenu.setHideOnEscape(true);
-        menuItemFilter.setGraphic(txtFilter);
+        menuItemFilter.setGraphic(hBoxFilter);
         menuItemList.setGraphic(listView);
         contextMenu.getItems().addAll(menuItemFilter, menuItemList);
 
@@ -169,7 +172,5 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     }
 
     protected abstract StringConverter<T> getStringConverter();
-
-    protected abstract Predicate<T> getTextFieldPredicate(String text);
 
 }

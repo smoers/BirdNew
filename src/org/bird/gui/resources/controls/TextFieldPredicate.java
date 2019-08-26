@@ -30,7 +30,23 @@ public abstract class TextFieldPredicate<T> extends TextField {
     /**
      * La liste à filtrer
      */
-    private FilteredList<T> filteredList;
+    private FilteredList<T> filteredList = null;
+
+    /**
+     * Constructeur
+     */
+    public TextFieldPredicate() {
+        initialyze();
+    }
+
+    /**
+     * Constructeur
+     * @param s
+     */
+    public TextFieldPredicate(String s) {
+        super(s);
+        initialyze();
+    }
 
     /**
      * Constructeur
@@ -57,8 +73,13 @@ public abstract class TextFieldPredicate<T> extends TextField {
      */
     private void initialyze(){
         textProperty().addListener(((observableValue, s, t1) -> {
-            filteredList.setPredicate(getPredicate(t1));
+            if (filteredList != null)
+                filteredList.setPredicate(getPredicate(t1));
         }));
+    }
+
+    public void setFilteredList(FilteredList<T> filteredList) {
+        this.filteredList = filteredList;
     }
 
     public FilteredList<T> getFilteredList() {

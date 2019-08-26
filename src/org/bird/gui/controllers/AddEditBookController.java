@@ -18,7 +18,10 @@ package org.bird.gui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
@@ -46,6 +49,8 @@ public class AddEditBookController extends DisplayWindowController {
     private ComboBox<Illustrator> fldIllustrators;
     @FXML
     private Accordion accData;
+    @FXML
+    private BorderPane borderPaneMain;
 
     private Class[] pathFXML;
     private Modality modality;
@@ -94,8 +99,27 @@ public class AddEditBookController extends DisplayWindowController {
          * Expand le panneau par défaut
          */
         accData.setExpandedPane(accData.getPanes().get(0));
+        Pane pane = new Pane();
+        pane.getChildren().add(new TextField("Test"));
+        Stage stage = (Stage) borderPaneMain.getScene().s;
         try {
-            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,Author.class) {
+            /**
+             * L'extended listview pour les auteurs
+             */
+            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,new TextFieldPredicate<Author>() {
+                @Override
+                protected Predicate<Author> getPredicate(String text) {
+                    return new Predicate<Author>() {
+                        @Override
+                        public boolean test(Author author) {
+                            if (author.getFullName().contains(text))
+                                return true;
+                            else
+                                return false;
+                        }
+                    };
+                }
+            }, Author.class) {
                 @Override
                 protected StringConverter<Author> getStringConverter() {
                     return new StringConverter<Author>() {
@@ -111,19 +135,6 @@ public class AddEditBookController extends DisplayWindowController {
                     };
                 }
 
-                @Override
-                protected Predicate<Author> getTextFieldPredicate(String text) {
-                    return new Predicate<Author>() {
-                        @Override
-                        public boolean test(Author author) {
-                            if (author.getFullName().contains(text)){
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                    };
-                }
             };
             ComboBoxCycles comboBoxCycles = new ComboBoxCycles(fldCycle);
             ComboBoxEditor comboBoxEditor = new ComboBoxEditor(fldEditor);

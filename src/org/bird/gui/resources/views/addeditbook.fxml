@@ -34,7 +34,7 @@
   ~ limitations under the License.
   -->
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderPaneMain" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../css/fxcss.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <Accordion fx:id="accData" BorderPane.alignment="CENTER">
         <panes>

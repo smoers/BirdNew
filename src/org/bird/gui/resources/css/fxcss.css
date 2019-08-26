@@ -331,3 +331,17 @@
 #buttonAdd:hover{
     -fx-graphic: url("../../../../../images/orange/plus-16.png");
 }
+/*id : buttonErase*/
+#buttonErase{
+    -fx-graphic: url("../../../../../images/blue/erase-16.png");
+}
+#buttonErase:hover{
+    -fx-graphic: url("../../../../../images/orange/erase-16.png");
+}
+/*id : buttonDelete*/
+#buttonDelete{
+    -fx-graphic: url("../../../../../images/blue/x-mark-16.png");
+}
+#buttonDelete:hover{
+    -fx-graphic: url("../../../../../images/orange/x-mark-16.png");
+}
