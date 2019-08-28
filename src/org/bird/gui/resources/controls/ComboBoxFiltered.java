@@ -19,6 +19,7 @@ package org.bird.gui.resources.controls;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import org.bird.gui.common.AbstractPredicate;
 
 import java.util.function.Predicate;
 
@@ -26,16 +27,18 @@ import java.util.function.Predicate;
  * Cette classe permet de créer un champ filter sur un objet ComboBox
  * @param <T>
  */
-public abstract class ComboBoxFiltered<T> {
+public class ComboBoxFiltered<T> {
 
     protected ComboBox<T> comboBox;
     protected ContextMenu contextMenu;
     protected TextFieldPredicate<T> textField;
     protected MenuItem menuItem = new MenuItem();
     protected FilteredList<T> filteredList;
+    protected AbstractPredicate<T,String> abstractPredicate;
 
-    public ComboBoxFiltered(ComboBox<T> comboBox) {
+    public ComboBoxFiltered(ComboBox<T> comboBox, AbstractPredicate<T,String> abstractPredicate) {
         this.comboBox = comboBox;
+        this.abstractPredicate = abstractPredicate;
         setup();
     }
 
@@ -49,7 +52,7 @@ public abstract class ComboBoxFiltered<T> {
         /**
          * TextField
          */
-        textField = new TextFieldPredicate<T>(filteredList) {
+        textField = new TextFieldPredicate<T>(filteredList, abstractPredicate) {
             @Override
             protected Predicate<T> getPredicate(String text) {
                 return getPredicate(text);
@@ -77,14 +80,4 @@ public abstract class ComboBoxFiltered<T> {
         contextMenu.show(comboBox,bounds.getMinX(),bounds.getMinY() - comboBox.getHeight());
         textField.requestFocus();
     }
-
-
-
-    /**
-     * Cette méthode doit retourner le PredicateString avec les critères d'applications du filtre
-     * @param text
-     * @return
-     */
-    public abstract Predicate<T> getPredicate(String text);
-
 }

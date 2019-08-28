@@ -24,6 +24,7 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Editor;
+import org.bird.gui.common.AbstractPredicate;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -80,21 +81,16 @@ public class ComboBoxEditor {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Editor>(comboBox) {
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Editor>(comboBox, new AbstractPredicate<Editor, String>() {
             @Override
-            public Predicate<Editor> getPredicate(String text) {
-                return new Predicate<Editor>() {
-                    @Override
-                    public boolean test(Editor editor) {
-                        if (editor.getName().contains(text)){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                };
+            public boolean test(Editor editor) {
+                if (editor.getName().contains(getValue())){
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        };
+        });
 
 
     }

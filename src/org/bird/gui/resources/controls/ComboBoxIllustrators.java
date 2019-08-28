@@ -25,6 +25,7 @@ import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Collection;
 import org.bird.db.models.Illustrator;
+import org.bird.gui.common.AbstractPredicate;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -81,21 +82,16 @@ public class ComboBoxIllustrators {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Illustrator>(comboBox) {
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Illustrator>(comboBox, new AbstractPredicate<Illustrator, String>() {
             @Override
-            public Predicate<Illustrator> getPredicate(String text) {
-                return new Predicate<Illustrator>() {
-                    @Override
-                    public boolean test(Illustrator illustrator) {
-                        if (illustrator.getFullName().contains(text)){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                };
+            public boolean test(Illustrator illustrator) {
+                if (illustrator.getFullName().contains(getValue())){
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        };
+        });
 
 
     }

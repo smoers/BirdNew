@@ -24,6 +24,7 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Cycle;
+import org.bird.gui.common.AbstractPredicate;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -80,21 +81,16 @@ public class ComboBoxCycles {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Cycle>(comboBox) {
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Cycle>(comboBox, new AbstractPredicate<Cycle, String>() {
             @Override
-            public Predicate<Cycle> getPredicate(String text) {
-                return new Predicate<Cycle>() {
-                    @Override
-                    public boolean test(Cycle cycle) {
-                        if (cycle.getTitle().contains(text)){
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                };
+            public boolean test(Cycle cycle) {
+                if (cycle.getTitle().contains(getValue())){
+                    return true;
+                } else {
+                    return false;
+                }
             }
-        };
+        });
 
 
     }

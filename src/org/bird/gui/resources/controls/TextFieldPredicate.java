@@ -18,24 +18,30 @@ package org.bird.gui.resources.controls;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.TextField;
+import org.bird.gui.common.AbstractPredicate;
 
 import java.util.function.Predicate;
 
 /**
- * Etend un objet TextField afin de la combiner avec un objet FilteredList
+ * Etend un objet TextField afin de le combiner avec un objet FilteredList
  * @param <T>
  */
-public abstract class TextFieldPredicate<T> extends TextField {
+public class TextFieldPredicate<T> extends TextField {
 
     /**
      * La liste à filtrer
      */
     private FilteredList<T> filteredList = null;
+    /**
+     * Predicate
+     */
+    private AbstractPredicate<T,String> abstractPredicate = null;
 
     /**
      * Constructeur
      */
-    public TextFieldPredicate() {
+    public TextFieldPredicate(AbstractPredicate<T,String> abstractPredicate) {
+        this.abstractPredicate = abstractPredicate;
         initialyze();
     }
 
@@ -43,8 +49,9 @@ public abstract class TextFieldPredicate<T> extends TextField {
      * Constructeur
      * @param s
      */
-    public TextFieldPredicate(String s) {
+    public TextFieldPredicate(String s,AbstractPredicate<T,String> abstractPredicate) {
         super(s);
+        this.abstractPredicate = abstractPredicate;
         initialyze();
     }
 
@@ -52,8 +59,9 @@ public abstract class TextFieldPredicate<T> extends TextField {
      * Constructeur
      * @param filteredList
      */
-    public TextFieldPredicate(FilteredList<T> filteredList) {
+    public TextFieldPredicate(FilteredList<T> filteredList,AbstractPredicate<T,String> abstractPredicate) {
         this.filteredList = filteredList;
+        this.abstractPredicate = abstractPredicate;
         initialyze();
     }
 
@@ -62,8 +70,9 @@ public abstract class TextFieldPredicate<T> extends TextField {
      * @param s
      * @param filteredList
      */
-    public TextFieldPredicate(String s, FilteredList<T> filteredList) {
+    public TextFieldPredicate(String s, FilteredList<T> filteredList,AbstractPredicate<T,String> abstractPredicate) {
         super(s);
+        this.abstractPredicate = abstractPredicate;
         this.filteredList = filteredList;
         initialyze();
     }
@@ -91,6 +100,9 @@ public abstract class TextFieldPredicate<T> extends TextField {
      * @param text
      * @return
      */
-    protected abstract Predicate<T> getPredicate(String text);
+    protected Predicate<T> getPredicate(String text){
+        abstractPredicate.setValue(text);
+        return abstractPredicate;
+    };
 
 }

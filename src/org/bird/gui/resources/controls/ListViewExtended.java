@@ -19,10 +19,15 @@ package org.bird.gui.resources.controls;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
+import org.bird.gui.common.AbstractPredicate;
 import org.bird.gui.common.ParentPaneOverrideControl;
 import org.bird.gui.common.mapper.DefaultMapper;
 import org.bird.gui.events.OnLeftClickEvent;
@@ -129,11 +134,26 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         txtSelection.setPrefWidth(txtSelectionWidth);
         txtSelection.update(listView.getSelectionModel());
         txtSelection.setOnContextMenuRequested(contextMenuEvent -> {
-            showContextField();
+            //showContextField();
         });
         txtSelection.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
             if (t1){
-                showContextField();
+                //showContextField();
+                PopupControl popup = new PopupControl();
+                PopupSkinFiltered<T> popupSkinFiltered = new PopupSkinFiltered<T>(popup, new AbstractPredicate<T, String>() {
+                    @Override
+                    public boolean test(T t) {
+                        return false;
+                    }
+                });
+                popupSkinFiltered.getContainer().getChildren().add(listView);
+                popup.setSkin(popupSkinFiltered);
+                popup.setAutoFix(true);
+                popup.setAnchorLocation(PopupWindow.AnchorLocation.CONTENT_BOTTOM_LEFT);
+                popup.setAutoHide(true);
+                popup.setHideOnEscape(true);
+                Bounds bounds = txtSelection.localToScreen(txtSelection.getBoundsInLocal());
+                popup.show(txtSelection,bounds.getMinX()+txtSelection.getWidth(),bounds.getMinY());
             }
         });
         /**

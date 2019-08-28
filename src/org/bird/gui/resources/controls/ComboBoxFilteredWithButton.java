@@ -21,6 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import org.bird.gui.common.AbstractPredicate;
 import org.bird.gui.common.ParentPane;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
  * Cette classe étend la classe ComboBoxFiltered en ajouutant un bouton Filter et un bouton Add
  * @param <T>
  */
-public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> {
+public class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> {
 
     protected HBox hBox = new HBox();
     protected ButtonFilter btFilter = new ButtonFilter();
@@ -43,8 +44,8 @@ public abstract class ComboBoxFilteredWithButton<T> extends ComboBoxFiltered<T> 
      * Constructeur
      * @param comboBox
      */
-    public ComboBoxFilteredWithButton(ComboBox<T> comboBox) {
-        super(comboBox);
+    public ComboBoxFilteredWithButton(ComboBox<T> comboBox, AbstractPredicate<T,String> abstractPredicate) {
+        super(comboBox,abstractPredicate);
         build();
     }
 

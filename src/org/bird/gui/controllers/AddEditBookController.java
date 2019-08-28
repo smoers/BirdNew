@@ -21,12 +21,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.*;
+import org.bird.gui.common.AbstractPredicate;
 import org.bird.gui.resources.controls.*;
 import org.bird.logger.ELoggers;
 import org.bird.logger.Loggers;
@@ -99,27 +101,20 @@ public class AddEditBookController extends DisplayWindowController {
          * Expand le panneau par défaut
          */
         accData.setExpandedPane(accData.getPanes().get(0));
-        Pane pane = new Pane();
-        pane.getChildren().add(new TextField("Test"));
-        Stage stage = (Stage) borderPaneMain.getScene().s;
         try {
             /**
              * L'extended listview pour les auteurs
              */
-            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,new TextFieldPredicate<Author>() {
+            TextFieldPredicate<Author> textFieldPredicate = new TextFieldPredicate<>(new AbstractPredicate<Author, String>() {
                 @Override
-                protected Predicate<Author> getPredicate(String text) {
-                    return new Predicate<Author>() {
-                        @Override
-                        public boolean test(Author author) {
-                            if (author.getFullName().contains(text))
-                                return true;
-                            else
-                                return false;
-                        }
-                    };
+                public boolean test(Author author) {
+                    if (author.getFullName().contains(getValue()))
+                        return true;
+                    else
+                        return false;
                 }
-            }, Author.class) {
+            });
+            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,textFieldPredicate, Author.class) {
                 @Override
                 protected StringConverter<Author> getStringConverter() {
                     return new StringConverter<Author>() {
