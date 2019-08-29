@@ -16,39 +16,56 @@
 
 package org.bird.gui.resources.controls;
 
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.layout.VBox;
 
+/**
+ * Cette classe permet de disposer d'un objet HBox préconfiguré
+ */
 public class DefaultVBox extends VBox {
 
-    public double paddings = 5.0;
-
+    /**
+     * Constructeur
+     */
     public DefaultVBox() {
         initialize();
     }
 
+    /**
+     * Constructeur
+     * @param v
+     */
     public DefaultVBox(double v) {
         super(v);
         initialize();
     }
 
+    /**
+     * Constructeur
+     * @param nodes
+     */
     public DefaultVBox(Node... nodes) {
         super(nodes);
         initialize();
     }
 
+    /**
+     * Constructeur
+     * @param v
+     * @param nodes
+     */
     public DefaultVBox(double v, Node... nodes) {
         super(v, nodes);
         initialize();
     }
 
+    /**
+     * Préconfiguration
+     */
     private void initialize(){
         setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-        setPadding(new Insets(paddings));
-
     }
 }

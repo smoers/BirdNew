@@ -14,23 +14,31 @@
  * limitations under the License.
  */
 
-package org.bird.gui.common;
+package org.bird.gui.resources.controls.popup;
 
-import java.util.function.Predicate;
+import javafx.scene.Node;
+import javafx.scene.control.PopupControl;
 
-public abstract class AbstractPredicate<T,V> implements Predicate<T> {
+/**
+ * Cette classe permet de disposer d'un objet PopupControl préconfiguré
+ */
+public class PopupDefault extends PopupControl {
 
-    protected V value;
-
-    public AbstractPredicate(V value) {
-        this.value = value;
+    /**
+     * Contructeur
+     */
+    public PopupDefault() {
+        initialize();
     }
 
-    public V getValue() {
-        return value;
+    /**
+     * Setup
+     */
+    private void initialize(){
+        setAutoFix(true);
+        setAnchorLocation(AnchorLocation.CONTENT_BOTTOM_LEFT);
+        setAutoHide(true);
+        setHideOnEscape(true);
     }
 
-    public void setValue(V value) {
-        this.value = value;
-    }
 }

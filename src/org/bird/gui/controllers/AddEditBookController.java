@@ -105,7 +105,7 @@ public class AddEditBookController extends DisplayWindowController {
             /**
              * L'extended listview pour les auteurs
              */
-            TextFieldPredicate<Author> textFieldPredicate = new TextFieldPredicate<>(new AbstractPredicate<Author, String>() {
+            AbstractPredicate<Author, String> abstractPredicate = new AbstractPredicate<Author, String>() {
                 @Override
                 public boolean test(Author author) {
                     if (author.getFullName().contains(getValue()))
@@ -113,8 +113,8 @@ public class AddEditBookController extends DisplayWindowController {
                     else
                         return false;
                 }
-            });
-            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,textFieldPredicate, Author.class) {
+            };
+            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,abstractPredicate, Author.class) {
                 @Override
                 protected StringConverter<Author> getStringConverter() {
                     return new StringConverter<Author>() {

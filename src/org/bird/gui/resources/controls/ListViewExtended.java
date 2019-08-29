@@ -16,13 +16,9 @@
 
 package org.bird.gui.resources.controls;
 
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import javafx.stage.PopupWindow;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -32,8 +28,8 @@ import org.bird.gui.common.ParentPaneOverrideControl;
 import org.bird.gui.common.mapper.DefaultMapper;
 import org.bird.gui.events.OnLeftClickEvent;
 import org.bird.gui.listeners.OnLeftClickListener;
-
-import java.util.function.Predicate;
+import org.bird.gui.resources.controls.popup.PopupDefault;
+import org.bird.gui.resources.controls.popup.PopupSkinFiltered;
 
 public abstract class ListViewExtended<T> extends DefaultMapper<T> {
 
@@ -55,10 +51,11 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     private ButtonFilter btFilter = new ButtonFilter();
     private ButtonAdd btAdd = new ButtonAdd();
     private DefaultHBox hBox = new DefaultHBox();
-    private ContextMenu contextMenu;
-    private MenuItem menuItemList = new MenuItem();
-    private MenuItem menuItemFilter = new MenuItem();
-    private TextFieldPredicate<T> txtFilter;
+    private Bounds bounds;
+    private PopupDefault popup = new PopupDefault();
+    private PopupSkinFiltered<T> popupSkinFiltered;
+    private AbstractPredicate<T,String> abstractPredicate;
+    private FilteredList<T> filteredList;
 
     /**
      * Constructeur
@@ -66,10 +63,11 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
      * @param clazz
      * @throws DBException
      */
-    public ListViewExtended(ListView<T> listView,TextFieldPredicate<T> textFieldPredicate, Class<T> clazz) throws DBException {
+    public ListViewExtended(ListView<T> listView, AbstractPredicate<T, String> abstractPredicate, Class<T> clazz) throws DBException {
         super(clazz);
         this.listView = listView;
-        this.txtFilter = textFieldPredicate;
+        this.abstractPredicate = abstractPredicate;
+        this.filteredList = new FilteredList<>(getObservableList());
         init();
     }
 
@@ -77,21 +75,11 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
      * Initialise l'objet
      */
     private void init(){
+
         /**
-         * Panneau filtre list
+         * Recupère les données & Charge les données dans la liste
          */
-        ButtonAdd btAddFilter = new ButtonAdd();
-        ButtonErase btEraseFilter = new ButtonErase();
-        ButtonDelete btDeleteFilter = new ButtonDelete();
-        DefaultHBox hBoxFilter = new DefaultHBox(txtFilter,btEraseFilter, btAddFilter,btDeleteFilter);
-        /**
-         * Recupère les données & instance de l'objet TextFieldPredicate
-         */
-        txtFilter.setFilteredList(new FilteredList<T>(getObservableList()));
-        /**
-         * Charge les données dans la liste
-         */
-        listView.setItems(txtFilter.getFilteredList());
+        listView.setItems(filteredList);
         /**
          * Défini le convertor
          */
@@ -121,9 +109,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
          */
         btFilter.addOnLeftClickListener(new OnLeftClickListener() {
             @Override
-            public void onLeftClick(OnLeftClickEvent evt) {
-                showContextField();
-            }
+            public void onLeftClick(OnLeftClickEvent evt) {showPopup();}
         });
         /**
          * Text multiselection
@@ -133,27 +119,12 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         txtSelection.setPrefHeight(txtSelectionHeight);
         txtSelection.setPrefWidth(txtSelectionWidth);
         txtSelection.update(listView.getSelectionModel());
-        txtSelection.setOnContextMenuRequested(contextMenuEvent -> {
-            //showContextField();
-        });
-        txtSelection.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (t1){
-                //showContextField();
-                PopupControl popup = new PopupControl();
-                PopupSkinFiltered<T> popupSkinFiltered = new PopupSkinFiltered<T>(popup, new AbstractPredicate<T, String>() {
-                    @Override
-                    public boolean test(T t) {
-                        return false;
-                    }
-                });
-                popupSkinFiltered.getContainer().getChildren().add(listView);
-                popup.setSkin(popupSkinFiltered);
-                popup.setAutoFix(true);
-                popup.setAnchorLocation(PopupWindow.AnchorLocation.CONTENT_BOTTOM_LEFT);
-                popup.setAutoHide(true);
-                popup.setHideOnEscape(true);
-                Bounds bounds = txtSelection.localToScreen(txtSelection.getBoundsInLocal());
-                popup.show(txtSelection,bounds.getMinX()+txtSelection.getWidth(),bounds.getMinY());
+        txtSelection.setOnMousePressed(mouseEvent -> {
+            if (mouseEvent.isPrimaryButtonDown() && mouseEvent.getClickCount() == 1){
+                if (popup.isShowing())
+                    popup.hide();
+                else
+                    showPopup();
             }
         });
         /**
@@ -163,24 +134,9 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         hBox = parentPane.<DefaultHBox>getPane(hBox);
         hBox.getChildren().setAll(txtSelection, btFilter, btAdd);
         /**
-         * Context Menu
+         * Popup
          */
-        contextMenu = new ContextMenu();
-        contextMenu.setHideOnEscape(true);
-        menuItemFilter.setGraphic(hBoxFilter);
-        menuItemList.setGraphic(listView);
-        contextMenu.getItems().addAll(menuItemFilter, menuItemList);
-
-    }
-
-
-    /**
-     * Permet de forcer l'affichage du ContextMenu
-     */
-    public void showContextField(){
-        Bounds bounds = txtSelection.localToScreen(txtSelection.getBoundsInLocal());
-        contextMenu.show(txtSelection,bounds.getMinX()+txtSelection.getWidth(),bounds.getMinY() - txtSelection.getHeight());
-        listView.requestFocus();
+        definePopup();
     }
 
     /**
@@ -192,5 +148,18 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     }
 
     protected abstract StringConverter<T> getStringConverter();
+
+    public void showPopup(){
+        bounds = txtSelection.localToScreen(txtSelection.getBoundsInLocal());
+        popup.show(txtSelection,bounds.getMinX()+txtSelection.getWidth(),bounds.getMinY());
+    }
+
+    private void definePopup(){
+        popupSkinFiltered = new PopupSkinFiltered<T>(popup,abstractPredicate);
+        popupSkinFiltered.getTextFieldPredicate().setFilteredList(filteredList);
+        popupSkinFiltered.addNode(listView);
+        popup.setSkin(popupSkinFiltered);
+
+    }
 
 }

@@ -18,8 +18,9 @@ package org.bird.gui.resources.controls;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.TextField;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.LoaderPredicate;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 /**
@@ -35,13 +36,13 @@ public class TextFieldPredicate<T> extends TextField {
     /**
      * Predicate
      */
-    private AbstractPredicate<T,String> abstractPredicate = null;
+    private LoaderPredicate<T,String> loaderPredicate = null;
 
     /**
      * Constructeur
      */
-    public TextFieldPredicate(AbstractPredicate<T,String> abstractPredicate) {
-        this.abstractPredicate = abstractPredicate;
+    public TextFieldPredicate(LoaderPredicate<T,String> loaderPredicate) {
+        this.loaderPredicate = loaderPredicate;
         initialyze();
     }
 
@@ -49,9 +50,9 @@ public class TextFieldPredicate<T> extends TextField {
      * Constructeur
      * @param s
      */
-    public TextFieldPredicate(String s,AbstractPredicate<T,String> abstractPredicate) {
+    public TextFieldPredicate(String s,LoaderPredicate<T,String> loaderPredicate) {
         super(s);
-        this.abstractPredicate = abstractPredicate;
+        this.loaderPredicate = loaderPredicate;
         initialyze();
     }
 
@@ -59,9 +60,9 @@ public class TextFieldPredicate<T> extends TextField {
      * Constructeur
      * @param filteredList
      */
-    public TextFieldPredicate(FilteredList<T> filteredList,AbstractPredicate<T,String> abstractPredicate) {
+    public TextFieldPredicate(FilteredList<T> filteredList,LoaderPredicate<T,String> loaderPredicate) {
         this.filteredList = filteredList;
-        this.abstractPredicate = abstractPredicate;
+        this.loaderPredicate = loaderPredicate;
         initialyze();
     }
 
@@ -70,9 +71,9 @@ public class TextFieldPredicate<T> extends TextField {
      * @param s
      * @param filteredList
      */
-    public TextFieldPredicate(String s, FilteredList<T> filteredList,AbstractPredicate<T,String> abstractPredicate) {
+    public TextFieldPredicate(String s, FilteredList<T> filteredList,LoaderPredicate<T,String> loaderPredicate) {
         super(s);
-        this.abstractPredicate = abstractPredicate;
+        this.loaderPredicate = loaderPredicate;
         this.filteredList = filteredList;
         initialyze();
     }
@@ -82,8 +83,19 @@ public class TextFieldPredicate<T> extends TextField {
      */
     private void initialyze(){
         textProperty().addListener(((observableValue, s, t1) -> {
-            if (filteredList != null)
-                filteredList.setPredicate(getPredicate(t1));
+            if (filteredList != null) {
+                try {
+                    filteredList.setPredicate(getPredicate(t1));
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
         }));
     }
 
@@ -100,9 +112,9 @@ public class TextFieldPredicate<T> extends TextField {
      * @param text
      * @return
      */
-    protected Predicate<T> getPredicate(String text){
-        abstractPredicate.setValue(text);
-        return abstractPredicate;
+    protected Predicate<T> getPredicate(String text) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+
+        return loaderPredicate.getInstance(text);
     };
 
 }

@@ -16,21 +16,19 @@
 
 package org.bird.gui.common;
 
-import java.util.function.Predicate;
+import java.lang.reflect.InvocationTargetException;
 
-public abstract class AbstractPredicate<T,V> implements Predicate<T> {
+public class LoaderPredicate<T,V> {
 
-    protected V value;
+    private Class<AbstractPredicate<T,V>> clazz;
 
-    public AbstractPredicate(V value) {
-        this.value = value;
+    public LoaderPredicate(Class<AbstractPredicate<T, V>> clazz) {
+        this.clazz = clazz;
     }
 
-    public V getValue() {
-        return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
+    public AbstractPredicate<T,V> getInstance(V value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        AbstractPredicate<T,V> abstractPredicate = clazz.getDeclaredConstructor().newInstance();
+        abstractPredicate.setValue(value);
+        return abstractPredicate;
     }
 }

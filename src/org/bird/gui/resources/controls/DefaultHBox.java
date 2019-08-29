@@ -20,27 +20,49 @@ import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.layout.HBox;
 
+/**
+ * Cette classe permet de disposer d'un objet HBox préconfiguré
+ */
 public class DefaultHBox extends HBox {
 
+    /**
+     * Constructeur
+     */
     public DefaultHBox() {
         initialyze();
     }
 
+    /**
+     * Constructeur
+     * @param v
+     */
     public DefaultHBox(double v) {
         super(v);
         initialyze();
     }
 
+    /**
+     * Constructeur
+     * @param nodes
+     */
     public DefaultHBox(Node... nodes) {
         super(nodes);
         initialyze();
     }
 
+    /**
+     * Constructeur
+     * @param v
+     * @param nodes
+     */
     public DefaultHBox(double v, Node... nodes) {
         super(v, nodes);
         initialyze();
     }
 
+    /**
+     * Préconfiguration
+     */
     private void initialyze(){
         setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         setMinSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
