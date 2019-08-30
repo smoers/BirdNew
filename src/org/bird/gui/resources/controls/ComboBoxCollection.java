@@ -24,10 +24,11 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Collection;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.AbstractPredicate;
+import org.bird.gui.common.predicate.CollectionPredicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Fourni un ComboBox correctement configuré & avec les données Collection
@@ -81,17 +82,7 @@ public class ComboBoxCollection {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Collection>(comboBox, new AbstractPredicate<Collection, String>() {
-            @Override
-            public boolean test(Collection collection) {
-                if (collection.getName().contains(getValue())){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Collection>(comboBox, new LoaderPredicate<Collection,String>(new CollectionPredicate()));
 
     }
 

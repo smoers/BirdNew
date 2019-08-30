@@ -23,12 +23,12 @@ import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
-import org.bird.db.models.Collection;
 import org.bird.db.models.Illustrator;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.AbstractPredicate;
+import org.bird.gui.common.predicate.IllustratorPredicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Fourni un ComboBox correctement configuré & avec les données Authors
@@ -82,16 +82,7 @@ public class ComboBoxIllustrators {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Illustrator>(comboBox, new AbstractPredicate<Illustrator, String>() {
-            @Override
-            public boolean test(Illustrator illustrator) {
-                if (illustrator.getFullName().contains(getValue())){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Illustrator>(comboBox,new LoaderPredicate<Illustrator,String>(new IllustratorPredicate()));
 
 
     }

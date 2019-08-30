@@ -23,11 +23,9 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Author;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.AbstractPredicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 import org.bird.gui.common.mapper.CollectionAuthor;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Fourni un ComboBox correctement configuré & avec les données Authors
@@ -77,16 +75,16 @@ public class ComboBoxAuthors extends CollectionAuthor {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Author>(comboBox, new AbstractPredicate<Author, String>() {
+        AbstractPredicate<Author,String> abstractPredicate = new AbstractPredicate<Author, String>() {
             @Override
             public boolean test(Author author) {
-                if (author.getFullName().contains(getValue())){
+                if (author.getFullName().contains(getValue()))
                     return true;
-                } else {
+                else
                     return false;
-                }
             }
-        });
+        };
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Author>(comboBox,new LoaderPredicate<Author,String>(abstractPredicate));
     }
 
     /**

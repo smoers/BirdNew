@@ -19,11 +19,10 @@ package org.bird.gui.resources.controls;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import javafx.stage.PopupWindow;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 import org.bird.gui.common.ParentPaneOverrideControl;
 import org.bird.gui.common.mapper.DefaultMapper;
 import org.bird.gui.events.OnLeftClickEvent;
@@ -54,7 +53,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     private Bounds bounds;
     private PopupDefault popup = new PopupDefault();
     private PopupSkinFiltered<T> popupSkinFiltered;
-    private AbstractPredicate<T,String> abstractPredicate;
+    private LoaderPredicate<T,String> loaderPredicate;
     private FilteredList<T> filteredList;
 
     /**
@@ -63,10 +62,10 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
      * @param clazz
      * @throws DBException
      */
-    public ListViewExtended(ListView<T> listView, AbstractPredicate<T, String> abstractPredicate, Class<T> clazz) throws DBException {
+    public ListViewExtended(ListView<T> listView, LoaderPredicate<T, String> loaderPredicate, Class<T> clazz) throws DBException {
         super(clazz);
         this.listView = listView;
-        this.abstractPredicate = abstractPredicate;
+        this.loaderPredicate = loaderPredicate;
         this.filteredList = new FilteredList<>(getObservableList());
         init();
     }
@@ -155,7 +154,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
     }
 
     private void definePopup(){
-        popupSkinFiltered = new PopupSkinFiltered<T>(popup,abstractPredicate);
+        popupSkinFiltered = new PopupSkinFiltered<T>(popup, loaderPredicate);
         popupSkinFiltered.getTextFieldPredicate().setFilteredList(filteredList);
         popupSkinFiltered.addNode(listView);
         popup.setSkin(popupSkinFiltered);

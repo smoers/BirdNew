@@ -18,10 +18,12 @@ package org.bird.gui.resources.controls;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.TextField;
-import org.bird.gui.common.LoaderPredicate;
+import org.apache.logging.log4j.Logger;
+import org.bird.gui.common.predicate.LoaderPredicate;
+import org.bird.logger.ELoggers;
+import org.bird.logger.Loggers;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.function.Predicate;
 
 /**
  * Etend un objet TextField afin de le combiner avec un objet FilteredList
@@ -37,6 +39,10 @@ public class TextFieldPredicate<T> extends TextField {
      * Predicate
      */
     private LoaderPredicate<T,String> loaderPredicate = null;
+    /**
+     * Logger
+     */
+    private Loggers loggers = Loggers.getInstance();
 
     /**
      * Constructeur
@@ -82,18 +88,13 @@ public class TextFieldPredicate<T> extends TextField {
      * Setup de l'objet
      */
     private void initialyze(){
+        Logger logger = loggers.getLogger(ELoggers.GUI);
         textProperty().addListener(((observableValue, s, t1) -> {
             if (filteredList != null) {
                 try {
-                    filteredList.setPredicate(getPredicate(t1));
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    filteredList.setPredicate(loaderPredicate.getInstance(t1));
+                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+                    logger.error(loggers.messageFactory.newMessage(e.getMessage(), this));
                 }
             }
         }));
@@ -106,15 +107,5 @@ public class TextFieldPredicate<T> extends TextField {
     public FilteredList<T> getFilteredList() {
         return filteredList;
     }
-
-    /**
-     * Cette méthode doit retourner le Predicate avec les critères d'applications du filtre
-     * @param text
-     * @return
-     */
-    protected Predicate<T> getPredicate(String text) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
-        return loaderPredicate.getInstance(text);
-    };
 
 }

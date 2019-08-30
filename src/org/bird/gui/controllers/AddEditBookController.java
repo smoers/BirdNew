@@ -19,23 +19,20 @@ package org.bird.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.*;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.AuthorPredicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 import org.bird.gui.resources.controls.*;
 import org.bird.logger.ELoggers;
 import org.bird.logger.Loggers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 public class AddEditBookController extends DisplayWindowController {
 
@@ -105,16 +102,7 @@ public class AddEditBookController extends DisplayWindowController {
             /**
              * L'extended listview pour les auteurs
              */
-            AbstractPredicate<Author, String> abstractPredicate = new AbstractPredicate<Author, String>() {
-                @Override
-                public boolean test(Author author) {
-                    if (author.getFullName().contains(getValue()))
-                        return true;
-                    else
-                        return false;
-                }
-            };
-            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,abstractPredicate, Author.class) {
+            ListViewExtended<Author> listViewExtended = new ListViewExtended<Author>(fldAuthors,new LoaderPredicate<Author,String>(new AuthorPredicate()), Author.class) {
                 @Override
                 protected StringConverter<Author> getStringConverter() {
                     return new StringConverter<Author>() {

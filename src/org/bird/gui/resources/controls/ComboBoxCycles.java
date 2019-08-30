@@ -24,10 +24,11 @@ import org.bird.db.exceptions.DBException;
 import org.bird.db.mapper.Mapper;
 import org.bird.db.mapper.MapperFactory;
 import org.bird.db.models.Cycle;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.AbstractPredicate;
+import org.bird.gui.common.predicate.CyclePredicator;
+import org.bird.gui.common.predicate.LoaderPredicate;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Fourni un ComboBox correctement configuré & avec les données Authors
@@ -81,17 +82,7 @@ public class ComboBoxCycles {
         /**
          * Init
          */
-        comboBoxFiltered = new ComboBoxFilteredWithButton<Cycle>(comboBox, new AbstractPredicate<Cycle, String>() {
-            @Override
-            public boolean test(Cycle cycle) {
-                if (cycle.getTitle().contains(getValue())){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-
+        comboBoxFiltered = new ComboBoxFilteredWithButton<Cycle>(comboBox,new LoaderPredicate<Cycle,String>(new CyclePredicator()));
 
     }
 

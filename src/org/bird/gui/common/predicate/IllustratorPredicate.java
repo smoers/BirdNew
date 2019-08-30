@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-package org.bird.gui.common;
+package org.bird.gui.common.predicate;
 
-import java.util.function.Predicate;
+import org.bird.db.models.Illustrator;
 
-public abstract class AbstractPredicate<T,V> implements Predicate<T> {
-
-    protected V value;
-
-    public AbstractPredicate(V value) {
-        this.value = value;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
+public class IllustratorPredicate extends AbstractPredicate<Illustrator,String> {
+    @Override
+    public boolean test(Illustrator illustrator) {
+        if (illustrator.getFullName().contains(getValue())){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

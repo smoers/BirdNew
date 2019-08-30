@@ -21,7 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.control.PopupControl;
 import javafx.scene.control.Skin;
 import javafx.scene.layout.VBox;
-import org.bird.gui.common.AbstractPredicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 import org.bird.gui.resources.controls.DefaultVBox;
 import org.bird.gui.resources.controls.TextFieldPredicate;
 
@@ -43,7 +43,7 @@ public class PopupSkinFiltered<T> implements Skin<PopupControl> {
     /**
      * la classe prédicate pour pouvoir avoir une instace de l'objet TextFieldPredicate
      */
-    private AbstractPredicate<T,String> abstractPredicate;
+    private LoaderPredicate<T,String> loaderPredicate;
     /**
      * le container VBox
      */
@@ -56,11 +56,11 @@ public class PopupSkinFiltered<T> implements Skin<PopupControl> {
     /**
      * Constructeur
      * @param popupControl
-     * @param abstractPredicate
+     * @param loaderPredicate
      */
-    public PopupSkinFiltered(PopupControl popupControl, AbstractPredicate<T,String> abstractPredicate) {
+    public PopupSkinFiltered(PopupControl popupControl, LoaderPredicate<T,String> loaderPredicate) {
         this.popupControl = popupControl;
-        this.abstractPredicate = abstractPredicate;
+        this.loaderPredicate = loaderPredicate;
         initialyze();
     }
 
@@ -68,7 +68,7 @@ public class PopupSkinFiltered<T> implements Skin<PopupControl> {
      * Setup
      */
     private void initialyze(){
-        textFieldPredicate = new TextFieldPredicate<>(abstractPredicate);
+        textFieldPredicate = new TextFieldPredicate<>(loaderPredicate);
         VBox.setMargin(textFieldPredicate,new Insets(margins));
         container = new DefaultVBox(textFieldPredicate);
     }
@@ -94,14 +94,6 @@ public class PopupSkinFiltered<T> implements Skin<PopupControl> {
      */
     public TextFieldPredicate<T> getTextFieldPredicate() {
         return textFieldPredicate;
-    }
-
-    /**
-     * L'objet AbstractPredicate
-     * @return
-     */
-    public AbstractPredicate<T, String> getAbstractPredicate() {
-        return abstractPredicate;
     }
 
     /**

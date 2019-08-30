@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package org.bird.gui.common;
+package org.bird.gui.common.predicate;
 
-import java.lang.reflect.InvocationTargetException;
+import org.bird.db.models.Author;
 
-public class LoaderPredicate<T,V> {
+public class AuthorPredicate extends AbstractPredicate<Author, String> {
 
-    private Class<AbstractPredicate<T,V>> clazz;
-
-    public LoaderPredicate(Class<AbstractPredicate<T, V>> clazz) {
-        this.clazz = clazz;
-    }
-
-    public AbstractPredicate<T,V> getInstance(V value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        AbstractPredicate<T,V> abstractPredicate = clazz.getDeclaredConstructor().newInstance();
-        abstractPredicate.setValue(value);
-        return abstractPredicate;
+    @Override
+    public boolean test(Author author) {
+        if (author.getFullName().contains(getValue()))
+            return true;
+        else
+            return false;
     }
 }

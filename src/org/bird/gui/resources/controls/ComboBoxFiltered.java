@@ -19,9 +19,7 @@ package org.bird.gui.resources.controls;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import org.bird.gui.common.AbstractPredicate;
-
-import java.util.function.Predicate;
+import org.bird.gui.common.predicate.LoaderPredicate;
 
 /**
  * Cette classe permet de créer un champ filter sur un objet ComboBox
@@ -34,11 +32,11 @@ public class ComboBoxFiltered<T> {
     protected TextFieldPredicate<T> textField;
     protected MenuItem menuItem = new MenuItem();
     protected FilteredList<T> filteredList;
-    protected AbstractPredicate<T,String> abstractPredicate;
+    protected LoaderPredicate<T,String> loaderPredicate;
 
-    public ComboBoxFiltered(ComboBox<T> comboBox, AbstractPredicate<T,String> abstractPredicate) {
+    public ComboBoxFiltered(ComboBox<T> comboBox, LoaderPredicate<T,String> loaderPredicate) {
         this.comboBox = comboBox;
-        this.abstractPredicate = abstractPredicate;
+        this.loaderPredicate = loaderPredicate;
         setup();
     }
 
@@ -52,12 +50,7 @@ public class ComboBoxFiltered<T> {
         /**
          * TextField
          */
-        textField = new TextFieldPredicate<T>(filteredList, abstractPredicate) {
-            @Override
-            protected Predicate<T> getPredicate(String text) {
-                return getPredicate(text);
-            }
-        };
+        textField = new TextFieldPredicate<T>(filteredList, loaderPredicate);
         textField.setPrefWidth(comboBox.getPrefWidth());
         /**
          * MenuContext
