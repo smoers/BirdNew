@@ -20,7 +20,11 @@ import javafx.scene.control.Control;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
+import org.bird.db.models.Author;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
@@ -34,6 +38,14 @@ public class TextFieldMultiSelection<T> extends TextField {
      * L'objet pour la convertion
      */
     protected StringConverter<T> converter;
+    /**
+     * Selected objet
+     */
+    protected List<T> selectedObject = new ArrayList<>();
+    /**
+     * Selected text
+     */
+    protected List<String> selectedText = new ArrayList<>();
 
     /**
      * Constructeur
@@ -59,15 +71,38 @@ public class TextFieldMultiSelection<T> extends TextField {
      * Met à jour le text de l'objet
      * @param model
      */
-    public void update(MultipleSelectionModel<T> model){
+    public MultipleSelectionModel<T> update(MultipleSelectionModel<T> model){
+        /**
+         * Nouveau joiner pour le texte final
+         */
         StringJoiner joiner = new StringJoiner(",");
-        model.getSelectedItems().forEach(new Consumer<T>() {
-            @Override
-            public void accept(T t) {
-                joiner.add(converter.toString(t));
+        /**
+         * supprime ou ajoute la/les valeurs de la sélection
+         */
+        if (model.getSelectedItem() != null) {
+            T t = model.getSelectedItem();
+
+            if (selectedText.contains(converter.toString(t))){
+                selectedObject.remove(t);
+                selectedText.remove(converter.toString(t));
+            } else {
+                selectedObject.add(t);
+                selectedText.add(converter.toString(t));
             }
+        }
+        /**
+         * on reconstruit la chaine de caractère à afficher
+         */
+        selectedText.forEach(text -> {
+            joiner.add(text);
         });
         setText(joiner.toString());
+        model.clearSelection();
+        selectedObject.forEach(t -> {
+            model.select(t);
+        });
+
+        return model;
     }
 
     private void initialize(){

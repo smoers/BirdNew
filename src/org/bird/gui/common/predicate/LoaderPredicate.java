@@ -16,8 +16,6 @@
 
 package org.bird.gui.common.predicate;
 
-import org.bird.gui.common.predicate.InterfacePredicate;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 

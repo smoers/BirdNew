@@ -90,6 +90,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
                     protected void updateItem(T item, boolean b) {
                         super.updateItem(item, b);
                         setText(getStringConverter().toString(item));
+                        setGraphic(new CheckBox());
                     }
                 };
             }
@@ -100,8 +101,10 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listView.setPrefHeight(listViewHeight);
         listView.setOnMousePressed(mouseEvent -> {
-            if (mouseEvent.isPrimaryButtonDown() && mouseEvent.getClickCount() == 1)
-                txtSelection.update(listView.getSelectionModel());
+            if (mouseEvent.isPrimaryButtonDown() && mouseEvent.getClickCount() == 1) {
+                MultipleSelectionModel model = txtSelection.update(listView.getSelectionModel());
+                popupSkinFiltered.getTextFieldPredicate().clear();
+            }
         });
         /**
          * Button Filter
