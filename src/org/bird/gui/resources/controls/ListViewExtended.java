@@ -74,6 +74,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
      * Initialise l'objet
      */
     private void init(){
+        txtSelection = new TextFieldMultiSelection(getStringConverter());
 
         /**
          * Recupère les données & Charge les données dans la liste
@@ -82,19 +83,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         /**
          * Défini le convertor
          */
-        listView.setCellFactory(new Callback<ListView<T>, ListCell<T>>() {
-            @Override
-            public ListCell<T> call(ListView<T> authorListView) {
-                return new ListCell<>(){
-                    @Override
-                    protected void updateItem(T item, boolean b) {
-                        super.updateItem(item, b);
-                        setText(getStringConverter().toString(item));
-                        setGraphic(new CheckBox());
-                    }
-                };
-            }
-        });
+        listView.setCellFactory(new CallBackItem(txtSelection));
         /**
          * Config listview
          */
@@ -104,6 +93,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
             if (mouseEvent.isPrimaryButtonDown() && mouseEvent.getClickCount() == 1) {
                 MultipleSelectionModel model = txtSelection.update(listView.getSelectionModel());
                 popupSkinFiltered.getTextFieldPredicate().clear();
+                model.clearSelection();
             }
         });
         /**
@@ -116,7 +106,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         /**
          * Text multiselection
          */
-        txtSelection = new TextFieldMultiSelection(getStringConverter());
+
         txtSelection.setEditable(false);
         txtSelection.setPrefHeight(txtSelectionHeight);
         txtSelection.setPrefWidth(txtSelectionWidth);
@@ -162,6 +152,32 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         popupSkinFiltered.addNode(listView);
         popup.setSkin(popupSkinFiltered);
 
+    }
+
+    private class CallBackItem implements Callback<ListView<T>, ListCell<T>>{
+
+        private TextFieldMultiSelection<T> textFieldMultiSelection;
+        private static final String HIGHLIGHTED_CONTROL_INNER_BACKGROUND = "derive(palegreen, 50%)";
+
+        public CallBackItem(TextFieldMultiSelection<T> textFieldMultiSelection) {
+            this.textFieldMultiSelection = textFieldMultiSelection;
+        }
+
+        @Override
+        public ListCell<T> call(ListView<T> tListView) {
+            return new ListCell<>(){
+                @Override
+                protected void updateItem(T item, boolean b) {
+                    super.updateItem(item, b);
+                    setText(getStringConverter().toString(item));
+                    if (textFieldMultiSelection.selectedObject.contains(item)){
+                        setStyle("-fx-control-inner-background: " + HIGHLIGHTED_CONTROL_INNER_BACKGROUND + ";");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            };
+        }
     }
 
 }
