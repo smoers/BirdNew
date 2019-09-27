@@ -18,6 +18,7 @@ package org.bird.gui.resources.controls;
 
 import javafx.scene.control.Control;
 import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import org.bird.db.models.Author;
@@ -81,8 +82,12 @@ public class TextFieldMultiSelection<T> extends TextField {
          */
         if (model.getSelectedItem() != null) {
             T t = model.getSelectedItem();
-
-            if (selectedText.contains(converter.toString(t))){
+            if (model.getSelectionMode().equals(SelectionMode.SINGLE)){
+                selectedObject.clear();
+                selectedText.clear();
+                selectedObject.add(t);
+                selectedText.add(converter.toString(t));
+            } else if (selectedText.contains(converter.toString(t))){
                 selectedObject.remove(t);
                 selectedText.remove(converter.toString(t));
             } else {

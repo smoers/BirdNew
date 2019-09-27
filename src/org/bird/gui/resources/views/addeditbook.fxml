@@ -154,11 +154,11 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <ComboBox fx:id="fldCycle" promptText="Cycle Title" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <ListView fx:id="fldCycle" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
-                              </ComboBox>
+                              </ListView>
                               <TextField fx:id="fldISBN10" promptText="ISBN 10" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -169,21 +169,21 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <ComboBox fx:id="fldEditor" promptText="Editor" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <ListView fx:id="fldEditor" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
-                              </ComboBox>
-                              <ComboBox fx:id="fldCollection" promptText="Collection" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                              </ListView>
+                              <ListView fx:id="fldCollection" styleClass="form_label_field" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
-                              </ComboBox>
-                              <ComboBox fx:id="fldIllustrators" promptText="Illustrators" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                              </ListView>
+                              <ListView fx:id="fldIllustrators" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
-                              </ComboBox>
+                              </ListView>
                               <TextField fx:id="fldISBN13" promptText="ISBN 13" styleClass="form_label_field" GridPane.columnIndex="3" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

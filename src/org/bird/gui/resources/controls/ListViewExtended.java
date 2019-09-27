@@ -30,6 +30,11 @@ import org.bird.gui.listeners.OnLeftClickListener;
 import org.bird.gui.resources.controls.popup.PopupDefault;
 import org.bird.gui.resources.controls.popup.PopupSkinFiltered;
 
+/**
+ * Cette classe permet l'affichage d'un ListView avec un champ
+ * permettant d'appliquer un filtre sur les données listées dans le ListView
+ * @param <T>
+ */
 public abstract class ListViewExtended<T> extends DefaultMapper<T> {
 
     /**
@@ -139,11 +144,29 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         return txtSelection;
     }
 
+    /**
+     * Permet de représenter l'objet sous forme d'une chaime de caractère
+     * @return
+     */
     protected abstract StringConverter<T> getStringConverter();
 
+    /**
+     * Affiche le ListView et le champ filtre
+     */
     public void showPopup(){
         bounds = txtSelection.localToScreen(txtSelection.getBoundsInLocal());
         popup.show(txtSelection,bounds.getMinX()+txtSelection.getWidth(),bounds.getMinY());
+    }
+
+    /**
+     * Multiple ou simple sélection
+     * @param value
+     */
+    public void setMultipleSelection(boolean value){
+        if (value)
+            listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        else
+            listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     private void definePopup(){
@@ -154,6 +177,9 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
 
     }
 
+    /**
+     * Cette classe est utilisée pour l'affichage des items
+     */
     private class CallBackItem implements Callback<ListView<T>, ListCell<T>>{
 
         private TextFieldMultiSelection<T> textFieldMultiSelection;
@@ -170,6 +196,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
                 protected void updateItem(T item, boolean b) {
                     super.updateItem(item, b);
                     setText(getStringConverter().toString(item));
+                    System.out.println(textFieldMultiSelection.selectedObject.size());
                     if (textFieldMultiSelection.selectedObject.contains(item)){
                         setStyle("-fx-control-inner-background: " + HIGHLIGHTED_CONTROL_INNER_BACKGROUND + ";");
                     } else {
