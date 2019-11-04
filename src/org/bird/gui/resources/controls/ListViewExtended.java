@@ -16,8 +16,12 @@
 
 package org.bird.gui.resources.controls;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -99,6 +103,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
                 MultipleSelectionModel model = txtSelection.update(listView.getSelectionModel());
                 popupSkinFiltered.getTextFieldPredicate().clear();
                 model.clearSelection();
+                listView.refresh(); //Très important dans le cas où la selection doit être unique
             }
         });
         /**
@@ -134,6 +139,7 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
          * Popup
          */
         definePopup();
+
     }
 
     /**
@@ -176,6 +182,8 @@ public abstract class ListViewExtended<T> extends DefaultMapper<T> {
         popup.setSkin(popupSkinFiltered);
 
     }
+
+
 
     /**
      * Cette classe est utilisée pour l'affichage des items

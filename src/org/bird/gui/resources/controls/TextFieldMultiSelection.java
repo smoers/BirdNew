@@ -21,13 +21,11 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
-import org.bird.db.models.Author;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.function.Consumer;
 
 /**
  * Permet d'afficher un champ text sur base d'un control multiSelection
